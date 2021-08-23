@@ -1,130 +1,130 @@
-# ±¾²å¼þ°æ±¾ÎªMossCGÏ¹¸Ä¸Ä³öÀ´µÄ
-# ¾­¹ýJerryZRFµÄÐÞ¸Ä
-# ÏÂÃæÊÇ²å¼þÅäÖÃÎÄ¼þwww~
+# ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ±¾ÎªMossCGÏ¹ï¿½Ä¸Ä³ï¿½ï¿½ï¿½ï¿½ï¿½
+# ï¿½ï¿½ï¿½ï¿½JerryZRFï¿½ï¿½ï¿½Þ¸ï¿½
+# ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½www~
 
-#°æ±¾ÐÅÏ¢ (ÇëÎð¸ü¸Ä)
+#ï¿½æ±¾ï¿½ï¿½Ï¢ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 version: 1
 
-#±¾¾Ö×î´óÍæ¼ÒÊý
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 max-players: 16
 
-#±¾¾Ö×îÐ¡Íæ¼ÒÊý£¨²»´ïµ½Õâ¸öÊýÁ¿²»»á¿ª¾Ö£©
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ïµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¿ªï¿½Ö£ï¿½
 min-players: 2
 
-#±¾¾Ö×î´óRunnerÊý£¨Õâ¶«Î÷ÎÒ»ù±¾ÓÃ²»µ½ÁËµ«ÊÇ»¹ÊÇ²»¸ÒÉ¾ÃâµÃ³öÎÊÌâ£©
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Runnerï¿½ï¿½ï¿½ï¿½ï¿½â¶«ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½Ç»ï¿½ï¿½Ç²ï¿½ï¿½ï¿½É¾ï¿½ï¿½Ã³ï¿½ï¿½ï¿½ï¿½â£©
 runner-max: 2
 
-#µÚÁã½×ÌÝÍæ¼ÒÊýÁ¿£¨´óÓÚµÈÓÚ¸ÃÊýÁ¿Runner»áÉèÖÃ¶ÔÓ¦½×ÌÝÊýÁ¿£¬ÏÂÍ¬£©
-#ÈçL0Player=2 L0Hunter=1¼´ÔÚ×ÜÍæ¼Ò´ïµ½2¼°ÒÔÉÏµÄÊ±ºò£¬ÁÔÈËÊýÎª1£©
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½Runnerï¿½ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½
+#ï¿½ï¿½L0Player=2 L0Hunter=1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò´ïµ½2ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª1ï¿½ï¿½
 L0Player: 2
 
-#µÚÁã½×ÌÝÌÓÍöÕßÊýÁ¿
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 L0Runner: 1
 
-#µÚÒ»½×ÌÝÍæ¼ÒÊýÁ¿
+#ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 L1Player: 6
 
-#µÚÒ»½×ÌÝÌÓÍöÕßÊýÁ¿
+#ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 L1Runner: 2
 
-#µÚ¶þ½×ÌÝÍæ¼ÒÊýÁ¿
+#ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 L2Player: 12
 
-#µÚ¶þ½×ÌÝÌÓÍöÕßÊýÁ¿
+#ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 L2Runner: 3
 
-#µÚÈý½×ÌÝÍæ¼ÒÊýÁ¿
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 L3Player: 16
 
-#µÚÈý½×ÌÝÌÓÍöÕßÊýÁ¿
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 L3Runner: 4
 
-#ÊÇ·ñ¿ª¾Ö½âËøÖ¸ÄÏÕë
+#ï¿½Ç·ñ¿ª¾Ö½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½
 CompassUnlocked: true
 
-#ÊÇ·ñ½áÊøÓÎÏ·×Ô¶¯ÖØÆô
+#ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
 AutoRestart: true
 
-#ÌÓÍöÕßXÖáÆ«ÒÆ£¨BasicÎª»ù´¡Æ«ÒÆ£¬RandomÎªËæ»úÖµ£©
-#Êµ¼ÊÆ«ÒÆÁ¿Îª£¨Basic+Random£©
-#ÈçXBasic: 10 XRandom: 20 ÔòÊµ¼ÊÆ«ÒÆÁ¿Îª10+(0~20)=10~30ÖÐÈ¡Ò»¸öËæ»úÊý
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½Æ«ï¿½Æ£ï¿½BasicÎªï¿½ï¿½ï¿½ï¿½Æ«ï¿½Æ£ï¿½RandomÎªï¿½ï¿½ï¿½Öµï¿½ï¿½
+#Êµï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Basic+Randomï¿½ï¿½
+#ï¿½ï¿½XBasic: 10 XRandom: 20 ï¿½ï¿½Êµï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½Îª10+(0~20)=10~30ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 XBasic: 5
 XRandom: 10
 
-#ÌÓÍöÕßYÖáÆ«ÒÆ£¨BasicÎª»ù´¡Æ«ÒÆ£¬RandomÎªËæ»úÖµ£©
-#¼ÆËãÔ­ÀíÍ¬ÉÏ
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Yï¿½ï¿½Æ«ï¿½Æ£ï¿½BasicÎªï¿½ï¿½ï¿½ï¿½Æ«ï¿½Æ£ï¿½RandomÎªï¿½ï¿½ï¿½Öµï¿½ï¿½
+#ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½Í¬ï¿½ï¿½
 YBasic: 5
 YRandom: 10
 
-#ÌÓÍöÕß¾¯¸æ¾àÀë
-#ºÃÆøÅ¶ÎÒ¿´ÁË°ëÌì·¢ÏÖÔ­×÷Õß°ÑdistanceÐ´³ÉÁËdistanceSquared
-#Ò²¾ÍÊÇÔ­±¾µÄÊÇ¾àÀëxyzµÄÆ½·½ºÍ£¬ÒÑÐÞ¸´ÎªÕý³£µÄ¾àÀë£¨Ó¦¸ÃÃ»ÎÊÌâÁË£©
-#½¨ÒéºÏÀíµ÷Õû·½±ãÁÔÈËÉú´æ
+#ï¿½ï¿½ï¿½ï¿½ï¿½ß¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#ï¿½ï¿½ï¿½ï¿½Å¶ï¿½Ò¿ï¿½ï¿½Ë°ï¿½ï¿½ì·¢ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ß°ï¿½distanceÐ´ï¿½ï¿½ï¿½ï¿½distanceSquared
+#Ò²ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½xyzï¿½ï¿½Æ½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ë£¨Ó¦ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 WarnDistance: 50
 
-#¿ª¾Öµ¹¼ÆÊ±Ê±³¤
+#ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ê±Ê±ï¿½ï¿½
 Countdown: 30
 
-#ÌÓÍöÕß¾¯¸æÏûÏ¢(%wdÊÇ¾¯¸æ¾àÀë¾ÍÊÇÉÏÃæÄÇ¸ö£¬%dÊÇµ±Ç°¾àÀë£©
-WarnDistanceSafe: "%wdM ÄÚÎ´¼ì²âµ½ÁÔÈË"
-WarnDistanceClose: "¾¯¸æ! ÁÔÈËÕýÔÚ¿¿½ü£¡µ±Ç°¾àÀë£º%dM"
+#ï¿½ï¿½ï¿½ï¿½ï¿½ß¾ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢(%wdï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½ï¿½ï¿½%dï¿½Çµï¿½Ç°ï¿½ï¿½ï¿½ë£©
+WarnDistanceSafe: "%wdM ï¿½ï¿½Î´ï¿½ï¿½âµ½ï¿½ï¿½ï¿½ï¿½"
+WarnDistanceClose: "ï¿½ï¿½ï¿½ï¿½! ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ë£º%dM"
 
-#·þÎñÆ÷Ãû³Æ£¨Êµ¼ÊÉÏÒ²¾Í½áÊøÍ³¼ÆµÄÊ±ºòÏÔÊ¾Ò»ÏÂ£©
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½Êµï¿½ï¿½ï¿½ï¿½Ò²ï¿½Í½ï¿½ï¿½ï¿½Í³ï¿½Æµï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾Ò»ï¿½Â£ï¿½
 ServerName: "Example"
 
-#ÓÎÏ·Ãû³Æ£¨Êµ¼ÊÉÏÒ²Í¬Ñù¾Í½áÊøÍ³¼ÆµÄÊ±ºòÏÔÊ¾Ò»ÏÂ£©
-ServerGame: "ÁÔÈËÓÎÏ·"
+#ï¿½ï¿½Ï·ï¿½ï¿½ï¿½Æ£ï¿½Êµï¿½ï¿½ï¿½ï¿½Ò²Í¬ï¿½ï¿½ï¿½Í½ï¿½ï¿½ï¿½Í³ï¿½Æµï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê¾Ò»ï¿½Â£ï¿½
+ServerGame: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·"
 
-#¹ÛÕ½Íæ¼ÒÃû×ÖÇ°×º
-ObserverName: "[³Ô¹Ï]"
+#ï¿½ï¿½Õ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°×º
+ObserverName: "[ï¿½Ô¹ï¿½]"
 
-#×·É±ÕßÍæ¼ÒÃû×ÖÇ°×º
-HunterName: "[ÁÔÈË]"
+#×·É±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°×º
+HunterName: "[ï¿½ï¿½ï¿½ï¿½]"
 
-#ÌÓÍöÕßÍæ¼ÒÃû×ÖÇ°×º
-RunnerName: "[ÌÓÍöÕß]"
+#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°×º
+RunnerName: "[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]"
 
-#µÈ´ýÖÐÍæ¼ÒÃû×ÖÇ°×º
-WaitingName: "[µÈ´ýÖÐ]"
+#ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°×º
+WaitingName: "[ï¿½È´ï¿½ï¿½ï¿½]"
 
-#Í³¼ÆÕ¹Ê¾µÄ»÷É±ÁúµÄÍæ¼Ò
-DragonKiller: "ÍÀÁúÓÂÊ¿"
+#Í³ï¿½ï¿½Õ¹Ê¾ï¿½Ä»ï¿½É±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+DragonKiller: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¿"
 
-#Í³¼ÆÕ¹Ê¾µÄ»÷É±ÌÓÍöÕßµÄÍæ¼Ò
-RunnerKiller: "×î¼ÑÁÔÈË"
+#Í³ï¿½ï¿½Õ¹Ê¾ï¿½Ä»ï¿½É±ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½ï¿½
+RunnerKiller: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 
-#Í³¼ÆÕ¹Ê¾µÄ¶ÔÈÎºÎÊµÌåÊä³öÉËº¦×î¶àµÄÍæ¼Ò
-DamageOutPut: "×î¼ÑÊä³ö"
+#Í³ï¿½ï¿½Õ¹Ê¾ï¿½Ä¶ï¿½ï¿½Îºï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+DamageOutPut: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 
-#Í³¼ÆÕ¹Ê¾µÄÊÜµ½ÉËº¦×î¶àµÄÍæ¼Ò
-DamageReceive: "×î²Ò°Ð×Ó"
+#Í³ï¿½ï¿½Õ¹Ê¾ï¿½ï¿½ï¿½Üµï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+DamageReceive: "ï¿½ï¿½Ò°ï¿½ï¿½ï¿½"
 
-#Í³¼ÆÕ¹Ê¾µÄ¶Ô¶ÓÓÑÊä³ö×î¶àµÄÍæ¼Ò
-TeamKiller: "¶ÓÓÑÉ±ÊÖ"
+#Í³ï¿½ï¿½Õ¹Ê¾ï¿½Ä¶Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+TeamKiller: "ï¿½ï¿½ï¿½ï¿½É±ï¿½ï¿½"
 
-#Í³¼ÆÕ¹Ê¾µÄÒÆ¶¯¾àÀë×î¶àµÄÍæ¼Ò
-WalkMaster: "´óÂÃÐÐÕß"
+#Í³ï¿½ï¿½Õ¹Ê¾ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+WalkMaster: "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 
-#Í³¼ÆÕ¹Ê¾µÄÌøÔ¾´ÎÊý×î¶àµÄÍæ¼Ò
-JumpMaster: "±ÄµÏ´óÊ¦"
+#Í³ï¿½ï¿½Õ¹Ê¾ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+JumpMaster: "ï¿½ÄµÏ´ï¿½Ê¦"
 
-#Í³¼ÆÕ¹Ê¾½áÊøºóµÄ½áÓï
-EndText1: "¸ÐÐ»ÓÎÍæ"
+#Í³ï¿½ï¿½Õ¹Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½
+EndText1: "ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½"
 EndText2: "Thanks for playing!"
 
-#¿ª¾Ö»ñµÃµÄÃæ°üÊý
+#ï¿½ï¿½ï¿½Ö»ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 Bread: 5
 
-#Íæ¼Òµ½ÆëµÄµ¹¼ÆÊ±
+#ï¿½ï¿½Òµï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½Ê±
 FullCountDown: 5
 
-#Ë½ÁÄÇ°×º
-ChatinTeam: 
-  - ¡°#¡±
+#Ë½ï¿½ï¿½Ç°×º
+ChatinTeam:
+  - ï¿½ï¿½#ï¿½ï¿½
 
-#ÓÎÏ·ÄÑ¶È
-#0 ºÍÆ½ || 1 ¼òµ¥ || 2 ÆÕÍ¨ || 3 À§ÄÑ
+#ï¿½ï¿½Ï·ï¿½Ñ¶ï¿½
+#0 ï¿½ï¿½Æ½ || 1 ï¿½ï¿½ || 2 ï¿½ï¿½Í¨ || 3 ï¿½ï¿½ï¿½ï¿½
 Difficult: 3
 
-#ÊÇ·ñ¸ü»»µØÍ¼
+#ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼
 changeMap: true

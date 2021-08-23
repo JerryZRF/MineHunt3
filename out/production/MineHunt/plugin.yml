@@ -2,7 +2,7 @@ name: MineHunt
 version: ${project.version}
 main: net.mcbbs.jerryzrf.minehunt.MineHunt
 api-version: 1.17
-authors: [JerryZRF]
+authors: [ JerryZRF ]
 description: 猎人游戏
 website: www.mcbbs.net
 softdepend:
