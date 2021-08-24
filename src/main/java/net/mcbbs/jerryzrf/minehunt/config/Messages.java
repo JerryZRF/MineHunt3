@@ -25,6 +25,7 @@ public class Messages {
     public static String UnknownTeam;
     public static String DifferentWorld;
     public static List<String> GameInfo;
+    
     private final MineHunt plugin = MineHunt.getInstance();
     
     public void LoadMessage() {

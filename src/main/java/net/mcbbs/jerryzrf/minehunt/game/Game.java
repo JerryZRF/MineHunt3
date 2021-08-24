@@ -77,7 +77,7 @@ public class Game {
 	 * @return 可能是Empty（玩家不属于游戏中的玩家）否则返回玩家角色
 	 */
 	public Optional<PlayerRole> getPlayerRole(Player player) {
-		if (status == GameStatus.WAITING_PLAYERS) {
+		if (status == GameStatus.WAITING_PLAYERS || status == GameStatus.ENDED) {
 			return Optional.of(PlayerRole.WAITING);
 		}
 		if (!this.roleMapping.containsKey(player)) {

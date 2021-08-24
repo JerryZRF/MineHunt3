@@ -32,7 +32,7 @@ public class StatisticsBaker {
         if (result.getValue() == 0.0d) {
             return "";
         }
-        return result.getKey() + " 旅行了 " + result.getValue().intValue() + " 米";
+        return result.getKey() + " 旅行了 " + result.getValue().intValue() / 100 + " 米";
     }
     
     

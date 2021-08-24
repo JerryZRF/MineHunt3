@@ -11,7 +11,6 @@ import net.mcbbs.jerryzrf.minehunt.util.Util;
 import net.mcbbs.jerryzrf.minehunt.watcher.CountDownWatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -45,6 +44,8 @@ public final class MineHunt extends JavaPlugin {
 		
 		saveDefaultConfig();
 		getConfig().options().copyDefaults(true);
+		new Messages().LoadMessage();
+		getLogger().info("语言文件加载完成！");
 		
 		game = new Game();
 		countDownWatcher = new CountDownWatcher();
@@ -62,8 +63,6 @@ public final class MineHunt extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new GameWinnerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
 		getLogger().info("事件注册完成！");
-		new Messages().LoadMessage();
-		getLogger().info("语言文件加载完成！");
 		
 		if (getConfig().getInt("version", -1) != versionNum) {
 			getLogger().warning("错误的配置文件版本，已备份并覆盖");
@@ -164,6 +163,8 @@ public final class MineHunt extends JavaPlugin {
 				} else {
 					sender.sendMessage(Messages.NoPermission);
 				}
+			} else {
+				sender.sendMessage(ChatColor.RED + "游戏已开始！");
 			}
 			return true;
 		}
@@ -186,12 +187,16 @@ public final class MineHunt extends JavaPlugin {
 		if (args[0].equalsIgnoreCase("forcestart")) {
 			if (this.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
 				if (sender.hasPermission("minehunt.start")) {
+					if (game.getInGamePlayers().size() <= 1) {
+						sender.sendMessage("没人你玩个啥");
+						return true;
+					}
 					game.start();
 				} else {
 					sender.sendMessage(Messages.NoPermission);
 				}
 			} else {
-				sender.sendMessage(Color.RED + "游戏已开始！");
+				sender.sendMessage(ChatColor.RED + "游戏已开始！");
 			}
 			return true;
 		}

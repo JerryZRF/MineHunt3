@@ -29,7 +29,7 @@ public class GameProgressManager {
 	 */
 	public void unlockProgress(GameProgress progress, Player player) {
 		//未开始
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED || plugin.getGame().getStatus() != GameStatus.ENDED) {
 			return;
 		}
 		//已解锁进度
@@ -41,16 +41,20 @@ public class GameProgressManager {
 	
 	/***
 	 * 发放进度奖励
+	 *
 	 * @param progress 进度
 	 * @param p        玩家
 	 */
 	private void processProgress(GameProgress progress, Player p) {
+		if (p == null) {
+			return;
+		}
 		Optional<PlayerRole> players = plugin.getGame().getPlayerRole(p);
 		if (players.isEmpty()) {
 			return;
 		}
 		switch (progress) {
-			case NOT_STARTED, GAME_STARTING -> plugin.getGame().getPlayersAsRole(players.get()).forEach(player -> player.getInventory().addItem(new ItemStack(Material.BREAD, plugin.getConfig().getInt("Bread"))));
+			case GAME_STARTING -> plugin.getGame().getPlayersAsRole(players.get()).forEach(player -> player.getInventory().addItem(new ItemStack(Material.BREAD, plugin.getConfig().getInt("Bread"))));
 			case STONE_AGE, IRON_MINED -> {
 				broadcastProgress(progress, true, true);
 				plugin.getGame().getPlayersAsRole(players.get()).forEach(player -> player.getInventory().addItem(new ItemStack(Material.IRON_ORE, 8)));
