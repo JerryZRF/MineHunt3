@@ -55,6 +55,7 @@ public final class MineHunt extends JavaPlugin {
 			getLogger().info("检测到PlaceHolderAPI插件，变量功能已启用！");
 			new placeholder(this).register();
 		}
+		
 		game.switchWorldRuleForReady(false);
 		Bukkit.getPluginManager().registerEvents(new PlayerServerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
@@ -188,7 +189,7 @@ public final class MineHunt extends JavaPlugin {
 			if (this.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
 				if (sender.hasPermission("minehunt.start")) {
 					if (game.getInGamePlayers().size() <= 1) {
-						sender.sendMessage("没人你玩个啥");
+						sender.sendMessage("人数不足，至少需要2人");
 						return true;
 					}
 					game.start();
@@ -199,6 +200,33 @@ public final class MineHunt extends JavaPlugin {
 				sender.sendMessage(ChatColor.RED + "游戏已开始！");
 			}
 			return true;
+		}
+		/*
+		 旁观者传送到指定玩家
+		 权限：无
+		*/
+		if (args[0].equalsIgnoreCase("tp")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage(ChatColor.RED + "只有玩家才可以这样做！");
+			}
+			if (this.getGame().getStatus() == GameStatus.GAME_STARTED) {
+				if (this.getGame().getPlayerRole((Player) sender).isEmpty()) {
+					//是旁观者
+					if (args.length == 1) {
+						//语法错误
+						return false;
+					}
+					Player player = Bukkit.getPlayer(args[1]);
+					if (player == null) {
+						sender.sendMessage(ChatColor.RED + "不存在指定玩家！");
+					}
+					((Player) sender).teleport(player);
+				} else {
+					sender.sendMessage(ChatColor.RED + "只有旁观者才可以这么做！");
+				}
+			} else {
+				sender.sendMessage(ChatColor.RED + "游戏尚未开始，你不能这么做！");
+			}
 		}
 		return false;
 	}

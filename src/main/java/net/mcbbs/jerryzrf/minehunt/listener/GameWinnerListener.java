@@ -70,9 +70,9 @@ public class GameWinnerListener implements Listener {
 		if (event.getDamager() instanceof Player) {
 			Optional<PlayerRole> role = MineHunt.getInstance().getGame().getPlayerRole(((Player) event.getDamager()));
 			if (role.isPresent()) {
-				//猎人攻击龙
 				if (role.get() == PlayerRole.HUNTER) {
-					event.setCancelled(true);
+					//猎人攻击龙
+					event.setCancelled(true);  //取消事件
 					event.getEntity().sendMessage(ChatColor.RED + Messages.HunterHurtDragon);
 					return;
 				}
