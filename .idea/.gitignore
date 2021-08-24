@@ -1,5 +1,5 @@
 # 默认忽略的文件
 /shelf/
 /workspace.xml
-/build
-/out
+/build/
+/out/
