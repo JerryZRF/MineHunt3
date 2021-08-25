@@ -35,7 +35,7 @@ public class PlayerCompassListener implements Listener {
 		}
 		Player player = (Player) event.getWhoClicked();                      //获取合成玩家
 		Optional<PlayerRole> role = plugin.getGame().getPlayerRole(player);  //获取玩家角色
-		if (!role.isPresent()) {
+		if (role.isEmpty()) {
 			return;
 		}
 		if (role.get() == PlayerRole.HUNTER) {
@@ -75,7 +75,7 @@ public class PlayerCompassListener implements Listener {
 			return;
 		}
 		if (!plugin.getGame().isCompassUnlocked()) {
-			//开局不解锁指南针
+			//没解锁指南针
 			event.getPlayer().setCompassTarget(event.getPlayer().getWorld().getSpawnLocation());
 			event.getPlayer().sendMessage(Messages.NoCompass);
 		}
@@ -84,7 +84,8 @@ public class PlayerCompassListener implements Listener {
 			event.getPlayer().sendMessage("追踪失败，所有逃亡者均已离线等待重连中...");
 		}
 		Player closestRunner = null;
-		for (Player runner : plugin.getGame().getPlayersAsRole(PlayerRole.RUNNER)) {
+		int dis = 0;
+		for (Player runner : runners) {
 			if (runner.getWorld() != event.getPlayer().getWorld()) {
 				//不在一个世界
 				continue;
@@ -95,16 +96,18 @@ public class PlayerCompassListener implements Listener {
 			}
 			if (closestRunner == null) {
 				closestRunner = runner;
+				dis = (int) event.getPlayer().getLocation().distance(runner.getLocation());
 				continue;
 			}
 			if (event.getPlayer().getLocation().distance(runner.getLocation()) < closestRunner.getLocation().distance(event.getPlayer().getLocation())) {
 				closestRunner = runner;
+				dis = (int) event.getPlayer().getLocation().distance(runner.getLocation());
 			}
 		}
 		if (closestRunner == null) {
 			event.getPlayer().sendMessage(Messages.DifferentWorld);
 		} else {
-			TextComponent component = new TextComponent("成功探测到距离您最近的逃亡者！正在追踪: %s".replace("%s", closestRunner.getName()));
+			TextComponent component = new TextComponent(Messages.FindRunner.replace("%s", closestRunner.getName()).replace("%d", String.valueOf(dis)));
 			component.setColor(ChatColor.AQUA);
 			if (event.getPlayer().getWorld().getEnvironment() == World.Environment.NORMAL) {
 				//在主世界

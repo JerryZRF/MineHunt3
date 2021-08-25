@@ -16,7 +16,7 @@ public class StatisticsBaker {
         if (result.getValue() == 0.0d) {
             return "";
         }
-        return result.getKey() + " 对其他生物造成了 " + result.getValue().intValue() + " 点伤害";
+        return result.getKey() + " 对其他生物造成了 " + result.getValue().intValue() / 10 + " 点伤害";
     }
     
     public String getDamageTakenMaster() {
@@ -24,7 +24,7 @@ public class StatisticsBaker {
         if (result.getValue() == 0.0d) {
             return "";
         }
-        return result.getKey() + " 共受到了 " + result.getValue().intValue() + " 点伤害";
+        return result.getKey() + " 共受到了 " + result.getValue().intValue() / 10 + " 点伤害";
     }
     
     public String getWalkingMaster() {

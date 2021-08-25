@@ -67,7 +67,7 @@ public class Game {
 			getPlayersAsRole(PlayerRole.HUNTER).forEach(p -> p.getInventory().remove(Material.COMPASS));
 			Bukkit.broadcastMessage(prefix + ChatColor.YELLOW + "猎人的追踪指南针被破坏失效，需要重新解锁！");
 		}
-		getPlayersAsRole(PlayerRole.RUNNER).forEach(p -> p.getInventory().remove(Material.COMPASS)); //清除合成的指南针
+		getPlayersAsRole(PlayerRole.RUNNER).forEach(p -> p.getInventory().remove(Material.COMPASS)); //清除逃亡者合成的指南针
 	}
 	
 	/**
@@ -200,6 +200,7 @@ public class Game {
 	
 	/***
 	 * 世界设置
+	 *
 	 * @param ready 游戏状态 -> ture开始||false等待
 	 */
 	public void switchWorldRuleForReady(boolean ready) {
@@ -240,6 +241,7 @@ public class Game {
 	
 	/***
 	 * 游戏结束
+	 *
 	 * @param winner   赢家团队
 	 * @param location 传送的坐标
 	 */

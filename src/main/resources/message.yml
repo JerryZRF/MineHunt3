@@ -1,6 +1,6 @@
 #语言文件
 #版本信息 (请勿更改)
-version: 1
+version: 2
 #逃亡者警告消息(%wd是警告距离就是上面那个，%d是当前距离）
 WarnDistanceSafe: "%wdM 内未检测到猎人"
 WarnDistanceClose: "警告! 猎人正在靠近！当前距离：%dM"
@@ -30,10 +30,10 @@ PlayerEnough: "玩家到齐，倒计时缩短！"
 #没有权限
 NoPermission: "你没有权限做这个！"
 #未知阵容
-UnknownTeam: "请选择阵容(hunter||runner)"
+UnknownTeam: "未知阵容，请选择阵容(hunter||runner)"
 #追踪失败，没有逃亡者世界相同
 DifferentWorld: "追踪失败，没有任何逃亡者和您所处的世界相同"
-#游戏开始时显示的东西 §
+#游戏开始时显示的东西
 # %runner% 逃亡者数量
 GameInfo:
   - "§b欢迎来到§aMineHunt"
@@ -43,4 +43,6 @@ GameInfo:
   - "§c在游戏过程中，当你率先解锁特定的游戏阶段时，同一团队玩家将会获得阶段奖励，可能是特定物品也可能是增益效果"
   - "§c猎人可以通过合成指南针来定位逃亡者的方向；逃亡者可以通过合成指南针摧毁猎人的指南针"
   - "§6§o§l祝君好运，末地见！"
-  
+#追踪到逃亡者
+#距离：%d 名称：%s
+FindRunner: "成功探测到距离您最近的逃亡者(距离: %dm)！正在追踪: %s"

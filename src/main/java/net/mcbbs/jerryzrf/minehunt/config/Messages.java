@@ -25,6 +25,7 @@ public class Messages {
     public static String UnknownTeam;
     public static String DifferentWorld;
     public static List<String> GameInfo;
+    public static String FindRunner;
     
     private final MineHunt plugin = MineHunt.getInstance();
     
@@ -60,5 +61,6 @@ public class Messages {
         UnknownTeam = config.getString("UnknownTeam");
         DifferentWorld = config.getString("DifferentWorld");
         GameInfo = config.getStringList("GameInfo");
+        FindRunner = config.getString("FindRunner");
     }
 }

@@ -42,7 +42,7 @@ public class Commander implements TabExecutor {
          */
 		if (args[0].equalsIgnoreCase("join")) {
 			if (!(sender instanceof Player)) {
-				sender.sendMessage("只有玩家才可以这么做！");
+				sender.sendMessage(ChatColor.RED + "只有玩家才可以这么做！");
 				return true;
 			}
 			if (sender.hasPermission("minehunt.join")) {
@@ -50,6 +50,7 @@ public class Commander implements TabExecutor {
 				plugin.getGame().getInGamePlayers().add(player);
 				if (args.length == 1) {
 					player.sendMessage(Messages.UnknownTeam);
+					return false;
 				}
 				if (args[1].equalsIgnoreCase("hunter")) {
 					plugin.getGame().getRoleMapping().put(player, PlayerRole.HUNTER);
@@ -59,7 +60,7 @@ public class Commander implements TabExecutor {
 					player.sendMessage(Messages.UnknownTeam);
 				}
 				player.setGameMode(GameMode.SURVIVAL);
-				Bukkit.broadcastMessage("玩家 " + sender.getName() + " 强制加入了游戏！ 身份：" + args[0]);
+				Bukkit.broadcastMessage("玩家 " + sender.getName() + " 强制加入了游戏！ 身份：" + args[1]);
 			} else {
 				sender.sendMessage(Messages.NoPermission);
 			}
@@ -90,6 +91,8 @@ public class Commander implements TabExecutor {
 				Bukkit.broadcastMessage(ChatColor.YELLOW + "> 猎人 & 逃亡者 <");
 				Bukkit.broadcastMessage(ChatColor.RED + "猎人: " + Util.list2String(MineHunt.getInstance().getGame().getPlayersAsRole(PlayerRole.HUNTER).stream().map(Player::getName).collect(Collectors.toList())));
 				Bukkit.broadcastMessage(ChatColor.GREEN + "逃亡者: " + Util.list2String(MineHunt.getInstance().getGame().getPlayersAsRole(PlayerRole.RUNNER).stream().map(Player::getName).collect(Collectors.toList())));
+			} else {
+				sender.sendMessage(ChatColor.RED + "游戏还未开始，角色未分配");
 			}
 			return true;
 		}
@@ -121,7 +124,7 @@ public class Commander implements TabExecutor {
 			if (!(sender instanceof Player)) {
 				sender.sendMessage(ChatColor.RED + "只有玩家才可以这样做！");
 			}
-			if (plugin.getGame().getStatus() == GameStatus.GAME_STARTED) {
+			if (plugin.getGame().getStatus() == GameStatus.GAME_STARTED || plugin.getGame().getStatus() == GameStatus.ENDED) {
 				if (plugin.getGame().getPlayerRole((Player) sender).isEmpty()) {
 					//是旁观者
 					if (args.length == 1) {
@@ -139,6 +142,7 @@ public class Commander implements TabExecutor {
 			} else {
 				sender.sendMessage(ChatColor.RED + "游戏尚未开始，你不能这么做！");
 			}
+			return true;
 		}
 		return false;
 	}
