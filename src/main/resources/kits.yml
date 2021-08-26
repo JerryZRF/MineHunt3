@@ -1,7 +1,7 @@
 #职业文件
 version: 2
 #职业列表
-#奔跑者
+#奔跑者（急速）
 Runner:
   name: "奔跑者"
   material: DIAMOND_BOOTS
@@ -23,8 +23,7 @@ Runner:
     duration: 20
     #级别
     level: 1
-
-#矿工
+#矿工（急迫
 Miner:
   name: "矿工"
   material: DIAMOND_PICKAXE
@@ -45,3 +44,144 @@ Miner:
     duration: 20
     #级别
     level: 1
+#战士（力量）
+Warrior:
+  material: DIAMOND_SWORD
+  lore:
+    - "让你伤害更高"
+  normal:
+    #冷却时间
+    cd: 120
+    #持续时间
+    duration: 30
+    #级别
+    level: 0
+  #超级模式
+  super:
+    #冷却时间
+    cd: 300
+    #持续时间
+    duration: 20
+    #级别
+    level: 1
+#兔子（跳跃提升）
+Rabbit:
+  material: RABBIT_FOOT
+  lore:
+    - "让你伤害更高"
+  normal:
+    #冷却时间
+    cd: 120
+    #持续时间
+    duration: 30
+    #级别
+    level: 0
+  #超级模式
+  super:
+    #冷却时间
+    cd: 300
+    #持续时间
+    duration: 20
+    #级别
+    level: 1
+#坦克（增加最大生命&抗性提升）
+Tank:
+  material: SHIELD
+  lore:
+    - "让你更肉"
+  normal:
+    #冷却时间
+    cd: 120
+    #持续时间
+    duration: 60
+    #级别
+    level: 1
+  #超级模式
+  super:
+    #冷却时间
+    cd: 300
+    #持续时间
+    duration: 30
+    #级别
+    level: 2
+#隐身
+Invisibility:
+  material: BARRIER
+  lore:
+    - "让你隐身"
+  normal:
+    #冷却时间
+    cd: 120
+    #持续时间
+    duration: 30
+    #级别
+    level: 0
+  #超级模式
+  super:
+    #冷却时间
+    cd: 300
+    #持续时间
+    duration: 60
+    #级别
+    level: 0
+#蝙蝠（夜视）
+Bat:
+  material: POTION
+  lore:
+    - "让你夜视"
+  normal:
+    #冷却时间
+    cd: 120
+    #持续时间
+    duration: 30
+    #级别
+    level: 0
+  #超级模式
+  super:
+    #冷却时间
+    cd: 300
+    #持续时间
+    duration: 60
+    #级别
+    level: 0
+    #蝙蝠（夜视）
+#小强（饱和&再生&伤害吸收）
+Cockroach:
+  material: TOTEM_OF_UNDYING
+  lore:
+    - "让你快速回血"
+  normal:
+    #冷却时间
+    cd: 120
+    #持续时间
+    duration: 20
+    #级别
+    level: 1
+  #超级模式
+  super:
+    #冷却时间
+    cd: 300
+    #持续时间
+    duration: 5
+    #级别
+    level: 3
+#水火不侵（水肺&防火&海豚）
+Impervius:
+  material: BARREL
+  lore:
+    - "让你水火不侵"
+  normal:
+    #冷却时间
+    cd: 120
+    #持续时间
+    duration: 20
+    #级别
+    level: 0
+  #超级模式
+  super:
+    #冷却时间
+    cd: 300
+    #持续时间
+    duration: 40
+    #级别
+    level: 0

@@ -179,20 +179,87 @@ public class PlayerItemListener implements Listener {
 			Date time = new Date();
 			KitInfo kits = Kit.kits.get(Kit.playerKits.get(event.getPlayer()));
 			if ((time.getTime() - Kit.useKitTime.get(event.getPlayer()) <
-					(Kit.lastMode ? kits.superCD : kits.normalCD) * 1000)) {
+					(Kit.lastMode ? kits.superCD : kits.normalCD) * 1000L)) {
 				event.getPlayer().sendMessage("技能冷却中...，剩余" +
-						(((Kit.lastMode ? kits.superCD : kits.normalCD) * 1000 - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000) + "s");
+						(((Kit.lastMode ? kits.superCD : kits.normalCD) * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000) + "s");
 				return;
 			}
 			switch (Kit.playerKits.get(event.getPlayer())) {
-				case 0 -> event.getPlayer().addPotionEffect(new PotionEffect(
-						PotionEffectType.SPEED,
-						(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-						Kit.mode ? kits.superLevel : kits.normalLevel));
-				case 1 -> event.getPlayer().addPotionEffect(new PotionEffect(
-						PotionEffectType.FAST_DIGGING,
-						(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-						Kit.mode ? kits.superLevel : kits.normalLevel));
+				case 0:
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.SPEED,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					break;
+				case 1:
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.FAST_DIGGING,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					break;
+				case 2:
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.INCREASE_DAMAGE,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					break;
+				case 3:
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.JUMP,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					break;
+				case 4:
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.DAMAGE_RESISTANCE,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.HEALTH_BOOST,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					break;
+				case 5:
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.INVISIBILITY,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					break;
+				case 6:
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.NIGHT_VISION,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					break;
+				case 7:
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.ABSORPTION,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.REGENERATION,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.SATURATION,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					break;
+				case 8:
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.WATER_BREATHING,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.DOLPHINS_GRACE,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.FIRE_RESISTANCE,
+							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+							Kit.mode ? kits.superLevel : kits.normalLevel));
+					break;
+				
 			}
 			event.getPlayer().sendMessage(org.bukkit.ChatColor.GOLD + "技能使用成功！");
 			Kit.lastMode = Kit.mode;

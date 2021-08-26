@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.List;
 
 public class LoadKits {
-	public static final String[] kits = {"Runner", "Miner"};
+	public static final String[] kits = {"Runner", "Miner", "Warrior", "Rabbit", "Tank", "Invisibility", "Bat", "Cockroach"};
 	private final MineHunt plugin = MineHunt.getInstance();
 	
 	public void Load() {
