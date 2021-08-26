@@ -1,8 +1,9 @@
 package net.mcbbs.jerryzrf.minehunt;
 
 import lombok.Getter;
-import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.Game;
+import net.mcbbs.jerryzrf.minehunt.kit.Kit;
+import net.mcbbs.jerryzrf.minehunt.kit.LoadKits;
 import net.mcbbs.jerryzrf.minehunt.listener.*;
 import net.mcbbs.jerryzrf.minehunt.placeholder.placeholder;
 import net.mcbbs.jerryzrf.minehunt.watcher.CountDownWatcher;
@@ -37,6 +38,9 @@ public final class MineHunt extends JavaPlugin {
 		getConfig().options().copyDefaults(true);
 		new Messages().LoadMessage();
 		getLogger().info("语言文件加载完成！");
+		new LoadKits().Load();
+		Kit.Init();
+		getLogger().info("职业文件加载完成！");
 		
 		game = new Game();
 		countDownWatcher = new CountDownWatcher();
@@ -50,7 +54,7 @@ public final class MineHunt extends JavaPlugin {
 		game.switchWorldRuleForReady(false);
 		Bukkit.getPluginManager().registerEvents(new PlayerServerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerCompassListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerItemListener(), this);
 		Bukkit.getPluginManager().registerEvents(new ProgressDetectingListener(), this);
 		Bukkit.getPluginManager().registerEvents(new GameWinnerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new ChatListener(), this);

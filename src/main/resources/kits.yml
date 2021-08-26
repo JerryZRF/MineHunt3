@@ -1,0 +1,47 @@
+#职业文件
+version: 2
+#职业列表
+#奔跑者
+Runner:
+  name: "奔跑者"
+  material: DIAMOND_BOOTS
+  lore:
+    - "让你跑得更快"
+  #普通模式
+  normal:
+    #冷却时间
+    cd: 120
+    #持续时间
+    duration: 30
+    #级别
+    level: 0
+  #超级模式
+  super:
+    #冷却时间
+    cd: 300
+    #持续时间
+    duration: 20
+    #级别
+    level: 1
+
+#矿工
+Miner:
+  name: "矿工"
+  material: DIAMOND_PICKAXE
+  lore:
+    - "让你挖得更快"
+  normal:
+    #冷却时间
+    cd: 120
+    #持续时间
+    duration: 30
+    #级别
+    level: 0
+  #超级模式
+  super:
+    #冷却时间
+    cd: 300
+    #持续时间
+    duration: 20
+    #级别
+    level: 1

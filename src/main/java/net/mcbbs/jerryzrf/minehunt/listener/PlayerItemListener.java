@@ -1,9 +1,12 @@
 package net.mcbbs.jerryzrf.minehunt.listener;
 
+import net.mcbbs.jerryzrf.minehunt.Messages;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
-import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
+import net.mcbbs.jerryzrf.minehunt.kit.Kit;
+import net.mcbbs.jerryzrf.minehunt.kit.KitInfo;
+import net.mcbbs.jerryzrf.minehunt.kit.LoadKits;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -14,17 +17,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public class PlayerCompassListener implements Listener {
+public class PlayerItemListener implements Listener {
 	private final MineHunt plugin = MineHunt.getInstance();
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -46,31 +55,33 @@ public class PlayerCompassListener implements Listener {
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void respawnGivenCompass(PlayerRespawnEvent event) {
-		//开局/复活给予猎人指南针
-		if (plugin.getGame().getStatus() == GameStatus.GAME_STARTED && plugin.getGame().isCompassUnlocked()) {
-			Optional<PlayerRole> role = plugin.getGame().getPlayerRole(event.getPlayer());
-			if (role.isPresent()) {
-				if (role.get() == PlayerRole.HUNTER) {
-					event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));
+	public void respawnGivenItem(PlayerRespawnEvent event) {
+		//开局/复活给予猎人指南针&职业工具
+		if (plugin.getGame().getStatus() == GameStatus.GAME_STARTED) {
+			if (plugin.getGame().isCompassUnlocked()) {
+				Optional<PlayerRole> role = plugin.getGame().getPlayerRole(event.getPlayer());
+				if (role.isPresent()) {
+					if (role.get() == PlayerRole.HUNTER) {
+						event.getPlayer().getInventory().addItem(new ItemStack(Material.COMPASS));
+					}
 				}
 			}
+			event.getPlayer().getInventory().setItem(8, Kit.kitItem);
 		}
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void deathDropRemoveCompass(PlayerDeathEvent event) {
+	public void deathDropRemove(PlayerDeathEvent event) {
 		event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.COMPASS);  //删除死亡掉落的指南针
+		event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.NETHER_STAR);  //删除死亡掉落的职业工具
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void clickCompass(PlayerInteractEvent event) {
-		//这句话我觉得没必要
-        /*
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_AIR && event.getAction() != Action.LEFT_CLICK_BLOCK) {
-            return;
-        }
-        */
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
+			return;
+		}
+		
 		if (event.getItem() == null || event.getItem().getType() != Material.COMPASS) {
 			return;
 		}
@@ -78,6 +89,7 @@ public class PlayerCompassListener implements Listener {
 			//没解锁指南针
 			event.getPlayer().setCompassTarget(event.getPlayer().getWorld().getSpawnLocation());
 			event.getPlayer().sendMessage(Messages.NoCompass);
+			return;
 		}
 		List<Player> runners = plugin.getGame().getPlayersAsRole(PlayerRole.RUNNER);
 		if (runners.isEmpty()) {
@@ -123,6 +135,71 @@ public class PlayerCompassListener implements Listener {
 				event.getItem().setItemMeta(compassMeta);
 			}
 			event.getPlayer().sendMessage(ChatMessageType.ACTION_BAR, component);
+		}
+	}
+	
+	@EventHandler
+	public void GUIClick(InventoryClickEvent event) {
+		Player player = (Player) event.getWhoClicked();
+		// 只有玩家可以触发 InventoryClickEvent，可以强制转换
+		InventoryView inv = player.getOpenInventory();
+		if (inv.getTitle().equals("职业")) {
+			// 通过标题区分 GUI
+			event.setCancelled(true);
+		}
+		if (event.getRawSlot() < 0 || event.getRawSlot() >= LoadKits.kits.length) {
+			// 这个方法来源于 Bukkit Development Note
+			// 如果在合理的范围内，getRawSlot 会返回一个合适的编号（0 ~ 物品栏大小-1）
+			return;
+			// 结束处理，使用 return 避免了多余的 else
+		}
+		ItemStack clickedItem = event.getCurrentItem();
+		// 获取被点的物品
+		if (clickedItem == null) {
+			// 确保不是 null
+			return;
+		}
+		// 后续处理
+		Kit.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
+		event.getWhoClicked().sendMessage("已选择职业" + Kit.kitsName.get(event.getRawSlot()));
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+	public void clickKitItem(PlayerInteractEvent event) {
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
+			return;
+		}
+		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+			return;
+		}
+		if (event.getItem() == null || event.getItem().getType() != Material.NETHER_STAR) {
+			return;
+		}
+		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+			Date time = new Date();
+			KitInfo kits = Kit.kits.get(Kit.playerKits.get(event.getPlayer()));
+			if ((time.getTime() - Kit.useKitTime.get(event.getPlayer()) <
+					(Kit.lastMode ? kits.superCD : kits.normalCD) * 1000)) {
+				event.getPlayer().sendMessage("技能冷却中...，剩余" +
+						(((Kit.lastMode ? kits.superCD : kits.normalCD) * 1000 - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000) + "s");
+				return;
+			}
+			switch (Kit.playerKits.get(event.getPlayer())) {
+				case 0 -> event.getPlayer().addPotionEffect(new PotionEffect(
+						PotionEffectType.SPEED,
+						(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+						Kit.mode ? kits.superLevel : kits.normalLevel));
+				case 1 -> event.getPlayer().addPotionEffect(new PotionEffect(
+						PotionEffectType.FAST_DIGGING,
+						(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
+						Kit.mode ? kits.superLevel : kits.normalLevel));
+			}
+			event.getPlayer().sendMessage(org.bukkit.ChatColor.GOLD + "技能使用成功！");
+			Kit.lastMode = Kit.mode;
+			Kit.useKitTime.put(event.getPlayer(), time.getTime());
+		} else {
+			Kit.mode = !Kit.mode;
+			event.getPlayer().sendMessage(ChatColor.GOLD + "技能模式已更换，当前为" + (Kit.mode ? "超级模式" : "普通模式"));
 		}
 	}
 }

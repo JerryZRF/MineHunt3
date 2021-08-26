@@ -1,8 +1,8 @@
 package net.mcbbs.jerryzrf.minehunt;
 
-import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
+import net.mcbbs.jerryzrf.minehunt.kit.GUI;
 import net.mcbbs.jerryzrf.minehunt.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -144,12 +144,24 @@ public class Commander implements TabExecutor {
 			}
 			return true;
 		}
+		/*
+		 选择职业
+		 权限：无
+		*/
+		if (args[0].equalsIgnoreCase("kits")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage(ChatColor.RED + "只有玩家才可以这么做！");
+				return true;
+			}
+			new GUI().openGUI((Player) sender);
+			return true;
+		}
 		return false;
 	}
 	
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 		final String[] teams = {"hunter", "runner"};
-		final String[] commands = {"forcestart", "players", "copyright", "resetcountdown", "join", "tp"};
+		final String[] commands = {"forcestart", "players", "copyright", "resetcountdown", "join", "tp", "kits"};
 		final List<String> players = new ArrayList<>();
 		plugin.getGame().getInGamePlayers().forEach((player) -> {
 			players.add(player.getName());

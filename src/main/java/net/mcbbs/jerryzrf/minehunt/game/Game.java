@@ -4,8 +4,9 @@ import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import net.mcbbs.jerryzrf.minehunt.Messages;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
-import net.mcbbs.jerryzrf.minehunt.config.Messages;
+import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.util.GameEndingData;
 import net.mcbbs.jerryzrf.minehunt.util.MusicPlayer;
 import net.mcbbs.jerryzrf.minehunt.util.StatisticsBaker;
@@ -186,7 +187,10 @@ public class Game {
 			getPlayersAsRole(PlayerRole.HUNTER).forEach(p -> p.getInventory().addItem(new ItemStack(Material.COMPASS, 1)));
 		}
 		switchWorldRuleForReady(true);
-		
+		Bukkit.broadcastMessage("正在发放职业物品");
+		inGamePlayers.forEach(player -> {
+			player.getInventory().setItem(8, Kit.kitItem);
+		});
 		Bukkit.broadcastMessage(prefix + "游戏开始！");
 		for (int i = 0; i < Messages.GameInfo.size(); i++) {
 			Bukkit.broadcastMessage(prefix + Messages.GameInfo.get(i).replace("%runner%", String.valueOf(runners)));

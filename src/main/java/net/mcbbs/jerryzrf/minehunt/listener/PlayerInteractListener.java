@@ -60,6 +60,4 @@ public class PlayerInteractListener implements Listener {
 			}
 		}
 	}
-	
-	
 }

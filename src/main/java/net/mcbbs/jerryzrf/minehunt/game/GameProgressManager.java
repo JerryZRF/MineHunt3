@@ -1,7 +1,7 @@
 package net.mcbbs.jerryzrf.minehunt.game;
 
+import net.mcbbs.jerryzrf.minehunt.Messages;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
-import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

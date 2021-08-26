@@ -1,9 +1,10 @@
 package net.mcbbs.jerryzrf.minehunt.listener;
 
+import net.mcbbs.jerryzrf.minehunt.Messages;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
-import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
+import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -23,6 +24,7 @@ public class PlayerServerListener implements Listener {
 	public void join(PlayerJoinEvent event) {
 		if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
 			if (plugin.getGame().playerJoining(event.getPlayer())) {
+				Kit.playerKits.put(event.getPlayer(), 0);
 				event.getPlayer().setGameMode(GameMode.ADVENTURE);
 			} else {
 				//人满了

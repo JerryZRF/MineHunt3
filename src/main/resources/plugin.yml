@@ -12,7 +12,7 @@ commands:
     description: "主命令"
     aliases:
       - mh
-    usage: "/minehunt forcestart || players || copyright || resetcountdown || join {team} || tp {player}"
+    usage: "/minehunt forcestart || players || copyright || resetcountdown || join {team} || tp {player} || kits"
 permissions:
   minehunt.*:
     description: 允许使用minehunt管理员命令
