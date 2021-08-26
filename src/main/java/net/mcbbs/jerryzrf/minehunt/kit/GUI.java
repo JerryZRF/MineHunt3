@@ -15,7 +15,11 @@ public class GUI {
 		for (int i = 0; i < kits.length; i++) {
 			ItemStack item = new ItemStack(Material.getMaterial(Kit.kitsMaterial.get(i)));
 			ItemMeta im = item.getItemMeta();
+			if (im == null) {
+				continue;
+			}
 			im.setLore(Kit.kitsLore.get(i));
+			im.setDisplayName(Kit.kitsName.get(i));
 			item.setItemMeta(im);
 			inv.setItem(i, item);
 		}

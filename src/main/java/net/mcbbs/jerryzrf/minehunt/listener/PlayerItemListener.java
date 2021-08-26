@@ -218,6 +218,10 @@ public class PlayerItemListener implements Listener {
 							PotionEffectType.HEALTH_BOOST,
 							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
 							Kit.mode ? kits.superLevel : kits.normalLevel));
+					event.getPlayer().addPotionEffect(new PotionEffect(
+							PotionEffectType.REGENERATION,
+							20,
+							4));
 					break;
 				case 5:
 					event.getPlayer().addPotionEffect(new PotionEffect(

@@ -16,7 +16,7 @@ public class Kit {
 	public static List<List<String>> kitsLore = new ArrayList<>();
 	public static List<String> kitsMaterial = new ArrayList<>();
 	public static Map<Player, Long> useKitTime = new HashMap<>();
-	public static boolean lastMode;  //0 普通 | 1超级
+	public static boolean lastMode = false;  //0 普通 | 1超级
 	public static boolean mode = false;  //0 普通 | 1超级
 	public static ItemStack kitItem = new ItemStack(Material.NETHER_STAR);
 	

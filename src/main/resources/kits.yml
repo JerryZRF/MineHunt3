@@ -46,6 +46,7 @@ Miner:
     level: 1
 #战士（力量）
 Warrior:
+  name: "战士"
   material: DIAMOND_SWORD
   lore:
     - "让你伤害更高"
@@ -66,6 +67,7 @@ Warrior:
     level: 1
 #兔子（跳跃提升）
 Rabbit:
+  name: "兔子"
   material: RABBIT_FOOT
   lore:
     - "让你伤害更高"
@@ -86,6 +88,7 @@ Rabbit:
     level: 1
 #坦克（增加最大生命&抗性提升）
 Tank:
+  name: "坦克"
   material: SHIELD
   lore:
     - "让你更肉"
@@ -106,6 +109,7 @@ Tank:
     level: 2
 #隐身
 Invisibility:
+  name: "隐者"
   material: BARRIER
   lore:
     - "让你隐身"
@@ -126,6 +130,7 @@ Invisibility:
     level: 0
 #蝙蝠（夜视）
 Bat:
+  name: "蝙蝠"
   material: POTION
   lore:
     - "让你夜视"
@@ -147,6 +152,7 @@ Bat:
     #蝙蝠（夜视）
 #小强（饱和&再生&伤害吸收）
 Cockroach:
+  name: "小强"
   material: TOTEM_OF_UNDYING
   lore:
     - "让你快速回血"
@@ -167,6 +173,7 @@ Cockroach:
     level: 3
 #水火不侵（水肺&防火&海豚）
 Impervius:
+  name: "水火不侵"
   material: BARREL
   lore:
     - "让你水火不侵"

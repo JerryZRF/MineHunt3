@@ -14,12 +14,13 @@ commands:
       - mh
     usage: "/minehunt forcestart || players || copyright || resetcountdown || join {team} || tp {player} || kits"
 permissions:
-  minehunt.*:
+  minehunt.admin:
     description: 允许使用minehunt管理员命令
     children:
       minehunt.join: true
       minehunt.start: true
-      minehunt.reset: true
+      minehunt.resetcountdown: true
+      minehunt.resetkit: true
     default: op
   minehunt.join:
     description: 允许强制加入一开始的游戏
@@ -29,4 +30,7 @@ permissions:
     default: op
   minehunt.reset:
     description: 允许重置倒计时
+    default: op
+  minehunt.resetkit:
+    description: 允许重置职业CD
     default: op

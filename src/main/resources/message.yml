@@ -28,7 +28,7 @@ Waiting: "正在等待更多玩家加入游戏...."
 #玩家到齐
 PlayerEnough: "玩家到齐，倒计时缩短！"
 #没有权限
-NoPermission: "你没有权限做这个！"
+NoPermission: "§4你没有权限做这个！"
 #未知阵容
 UnknownTeam: "未知阵容，请选择阵容(hunter||runner)"
 #追踪失败，没有逃亡者世界相同

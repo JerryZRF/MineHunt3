@@ -3,6 +3,7 @@ package net.mcbbs.jerryzrf.minehunt;
 import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.kit.GUI;
+import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -68,7 +69,7 @@ public class Commander implements TabExecutor {
 		}
         /*
          重置倒计时
-         权限：minehunt.reset
+         权限：minehunt.resetcountdown
          */
 		if (args[0].equalsIgnoreCase("resetcountdown")) {
 			if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
@@ -153,7 +154,28 @@ public class Commander implements TabExecutor {
 				sender.sendMessage(ChatColor.RED + "只有玩家才可以这么做！");
 				return true;
 			}
+			if (plugin.getGame().getStatus() != GameStatus.WAITING_PLAYERS) {
+				sender.sendMessage(ChatColor.RED + "游戏已开始！");
+				return true;
+			}
 			new GUI().openGUI((Player) sender);
+			return true;
+		}
+		/*
+		 重置职业倒计时
+		 权限： minehunt.resetkit
+		*/
+		if (args[0].equalsIgnoreCase("resetkit")) {
+			if (!(sender instanceof Player)) {
+				sender.sendMessage(ChatColor.RED + "只有玩家才可以这么做！");
+				return true;
+			}
+			if (sender.hasPermission("minehunt.resetkit")) {
+				sender.sendMessage(ChatColor.GOLD + "职业CD已归零");
+				Kit.useKitTime.put((Player) sender, 0L);
+			} else {
+				sender.sendMessage(Messages.NoPermission);
+			}
 			return true;
 		}
 		return false;
@@ -161,7 +183,7 @@ public class Commander implements TabExecutor {
 	
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 		final String[] teams = {"hunter", "runner"};
-		final String[] commands = {"forcestart", "players", "copyright", "resetcountdown", "join", "tp", "kits"};
+		final String[] commands = {"forcestart", "players", "copyright", "resetcountdown", "join", "tp", "kits", "resetkit"};
 		final List<String> players = new ArrayList<>();
 		plugin.getGame().getInGamePlayers().forEach((player) -> {
 			players.add(player.getName());

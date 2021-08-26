@@ -25,6 +25,7 @@ public class PlayerServerListener implements Listener {
 		if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
 			if (plugin.getGame().playerJoining(event.getPlayer())) {
 				Kit.playerKits.put(event.getPlayer(), 0);
+				Kit.useKitTime.put(event.getPlayer(), 0L);
 				event.getPlayer().setGameMode(GameMode.ADVENTURE);
 			} else {
 				//人满了
