@@ -160,7 +160,7 @@ public class PlayerItemListener implements Listener {
 		}
 		// 后续处理
 		Kit.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
-		event.getWhoClicked().sendMessage("已选择职业" + Kit.kits.get(event.getRawSlot()).name);
+		event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + Kit.kits.get(event.getRawSlot()).name);
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -180,8 +180,8 @@ public class PlayerItemListener implements Listener {
 			
 			if ((time.getTime() - Kit.useKitTime.get(event.getPlayer()) <
 					(kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD) * 1000L)) {
-				event.getPlayer().sendMessage("技能冷却中...，剩余" +
-						((kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000) + "s");
+				event.getPlayer().sendMessage(Messages.KitColding.replace("%c",
+						String.valueOf((kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000)));
 				return;
 			}
 			
@@ -192,12 +192,12 @@ public class PlayerItemListener implements Listener {
 						kits.mode.get(Kit.mode.get(event.getPlayer())).level.get(i)));
 			}
 			
-			event.getPlayer().sendMessage(org.bukkit.ChatColor.GOLD + "技能使用成功！");
+			event.getPlayer().sendMessage(Messages.UseKit);
 			Kit.lastMode.put(event.getPlayer(), Kit.mode.get(event.getPlayer()));
 			Kit.useKitTime.put(event.getPlayer(), time.getTime());
 		} else {
 			Kit.mode.put(event.getPlayer(), (Kit.mode.get(event.getPlayer()) + 1) % kits.mode.size());
-			event.getPlayer().sendMessage(ChatColor.GOLD + "技能模式已更换，当前为" + kits.mode.get(Kit.mode.get(event.getPlayer())).name);
+			event.getPlayer().sendMessage(Messages.ChangeKitMode.replace("%s", kits.mode.get(Kit.mode.get(event.getPlayer())).name));
 		}
 	}
 }

@@ -25,6 +25,9 @@ public class Messages {
     public static String DifferentWorld;
     public static List<String> GameInfo;
     public static String FindRunner;
+    public static String KitColding;
+    public static String UseKit;
+    public static String ChangeKitMode;
     
     private final MineHunt plugin = MineHunt.getInstance();
     
@@ -61,5 +64,8 @@ public class Messages {
         DifferentWorld = config.getString("DifferentWorld");
         GameInfo = config.getStringList("GameInfo");
         FindRunner = config.getString("FindRunner");
+        KitColding = config.getString("KitColding");
+        UseKit = config.getString("UseKit");
+        ChangeKitMode = config.getString("ChangeKitMode");
     }
 }
