@@ -2,7 +2,6 @@ package net.mcbbs.jerryzrf.minehunt.game;
 
 //游戏进度
 public enum GameProgress {
-	NOT_STARTED("未开始"),
 	GAME_STARTING("游戏开始"),
 	STONE_AGE("石器时代"),
 	IRON_MINED("来硬的!"),

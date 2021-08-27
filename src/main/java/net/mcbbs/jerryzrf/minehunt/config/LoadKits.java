@@ -1,6 +1,10 @@
-package net.mcbbs.jerryzrf.minehunt.kit;
+package net.mcbbs.jerryzrf.minehunt.config;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.kit.GUI;
+import net.mcbbs.jerryzrf.minehunt.kit.Kit;
+import net.mcbbs.jerryzrf.minehunt.kit.KitInfo;
+import net.mcbbs.jerryzrf.minehunt.kit.KitMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

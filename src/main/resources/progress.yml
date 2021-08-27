@@ -1,0 +1,63 @@
+#进度奖励
+#版本信息(请勿更改)
+version: 3
+#石器时代
+STONE_AGE:
+  item:
+    - material: IRON_ORE
+      num: 8
+  buff:
+    - type: NIGHT_VISION
+      time: 30
+      level: 0
+#铁
+IRON_MINED:
+  item:
+    - material: IRON_ORE
+      num: 8
+  buff:
+    - type: NIGHT_VISION
+      time: 30
+      level: 0
+#解锁指南针
+COMPASS_UNLOCKED:
+  item:
+    -
+  buff:
+    -
+    #屠龙
+KILLED_DRAGON:
+  item:
+    -
+  buff:
+    -
+    #进入下界
+ENTER_NETHER:
+  item:
+    - material: OBSIDIAN
+      num: 4
+    - material: FLINT
+      num: 1
+  buff:
+#获得烈焰棒
+GET_BLAZE_ROD:
+  item:
+    -
+  buff:
+    - type: FIRE_RESISTANCE
+      time: 30
+      level: 0
+#获得末影珍珠
+GET_ENDER_PERAL:
+  item:
+    - material: ENDER_PEARL
+      num: 1
+  buff:
+    -
+    #进入末地
+ENTER_END:
+  item:
+    - material: WATER_BUCKET
+      num: 1
+  buff:
+    -

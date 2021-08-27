@@ -1,7 +1,7 @@
 package net.mcbbs.jerryzrf.minehunt.watcher;
 
-import net.mcbbs.jerryzrf.minehunt.Messages;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

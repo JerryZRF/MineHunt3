@@ -1,7 +1,7 @@
 package net.mcbbs.jerryzrf.minehunt.listener;
 
-import net.mcbbs.jerryzrf.minehunt.Messages;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
@@ -145,6 +145,8 @@ public class PlayerItemListener implements Listener {
 		if (inv.getTitle().equals("职业")) {
 			// 通过标题区分 GUI
 			event.setCancelled(true);
+		} else {
+			return;
 		}
 		if (event.getRawSlot() < 0 || event.getRawSlot() >= Kit.kits.size()) {
 			// 这个方法来源于 Bukkit Development Note

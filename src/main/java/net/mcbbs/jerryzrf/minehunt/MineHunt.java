@@ -1,9 +1,11 @@
 package net.mcbbs.jerryzrf.minehunt;
 
 import lombok.Getter;
+import net.mcbbs.jerryzrf.minehunt.config.LoadKits;
+import net.mcbbs.jerryzrf.minehunt.config.Messages;
+import net.mcbbs.jerryzrf.minehunt.config.Progress;
 import net.mcbbs.jerryzrf.minehunt.game.Game;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
-import net.mcbbs.jerryzrf.minehunt.kit.LoadKits;
 import net.mcbbs.jerryzrf.minehunt.listener.*;
 import net.mcbbs.jerryzrf.minehunt.placeholder.placeholder;
 import net.mcbbs.jerryzrf.minehunt.watcher.CountDownWatcher;
@@ -41,6 +43,8 @@ public final class MineHunt extends JavaPlugin {
 		new LoadKits().Load();
 		Kit.Init();
 		getLogger().info("职业文件加载完成！");
+		Progress.Load();
+		getLogger().info("进度文件加载完成！");
 		
 		game = new Game();
 		countDownWatcher = new CountDownWatcher();

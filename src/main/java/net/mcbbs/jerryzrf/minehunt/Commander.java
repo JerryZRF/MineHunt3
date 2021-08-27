@@ -1,5 +1,6 @@
 package net.mcbbs.jerryzrf.minehunt;
 
+import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.kit.GUI;
@@ -104,7 +105,7 @@ public class Commander implements TabExecutor {
 		if (args[0].equalsIgnoreCase("forcestart")) {
 			if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
 				if (sender.hasPermission("minehunt.start")) {
-					if (plugin.getGame().getInGamePlayers().size() <= 1) {
+					if (plugin.getGame().getInGamePlayers().size() < 1) {
 						sender.sendMessage("人数不足，至少需要2人");
 						return true;
 					}
