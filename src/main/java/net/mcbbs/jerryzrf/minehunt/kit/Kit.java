@@ -13,8 +13,8 @@ public class Kit {
 	public static Map<Player, Integer> playerKits = new HashMap<>();
 	public static List<KitInfo> kits = new ArrayList<>();
 	public static Map<Player, Long> useKitTime = new HashMap<>();
-	public static int lastMode = 0;
-	public static int mode = 0;
+	public static Map<Player, Integer> lastMode = new HashMap<>();
+	public static Map<Player, Integer> mode = new HashMap<>();
 	public static ItemStack kitItem = new ItemStack(Material.NETHER_STAR);
 	
 	public static void Init() {

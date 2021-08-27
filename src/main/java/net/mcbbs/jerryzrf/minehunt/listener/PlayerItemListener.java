@@ -179,26 +179,25 @@ public class PlayerItemListener implements Listener {
 			Date time = new Date();
 			
 			if ((time.getTime() - Kit.useKitTime.get(event.getPlayer()) <
-					(kits.mode.get(Kit.lastMode).CD) * 1000L)) {
+					(kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD) * 1000L)) {
 				event.getPlayer().sendMessage("技能冷却中...，剩余" +
-						((kits.mode.get(Kit.lastMode).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000) + "s");
+						((kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000) + "s");
 				return;
 			}
 			
-			for (int i = 0; i < kits.mode.get(Kit.mode).duration.size(); i++) {
+			for (int i = 0; i < kits.mode.get(Kit.mode.get(event.getPlayer())).duration.size(); i++) {
 				event.getPlayer().addPotionEffect(new PotionEffect(
 						PotionEffectType.getByName(kits.buff.get(i)),
-						(kits.mode.get(Kit.mode).duration.get(i)) * 20,
-						kits.mode.get(Kit.mode).level.get(i)));
+						(kits.mode.get(Kit.mode.get(event.getPlayer())).duration.get(i)) * 20,
+						kits.mode.get(Kit.mode.get(event.getPlayer())).level.get(i)));
 			}
 			
 			event.getPlayer().sendMessage(org.bukkit.ChatColor.GOLD + "技能使用成功！");
-			Kit.lastMode = Kit.mode;
+			Kit.lastMode.put(event.getPlayer(), Kit.mode.get(event.getPlayer()));
 			Kit.useKitTime.put(event.getPlayer(), time.getTime());
 		} else {
-			Kit.mode++;
-			Kit.mode %= Kit.kits.size();
-			event.getPlayer().sendMessage(ChatColor.GOLD + "技能模式已更换，当前为" + kits.mode.get(Kit.mode).name);
+			Kit.mode.put(event.getPlayer(), (Kit.mode.get(event.getPlayer()) + 1) % kits.mode.size());
+			event.getPlayer().sendMessage(ChatColor.GOLD + "技能模式已更换，当前为" + kits.mode.get(Kit.mode.get(event.getPlayer())).name);
 		}
 	}
 }

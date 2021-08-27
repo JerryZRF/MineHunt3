@@ -197,6 +197,6 @@ kits:
         #冷却时间
         cd: 300
         #持续时间
-        duration: [ 30 ]
+        duration: [ 30, 30, 30 ]
         #级别
         level: [ 0, 0, 0 ]

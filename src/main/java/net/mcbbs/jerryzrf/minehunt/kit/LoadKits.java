@@ -24,7 +24,7 @@ public class LoadKits {
 			file.renameTo(newFile);
 			plugin.saveResource("kits.yml", false);
 		}
-		GUI.grid = config.getInt("grid");
+		GUI.grid = config.getInt("grid", 36);
 		List<Map<?, ?>> kitList = config.getMapList("kits");
 		for (Map<?, ?> map : kitList) {
 			KitInfo ki = new KitInfo();
@@ -35,6 +35,7 @@ public class LoadKits {
 			List<Map<?, ?>> mode = (List<Map<?, ?>>) map.get("mode");
 			for (Map<?, ?> value : mode) {
 				KitMode km = new KitMode();
+				km.name = (String) value.get("name");
 				km.CD = (int) value.get("cd");
 				km.duration = (List<Integer>) value.get("duration");
 				km.level = (List<Integer>) value.get("level");
