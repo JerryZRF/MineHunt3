@@ -1,194 +1,202 @@
 #职业文件
-version: 2
+version: 3
+#格子数量 9的倍数
+grid: 9
 #职业列表
-#奔跑者（急速）
-Runner:
-  name: "奔跑者"
-  material: DIAMOND_BOOTS
-  lore:
-    - "让你跑得更快"
-  #普通模式
-  normal:
-    #冷却时间
-    cd: 120
-    #持续时间
-    duration: 30
-    #级别
-    level: 0
-  #超级模式
-  super:
-    #冷却时间
-    cd: 300
-    #持续时间
-    duration: 20
-    #级别
-    level: 1
-#矿工（急迫
-Miner:
-  name: "矿工"
-  material: DIAMOND_PICKAXE
-  lore:
-    - "让你挖得更快"
-  normal:
-    #冷却时间
-    cd: 120
-    #持续时间
-    duration: 30
-    #级别
-    level: 0
-  #超级模式
-  super:
-    #冷却时间
-    cd: 300
-    #持续时间
-    duration: 20
-    #级别
-    level: 1
-#战士（力量）
-Warrior:
-  name: "战士"
-  material: DIAMOND_SWORD
-  lore:
-    - "让你伤害更高"
-  normal:
-    #冷却时间
-    cd: 120
-    #持续时间
-    duration: 30
-    #级别
-    level: 0
-  #超级模式
-  super:
-    #冷却时间
-    cd: 300
-    #持续时间
-    duration: 20
-    #级别
-    level: 1
-#兔子（跳跃提升）
-Rabbit:
-  name: "兔子"
-  material: RABBIT_FOOT
-  lore:
-    - "让你伤害更高"
-  normal:
-    #冷却时间
-    cd: 120
-    #持续时间
-    duration: 30
-    #级别
-    level: 0
-  #超级模式
-  super:
-    #冷却时间
-    cd: 300
-    #持续时间
-    duration: 20
-    #级别
-    level: 1
-#坦克（增加最大生命&抗性提升）
-Tank:
-  name: "坦克"
-  material: SHIELD
-  lore:
-    - "让你更肉"
-  normal:
-    #冷却时间
-    cd: 120
-    #持续时间
-    duration: 60
-    #级别
-    level: 1
-  #超级模式
-  super:
-    #冷却时间
-    cd: 300
-    #持续时间
-    duration: 30
-    #级别
-    level: 2
-#隐身
-Invisibility:
-  name: "隐者"
-  material: BARRIER
-  lore:
-    - "让你隐身"
-  normal:
-    #冷却时间
-    cd: 120
-    #持续时间
-    duration: 30
-    #级别
-    level: 0
-  #超级模式
-  super:
-    #冷却时间
-    cd: 300
-    #持续时间
-    duration: 60
-    #级别
-    level: 0
-#蝙蝠（夜视）
-Bat:
-  name: "蝙蝠"
-  material: POTION
-  lore:
-    - "让你夜视"
-  normal:
-    #冷却时间
-    cd: 120
-    #持续时间
-    duration: 30
-    #级别
-    level: 0
-  #超级模式
-  super:
-    #冷却时间
-    cd: 300
-    #持续时间
-    duration: 60
-    #级别
-    level: 0
-    #蝙蝠（夜视）
-#小强（饱和&再生&伤害吸收）
-Cockroach:
-  name: "小强"
-  material: TOTEM_OF_UNDYING
-  lore:
-    - "让你快速回血"
-  normal:
-    #冷却时间
-    cd: 120
-    #持续时间
-    duration: 20
-    #级别
-    level: 1
-  #超级模式
-  super:
-    #冷却时间
-    cd: 300
-    #持续时间
-    duration: 5
-    #级别
-    level: 3
-#水火不侵（水肺&防火&海豚）
-Impervius:
-  name: "水火不侵"
-  material: BARREL
-  lore:
-    - "让你水火不侵"
-  normal:
-    #冷却时间
-    cd: 120
-    #持续时间
-    duration: 20
-    #级别
-    level: 0
-  #超级模式
-  super:
-    #冷却时间
-    cd: 300
-    #持续时间
-    duration: 40
-    #级别
-    level: 0
+kits:
+  - name: "奔跑者"
+    material: DIAMOND_BOOTS
+    buff:
+      - SPEED
+    lore:
+      - "让你跑得更快"
+    mode:
+      - name: "普通模式"
+        #冷却时间
+        cd: 120
+        #持续时间
+        duration: [ 30 ]
+        #级别
+        level: [ 0 ]
+      - name: "超级模式"
+        #冷却时间
+        cd: 300
+        #持续时间
+        duration: [ 20 ]
+        #级别
+        level: [ 1 ]
+
+  - name: "矿工"
+    material: DIAMOND_PICKAXE
+    buff:
+      - FAST_DIGGING
+    lore:
+      - "让你挖得更快"
+    mode:
+      - name: "普通模式"
+        #冷却时间
+        cd: 120
+        #持续时间
+        duration: [ 30 ]
+        #级别
+        level: [ 0 ]
+      - name: "超级模式"
+        #冷却时间
+        cd: 300
+        #持续时间
+        duration: [ 20 ]
+        #级别
+        level: [ 1 ]
+  - name: "战士"
+    material: DIAMOND_SWORD
+    buff:
+      - INCREASE_DAMAGE
+    lore:
+      - "让你伤害更高"
+    mode:
+      #冷却时间
+      - name: "普通模式"
+        cd: 120
+        #持续时间
+        duration: [ 20 ]
+        #级别
+        level: [ 0 ]
+        #冷却时间
+      - name: "超级模式"
+        cd: 300
+        #持续时间
+        duration: [ 10 ]
+        #级别
+        level: [ 1 ]
+  - name: "兔子"
+    material: RABBIT_FOOT
+    buff:
+      - JUMP
+    lore:
+      - "让你伤害更高"
+    mode:
+      - name: "普通模式"
+        #冷却时间
+        cd: 120
+        #持续时间
+        duration: [ 30 ]
+        #级别
+        level: [ 0 ]
+      - name: "超级模式"
+        #冷却时间
+        cd: 300
+        #持续时间
+        duration: [ 20 ]
+        #级别
+        level: [ 1 ]
+  - name: "坦克"
+    material: SHIELD
+    buff:
+      - DAMAGE_RESISTANCE
+      - HEALTH_BOOST
+      - REGENERATION
+    lore:
+      - "让你更肉"
+    mode:
+      - name: "普通模式"
+        #冷却时间
+        cd: 120
+        #持续时间
+        duration: [ 30, 30, 1 ]
+        #级别
+        level: [ 1, 1, 4 ]
+      - name: "超级模式"
+        #冷却时间
+        cd: 300
+        #持续时间
+        duration: [ 45, 30, 2 ]
+        #级别
+        level: [ 2, 2, 4 ]
+  - name: "隐者"
+    material: BARRIER
+    buff:
+      - INVISIBILITY
+    lore:
+      - "让你隐身"
+    mode:
+      - name: "普通模式"
+        #冷却时间
+        cd: 120
+        #持续时间
+        duration: [ 30 ]
+        #级别
+        level: [ 0 ]
+      - name: "超级模式"
+        #冷却时间
+        cd: 300
+        #持续时间
+        duration: [ 60 ]
+        #级别
+        level: [ 0 ]
+  - name: "蝙蝠"
+    material: POTION
+    buff:
+      - NIGHT_VISION
+    lore:
+      - "让你夜视"
+    mode:
+      - name: "普通模式"
+        #冷却时间
+        cd: 120
+        #持续时间
+        duration: [ 30 ]
+        #级别
+        level: [ 0 ]
+      - name: "超级模式"
+        #冷却时间
+        cd: 300
+        #持续时间
+        duration: [ 60 ]
+        #级别
+        level: [ 0 ]
+  - name: "小强"
+    material: TOTEM_OF_UNDYING
+    buff:
+      - ABSORPTION
+      - REGENERATION
+      - SATURATION
+    lore:
+      - "让你快速回血"
+    mode:
+      - name: "普通模式"
+        #冷却时间
+        cd: 120
+        #持续时间
+        duration: [ 30, 5, 15 ]
+        #级别
+        level: [ 1, 1, 0 ]
+      - name: "超级模式"
+        #冷却时间
+        cd: 300
+        #持续时间
+        duration: [ 45, 3, 15 ]
+        #级别
+        level: [ 2, 4, 0 ]
+  - name: "水火不侵"
+    material: BARREL
+    buff:
+      - WATER_BREATHING
+      - DOLPHINS_GRACE
+      - FIRE_RESISTANCE
+    lore:
+      - "让你水火不侵"
+    mode:
+      - name: "普通模式"
+        #冷却时间
+        cd: 120
+        #持续时间
+        duration: [ 15, 15, 15 ]
+        #级别
+        level: [ 0, 0, 0 ]
+      - name: "超级模式"
+        #冷却时间
+        cd: 300
+        #持续时间
+        duration: [ 30 ]
+        #级别
+        level: [ 0, 0, 0 ]

@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public final class MineHunt extends JavaPlugin {
 	@Getter
-	private final static int versionNum = 2;
+	private final static int versionNum = 3;
 	@Getter
 	private static MineHunt instance;
 	@Getter

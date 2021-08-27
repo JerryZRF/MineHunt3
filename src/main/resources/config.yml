@@ -3,7 +3,7 @@
 # 下面是插件配置文件www~
 
 #版本信息 (请勿更改)
-version: 2
+version: 3
 
 #本局最大玩家数
 max-players: 16
@@ -22,7 +22,7 @@ L0Player: 2
 L0Runner: 1
 
 #第一阶梯玩家数量
-L1Player: 6
+L1Player: 8
 
 #第一阶梯逃亡者数量
 L1Runner: 2
@@ -49,21 +49,21 @@ AutoRestart: true
 #实际偏移量为（Basic+Random）
 #如XBasic: 10 XRandom: 20 则实际偏移量为10+(0~20)=10~30中取一个随机数
 XBasic: 5
-XRandom: 10
+XRandom: 5
 
 #逃亡者Y轴偏移（Basic为基础偏移，Random为随机值）
 #计算原理同上
 YBasic: 5
-YRandom: 10
+YRandom: 5
 
 #逃亡者警告距离
 #好气哦我看了半天发现原作者把distance写成了distanceSquared
 #也就是原本的是距离xyz的平方和，已修复为正常的距离（应该没问题了）
 #建议合理调整方便猎人生存
-WarnDistance: 50
+WarnDistance: 100
 
 #开局倒计时时长
-Countdown: 30
+Countdown: 120
 
 #逃亡者警告消息(%wd是警告距离就是上面那个，%d是当前距离）
 WarnDistanceSafe: "%wdM 内未检测到猎人"
@@ -119,7 +119,8 @@ Bread: 5
 FullCountDown: 5
 
 #私聊前缀
-ChatinTeam: '#'
+ChatinTeam:
+  - '#'
 
 #游戏难度
 #0 和平 || 1 简单 || 2 普通 || 3 困难

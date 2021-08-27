@@ -1,10 +1,12 @@
 package net.mcbbs.jerryzrf.minehunt.kit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class KitInfo {
-	public int normalCD;
-	public int normalLevel;
-	public int normalDuration;
-	public int superCD;
-	public int superLevel;
-	public int superDuration;
+	public List<String> buff = new ArrayList<>();
+	public String name;
+	public List<String> lore = new ArrayList<>();
+	public String material;
+	public List<KitMode> mode = new ArrayList<>();
 }

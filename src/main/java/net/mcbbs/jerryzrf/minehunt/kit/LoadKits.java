@@ -6,9 +6,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 public class LoadKits {
-	public static final String[] kits = {"Runner", "Miner", "Warrior", "Rabbit", "Tank", "Invisibility", "Bat", "Cockroach"};
 	private final MineHunt plugin = MineHunt.getInstance();
 	
 	public void Load() {
@@ -24,20 +24,22 @@ public class LoadKits {
 			file.renameTo(newFile);
 			plugin.saveResource("kits.yml", false);
 		}
-		for (String kit : kits) {
-			String name = config.getString(kit + ".name", "未能成功加载该职业");
-			List<String> lore = config.getStringList(kit + ".lore");
-			String material = config.getString(kit + ".material", "AIR");
-			Kit.kitsName.add(name);
-			Kit.kitsLore.add(lore);
-			Kit.kitsMaterial.add(material);
+		GUI.grid = config.getInt("grid");
+		List<Map<?, ?>> kitList = config.getMapList("kits");
+		for (Map<?, ?> map : kitList) {
 			KitInfo ki = new KitInfo();
-			ki.normalCD = config.getInt(kit + ".normal.cd");
-			ki.normalDuration = config.getInt(kit + ".normal.duration");
-			ki.normalLevel = config.getInt(kit + ".normal.level");
-			ki.superCD = config.getInt(kit + ".super.cd");
-			ki.superDuration = config.getInt(kit + ".super.duration");
-			ki.superLevel = config.getInt(kit + ".super.level");
+			ki.name = (String) map.get("name");
+			ki.lore = (List<String>) map.get("lore");
+			ki.material = (String) map.get("material");
+			ki.buff = (List<String>) map.get("buff");
+			List<Map<?, ?>> mode = (List<Map<?, ?>>) map.get("mode");
+			for (Map<?, ?> value : mode) {
+				KitMode km = new KitMode();
+				km.CD = (int) value.get("cd");
+				km.duration = (List<Integer>) value.get("duration");
+				km.level = (List<Integer>) value.get("level");
+				ki.mode.add(km);
+			}
 			Kit.kits.add(ki);
 		}
 	}

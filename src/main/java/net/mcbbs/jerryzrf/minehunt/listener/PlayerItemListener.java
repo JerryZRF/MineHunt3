@@ -6,7 +6,6 @@ import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.kit.KitInfo;
-import net.mcbbs.jerryzrf.minehunt.kit.LoadKits;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -147,7 +146,7 @@ public class PlayerItemListener implements Listener {
 			// 通过标题区分 GUI
 			event.setCancelled(true);
 		}
-		if (event.getRawSlot() < 0 || event.getRawSlot() >= LoadKits.kits.length) {
+		if (event.getRawSlot() < 0 || event.getRawSlot() >= Kit.kits.size()) {
 			// 这个方法来源于 Bukkit Development Note
 			// 如果在合理的范围内，getRawSlot 会返回一个合适的编号（0 ~ 物品栏大小-1）
 			return;
@@ -161,7 +160,7 @@ public class PlayerItemListener implements Listener {
 		}
 		// 后续处理
 		Kit.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
-		event.getWhoClicked().sendMessage("已选择职业" + Kit.kitsName.get(event.getRawSlot()));
+		event.getWhoClicked().sendMessage("已选择职业" + Kit.kits.get(event.getRawSlot()).name);
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -175,102 +174,31 @@ public class PlayerItemListener implements Listener {
 		if (event.getItem() == null || event.getItem().getType() != Material.NETHER_STAR) {
 			return;
 		}
+		KitInfo kits = Kit.kits.get(Kit.playerKits.get(event.getPlayer()));
 		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 			Date time = new Date();
-			KitInfo kits = Kit.kits.get(Kit.playerKits.get(event.getPlayer()));
+			
 			if ((time.getTime() - Kit.useKitTime.get(event.getPlayer()) <
-					(Kit.lastMode ? kits.superCD : kits.normalCD) * 1000L)) {
+					(kits.mode.get(Kit.lastMode).CD) * 1000L)) {
 				event.getPlayer().sendMessage("技能冷却中...，剩余" +
-						(((Kit.lastMode ? kits.superCD : kits.normalCD) * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000) + "s");
+						((kits.mode.get(Kit.lastMode).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000) + "s");
 				return;
 			}
-			switch (Kit.playerKits.get(event.getPlayer())) {
-				case 0:
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.SPEED,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					break;
-				case 1:
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.FAST_DIGGING,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					break;
-				case 2:
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.INCREASE_DAMAGE,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					break;
-				case 3:
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.JUMP,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					break;
-				case 4:
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.DAMAGE_RESISTANCE,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.HEALTH_BOOST,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.REGENERATION,
-							20,
-							4));
-					break;
-				case 5:
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.INVISIBILITY,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					break;
-				case 6:
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.NIGHT_VISION,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					break;
-				case 7:
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.ABSORPTION,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.REGENERATION,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.SATURATION,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					break;
-				case 8:
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.WATER_BREATHING,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.DOLPHINS_GRACE,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					event.getPlayer().addPotionEffect(new PotionEffect(
-							PotionEffectType.FIRE_RESISTANCE,
-							(Kit.mode ? kits.superDuration : kits.normalDuration) * 20,
-							Kit.mode ? kits.superLevel : kits.normalLevel));
-					break;
-				
+			
+			for (int i = 0; i < kits.mode.get(Kit.mode).duration.size(); i++) {
+				event.getPlayer().addPotionEffect(new PotionEffect(
+						PotionEffectType.getByName(kits.buff.get(i)),
+						(kits.mode.get(Kit.mode).duration.get(i)) * 20,
+						kits.mode.get(Kit.mode).level.get(i)));
 			}
+			
 			event.getPlayer().sendMessage(org.bukkit.ChatColor.GOLD + "技能使用成功！");
 			Kit.lastMode = Kit.mode;
 			Kit.useKitTime.put(event.getPlayer(), time.getTime());
 		} else {
-			Kit.mode = !Kit.mode;
-			event.getPlayer().sendMessage(ChatColor.GOLD + "技能模式已更换，当前为" + (Kit.mode ? "超级模式" : "普通模式"));
+			Kit.mode++;
+			Kit.mode %= Kit.kits.size();
+			event.getPlayer().sendMessage(ChatColor.GOLD + "技能模式已更换，当前为" + kits.mode.get(Kit.mode).name);
 		}
 	}
 }

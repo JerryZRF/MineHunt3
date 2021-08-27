@@ -12,12 +12,9 @@ import java.util.Map;
 public class Kit {
 	public static Map<Player, Integer> playerKits = new HashMap<>();
 	public static List<KitInfo> kits = new ArrayList<>();
-	public static List<String> kitsName = new ArrayList<>();
-	public static List<List<String>> kitsLore = new ArrayList<>();
-	public static List<String> kitsMaterial = new ArrayList<>();
 	public static Map<Player, Long> useKitTime = new HashMap<>();
-	public static boolean lastMode = false;  //0 普通 | 1超级
-	public static boolean mode = false;  //0 普通 | 1超级
+	public static int lastMode = 0;
+	public static int mode = 0;
 	public static ItemStack kitItem = new ItemStack(Material.NETHER_STAR);
 	
 	public static void Init() {
