@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.List;
@@ -34,6 +35,9 @@ public class LoadKits {
 		Kit.kitItem = new ItemStack(Material.getMaterial(config.getString("material", "NETHER_STAR")));
 		Kit.setEnable(config.getBoolean("enable", true));
 		List<Map<?, ?>> kitList = config.getMapList("kits");
+		ItemMeta im = Kit.kitItem.getItemMeta();
+		im.setLore(config.getStringList("lore"));
+		Kit.kitItem.setItemMeta(im);
 		for (Map<?, ?> map : kitList) {
 			KitInfo ki = new KitInfo();
 			ki.name = (String) map.get("name");

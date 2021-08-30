@@ -7,6 +7,9 @@ enable: true
 grid: 9
 #职业物品
 material: NETHER_STAR
+lore:
+  - "左击使用职业技能"
+  - "右击切换模式"
 #职业列表
 kits:
   - name: "奔跑者"
