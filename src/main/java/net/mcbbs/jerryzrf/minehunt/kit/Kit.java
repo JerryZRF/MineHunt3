@@ -1,6 +1,7 @@
 package net.mcbbs.jerryzrf.minehunt.kit;
 
-import org.bukkit.Material;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,7 +16,11 @@ public class Kit {
 	public static Map<Player, Long> useKitTime = new HashMap<>();
 	public static Map<Player, Integer> lastMode = new HashMap<>();
 	public static Map<Player, Integer> mode = new HashMap<>();
-	public static ItemStack kitItem = new ItemStack(Material.NETHER_STAR);
+	public static List<List<String>> kitsItems = new ArrayList<>();
+	public static ItemStack kitItem;
+	@Setter
+	@Getter
+	private static boolean enable;
 	
 	public static void Init() {
 		kitItem.setDisplayName("职业工具");

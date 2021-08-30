@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-public class Progress {
+public class LoadProgress {
 	public final static String[] progressList = {"STONE_AGE", "IRON_MINED", "COMPASS_UNLOCKED", "KILLED_DRAGON", "ENTER_NETHER", "GET_BLAZE_ROD", "GET_ENDER_PERAL", "ENTER_END"};
 	private final static MineHunt plugin = MineHunt.getInstance();
 	
@@ -27,6 +27,7 @@ public class Progress {
 			file.renameTo(newFile);
 			plugin.saveResource("progress.yml", false);
 		}
+		GameProgressManager.setEnable(config.getBoolean("enable", true));
 		for (String p : progressList) {
 			ProgressInfo pi = new ProgressInfo();
 			List<Map<?, ?>> item = config.getMapList(p + ".item");

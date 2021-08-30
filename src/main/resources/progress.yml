@@ -1,6 +1,8 @@
 #进度奖励
 #版本信息(请勿更改)
-version: 3
+version: 4
+#启用
+enable: true
 #石器时代
 STONE_AGE:
   item:

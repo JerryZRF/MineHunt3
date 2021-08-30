@@ -5,8 +5,10 @@ import net.mcbbs.jerryzrf.minehunt.kit.GUI;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.kit.KitInfo;
 import net.mcbbs.jerryzrf.minehunt.kit.KitMode;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.List;
@@ -19,7 +21,7 @@ public class LoadKits {
 		File file = new File(plugin.getDataFolder(), "kits.yml");
 		if (!file.exists()) {
 			plugin.saveResource("kits.yml", false);
-			//保存插件根目录下的message.yml到插件目录文件夹里
+			//保存插件根目录下的kits.yml到插件目录文件夹里
 		}
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		if (config.getInt("version", -1) != MineHunt.getVersionNum()) {
@@ -28,7 +30,9 @@ public class LoadKits {
 			file.renameTo(newFile);
 			plugin.saveResource("kits.yml", false);
 		}
-		GUI.grid = config.getInt("grid", 36);
+		GUI.setGrid(config.getInt("grid", 36));
+		Kit.kitItem = new ItemStack(Material.getMaterial(config.getString("material", "NETHER_STAR")));
+		Kit.setEnable(config.getBoolean("enable", true));
 		List<Map<?, ?>> kitList = config.getMapList("kits");
 		for (Map<?, ?> map : kitList) {
 			KitInfo ki = new KitInfo();
@@ -37,6 +41,7 @@ public class LoadKits {
 			ki.material = (String) map.get("material");
 			ki.buff = (List<String>) map.get("buff");
 			List<Map<?, ?>> mode = (List<Map<?, ?>>) map.get("mode");
+			Kit.kitsItems.add((List<String>) map.get("item"));
 			for (Map<?, ?> value : mode) {
 				KitMode km = new KitMode();
 				km.name = (String) value.get("name");

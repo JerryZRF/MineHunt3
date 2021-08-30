@@ -1,5 +1,6 @@
 package net.mcbbs.jerryzrf.minehunt.kit;
 
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,7 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class GUI {
-	public static int grid;
+	@Setter
+	private static int grid = 36;
+	
 	public void openGUI(Player player) {
 		Inventory inv = Bukkit.createInventory(player, grid, "职业");
 		for (int i = 0; i < Kit.kits.size(); i++) {

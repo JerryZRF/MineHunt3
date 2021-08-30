@@ -52,7 +52,7 @@ public class StatisticsBaker {
                 continue;
             }
             maxPlayer = playerDoubleEntry.getKey();
-            maxDamage = playerDoubleEntry.getValue().intValue();
+            maxDamage = playerDoubleEntry.getValue().doubleValue();
         }
         if (maxPlayer == null) {
             return "";

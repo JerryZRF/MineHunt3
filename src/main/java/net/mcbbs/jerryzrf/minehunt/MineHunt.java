@@ -2,8 +2,8 @@ package net.mcbbs.jerryzrf.minehunt;
 
 import lombok.Getter;
 import net.mcbbs.jerryzrf.minehunt.config.LoadKits;
+import net.mcbbs.jerryzrf.minehunt.config.LoadProgress;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
-import net.mcbbs.jerryzrf.minehunt.config.Progress;
 import net.mcbbs.jerryzrf.minehunt.game.Game;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.listener.*;
@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public final class MineHunt extends JavaPlugin {
 	@Getter
-	private final static int versionNum = 3;
+	private final static int versionNum = 4;
 	@Getter
 	private static MineHunt instance;
 	@Getter
@@ -43,7 +43,7 @@ public final class MineHunt extends JavaPlugin {
 		new LoadKits().Load();
 		Kit.Init();
 		getLogger().info("职业文件加载完成！");
-		Progress.Load();
+		LoadProgress.Load();
 		getLogger().info("进度文件加载完成！");
 		
 		game = new Game();
@@ -89,12 +89,14 @@ public final class MineHunt extends JavaPlugin {
 				DeleteFile(world);
 				world = new File(getDataFolder(), "..\\..\\world_the_end");
 				DeleteFile(world);
+				System.out.println("地图清理完成");
 			}));
 		}
 	}
 	
 	/***
 	 * 删除文件/文件夹
+	 *
 	 * @param file 文件
 	 */
 	public void DeleteFile(File file) {

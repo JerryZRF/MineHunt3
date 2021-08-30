@@ -42,6 +42,6 @@ public class PlayerMoveWatcher {
 					
 				});
 			}
-		}.runTaskTimer(MineHunt.getInstance(), 0, 100);
+		}.runTaskTimer(MineHunt.getInstance(), 0, 40);
 	}
 }

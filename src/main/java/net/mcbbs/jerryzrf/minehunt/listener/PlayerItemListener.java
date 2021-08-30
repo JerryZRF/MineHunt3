@@ -65,14 +65,28 @@ public class PlayerItemListener implements Listener {
 					}
 				}
 			}
-			event.getPlayer().getInventory().setItem(8, Kit.kitItem);
+			if (Kit.isEnable()) {
+				event.getPlayer().getInventory().setItem(8, Kit.kitItem);
+				for (int i = 0; i < Kit.kitsItems.get(Kit.playerKits.get(event.getPlayer())).size(); i++) {
+					event.getPlayer().getInventory().addItem(new ItemStack(Material.getMaterial(
+									Kit.kitsItems.get(Kit.playerKits.get(event.getPlayer())).get(i)
+							))
+					);
+				}
+			}
 		}
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void deathDropRemove(PlayerDeathEvent event) {
-		event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.COMPASS);  //删除死亡掉落的指南针
-		event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.NETHER_STAR);  //删除死亡掉落的职业工具
+		event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.COMPASS);      //删除死亡掉落的指南针
+		if (Kit.isEnable()) {
+			event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.NETHER_STAR);  //删除死亡掉落的职业工具
+			for (int i = 0; i < Kit.kitsItems.get(Kit.playerKits.get(event.getEntity())).size(); i++) {
+				int finalI = i;
+				event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.getMaterial(Kit.kitsItems.get(Kit.playerKits.get(event.getEntity())).get(finalI)));
+			}
+		}
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -173,7 +187,7 @@ public class PlayerItemListener implements Listener {
 		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
 			return;
 		}
-		if (event.getItem() == null || event.getItem().getType() != Material.NETHER_STAR) {
+		if (event.getItem() == null || event.getItem().getType() != Kit.kitItem.getType()) {
 			return;
 		}
 		KitInfo kits = Kit.kits.get(Kit.playerKits.get(event.getPlayer()));
@@ -182,16 +196,20 @@ public class PlayerItemListener implements Listener {
 			
 			if ((time.getTime() - Kit.useKitTime.get(event.getPlayer()) <
 					(kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD) * 1000L)) {
-				event.getPlayer().sendMessage(Messages.KitColding.replace("%c",
-						String.valueOf((kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000)));
+				event.getPlayer().sendMessage(Messages.KitColding.replace("%d",
+								String.valueOf((kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000)
+						)
+				);
 				return;
 			}
 			
 			for (int i = 0; i < kits.mode.get(Kit.mode.get(event.getPlayer())).duration.size(); i++) {
 				event.getPlayer().addPotionEffect(new PotionEffect(
-						PotionEffectType.getByName(kits.buff.get(i)),
-						(kits.mode.get(Kit.mode.get(event.getPlayer())).duration.get(i)) * 20,
-						kits.mode.get(Kit.mode.get(event.getPlayer())).level.get(i)));
+								PotionEffectType.getByName(kits.buff.get(i)),
+								(kits.mode.get(Kit.mode.get(event.getPlayer())).duration.get(i)) * 20,
+								kits.mode.get(Kit.mode.get(event.getPlayer())).level.get(i)
+						)
+				);
 			}
 			
 			event.getPlayer().sendMessage(Messages.UseKit);

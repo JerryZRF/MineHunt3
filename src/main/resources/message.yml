@@ -1,6 +1,6 @@
 #语言文件
 #版本信息 (请勿更改)
-version: 3
+version: 4
 #逃亡者警告消息(%wd是警告距离就是上面那个，%d是当前距离）
 WarnDistanceSafe: "%wdM 内未检测到猎人"
 WarnDistanceClose: "警告! 猎人正在靠近！当前距离：%dM"

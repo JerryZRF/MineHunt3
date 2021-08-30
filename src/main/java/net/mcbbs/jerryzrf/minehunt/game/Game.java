@@ -190,6 +190,9 @@ public class Game {
 		Bukkit.broadcastMessage("正在发放职业物品");
 		inGamePlayers.forEach(player -> {
 			player.getInventory().setItem(8, Kit.kitItem);
+			for (int i = 0; i < Kit.kitsItems.get(Kit.playerKits.get(player)).size(); i++) {
+				player.getInventory().addItem(new ItemStack(Material.getMaterial(Kit.kitsItems.get(Kit.playerKits.get(player)).get(i))));
+			}
 		});
 		Bukkit.broadcastMessage(prefix + "游戏开始！");
 		for (int i = 0; i < Messages.GameInfo.size(); i++) {

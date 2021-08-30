@@ -1,11 +1,18 @@
 #职业文件
-version: 3
+#版本信息(请勿更改)
+version: 4
+#启用
+enable: true
 #格子数量 9的倍数
 grid: 9
+#职业物品
+material: NETHER_STAR
 #职业列表
 kits:
   - name: "奔跑者"
     material: DIAMOND_BOOTS
+    item:
+      - IRON_BOOTS
     buff:
       - SPEED
     lore:
@@ -28,6 +35,8 @@ kits:
 
   - name: "矿工"
     material: DIAMOND_PICKAXE
+    item:
+      - IRON_PICKAXE
     buff:
       - FAST_DIGGING
     lore:
@@ -49,6 +58,8 @@ kits:
         level: [ 1 ]
   - name: "战士"
     material: DIAMOND_SWORD
+    item:
+      - IRON_SWORD
     buff:
       - INCREASE_DAMAGE
     lore:
@@ -61,7 +72,6 @@ kits:
         duration: [ 20 ]
         #级别
         level: [ 0 ]
-        #冷却时间
       - name: "超级模式"
         cd: 300
         #持续时间
@@ -70,10 +80,12 @@ kits:
         level: [ 1 ]
   - name: "兔子"
     material: RABBIT_FOOT
+    item:
+      - IRON_BOOTS
     buff:
       - JUMP
     lore:
-      - "让你伤害更高"
+      - "让你跳得更高"
     mode:
       - name: "普通模式"
         #冷却时间
@@ -91,10 +103,13 @@ kits:
         level: [ 1 ]
   - name: "坦克"
     material: SHIELD
+    item:
+      - IRON_CHESTPLATE
     buff:
       - DAMAGE_RESISTANCE
       - HEALTH_BOOST
       - REGENERATION
+      - WEAKNESS
     lore:
       - "让你更肉"
     mode:
@@ -102,20 +117,23 @@ kits:
         #冷却时间
         cd: 120
         #持续时间
-        duration: [ 30, 30, 1 ]
+        duration: [ 30, 30, 1, 30 ]
         #级别
-        level: [ 1, 1, 4 ]
+        level: [ 1, 1, 4, 0 ]
       - name: "超级模式"
         #冷却时间
         cd: 300
         #持续时间
-        duration: [ 45, 30, 2 ]
+        duration: [ 45, 30, 2, 45 ]
         #级别
-        level: [ 2, 2, 4 ]
+        level: [ 2, 2, 4, 0 ]
   - name: "隐者"
     material: BARRIER
+    item:
+      - WOODEN_SWORD
     buff:
       - INVISIBILITY
+      - SPEED
     lore:
       - "让你隐身"
     mode:
@@ -123,20 +141,23 @@ kits:
         #冷却时间
         cd: 120
         #持续时间
-        duration: [ 30 ]
+        duration: [ 30, 10 ]
         #级别
-        level: [ 0 ]
+        level: [ 0, 0 ]
       - name: "超级模式"
         #冷却时间
         cd: 300
         #持续时间
-        duration: [ 60 ]
+        duration: [ 60, 25 ]
         #级别
-        level: [ 0 ]
+        level: [ 0, 0 ]
   - name: "蝙蝠"
     material: POTION
+    item:
+      - WOODEN_SWORD
     buff:
       - NIGHT_VISION
+      - SLOW_FALLING
     lore:
       - "让你夜视"
     mode:
@@ -144,22 +165,25 @@ kits:
         #冷却时间
         cd: 120
         #持续时间
-        duration: [ 30 ]
+        duration: [ 30, 30 ]
         #级别
-        level: [ 0 ]
+        level: [ 0, 0 ]
       - name: "超级模式"
         #冷却时间
         cd: 300
         #持续时间
-        duration: [ 60 ]
+        duration: [ 60, 60 ]
         #级别
-        level: [ 0 ]
+        level: [ 0, 0 ]
   - name: "小强"
     material: TOTEM_OF_UNDYING
+    item:
+      - GOLDEN_APPLE
     buff:
       - ABSORPTION
       - REGENERATION
       - SATURATION
+      - WEAKNESS
     lore:
       - "让你快速回血"
     mode:
@@ -167,22 +191,25 @@ kits:
         #冷却时间
         cd: 120
         #持续时间
-        duration: [ 30, 5, 15 ]
+        duration: [ 30, 5, 15, 30 ]
         #级别
-        level: [ 1, 1, 0 ]
+        level: [ 1, 1, 0, 0 ]
       - name: "超级模式"
         #冷却时间
         cd: 300
         #持续时间
-        duration: [ 45, 3, 15 ]
+        duration: [ 45, 3, 15, 45 ]
         #级别
-        level: [ 2, 4, 0 ]
+        level: [ 2, 4, 0, 0 ]
   - name: "水火不侵"
     material: BARREL
+    item:
+      - WATER_BUCKET
     buff:
       - WATER_BREATHING
       - DOLPHINS_GRACE
       - FIRE_RESISTANCE
+      - CONDUIT_POWER
     lore:
       - "让你水火不侵"
     mode:
@@ -190,13 +217,13 @@ kits:
         #冷却时间
         cd: 120
         #持续时间
-        duration: [ 15, 15, 15 ]
+        duration: [ 15, 15, 15, 15 ]
         #级别
-        level: [ 0, 0, 0 ]
+        level: [ 0, 0, 0, 0 ]
       - name: "超级模式"
         #冷却时间
         cd: 300
         #持续时间
-        duration: [ 30, 30, 30 ]
+        duration: [ 30, 30, 30, 30 ]
         #级别
-        level: [ 0, 0, 0 ]
+        level: [ 0, 0, 0, 0 ]

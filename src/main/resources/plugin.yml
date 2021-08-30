@@ -1,12 +1,11 @@
 name: MineHunt
-version: 3.3.1
+version: 3.3.3
 main: net.mcbbs.jerryzrf.minehunt.MineHunt
 api-version: 1.17
 authors: [ JerryZRF ]
 description: 猎人游戏
 website: www.mcbbs.net
-softdepend:
-  - PlaceholderAPI
+softdepend: [ PlaceholderAPI ]
 commands:
   minehunt:
     description: "主命令"

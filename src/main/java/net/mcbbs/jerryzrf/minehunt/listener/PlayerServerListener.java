@@ -24,10 +24,12 @@ public class PlayerServerListener implements Listener {
 	public void join(PlayerJoinEvent event) {
 		if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
 			if (plugin.getGame().playerJoining(event.getPlayer())) {
-				Kit.playerKits.put(event.getPlayer(), 0);
-				Kit.useKitTime.put(event.getPlayer(), 0L);
-				Kit.mode.put(event.getPlayer(), 0);
-				Kit.lastMode.put(event.getPlayer(), 0);
+				if (Kit.isEnable()) {
+					Kit.playerKits.put(event.getPlayer(), 0);
+					Kit.useKitTime.put(event.getPlayer(), 0L);
+					Kit.mode.put(event.getPlayer(), 0);
+					Kit.lastMode.put(event.getPlayer(), 0);
+				}
 				event.getPlayer().setGameMode(GameMode.ADVENTURE);
 			} else {
 				//人满了

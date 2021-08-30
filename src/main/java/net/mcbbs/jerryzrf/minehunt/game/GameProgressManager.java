@@ -1,5 +1,6 @@
 package net.mcbbs.jerryzrf.minehunt.game;
 
+import lombok.Setter;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import org.bukkit.Bukkit;
@@ -19,7 +20,8 @@ public class GameProgressManager {
 	private final MineHunt plugin = MineHunt.getInstance();
 	private final Set<GameProgress> unlocked = new HashSet<>();
 	private final String prefix = Messages.prefix;
-	
+	@Setter
+	private static boolean enable = true;
 	public static Map<String, ProgressInfo> progressInfo = new HashMap<>();
 	
 	/**
@@ -33,7 +35,9 @@ public class GameProgressManager {
 		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED && plugin.getGame().getStatus() != GameStatus.ENDED) {
 			return;
 		}
-		
+		if (!enable) {
+			return;
+		}
 		//已解锁进度
 		if (!unlocked.add(progress)) {
 			return;

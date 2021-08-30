@@ -159,11 +159,15 @@ public class Commander implements TabExecutor {
 				sender.sendMessage(ChatColor.RED + "游戏已开始！");
 				return true;
 			}
+			if (!Kit.isEnable()) {
+				sender.sendMessage(ChatColor.RED + "服务器已禁用该功能！");
+				return true;
+			}
 			new GUI().openGUI((Player) sender);
 			return true;
 		}
 		/*
-		 重置职业倒计时
+		 重置职业CD
 		 权限： minehunt.resetkit
 		*/
 		if (args[0].equalsIgnoreCase("resetkit")) {
