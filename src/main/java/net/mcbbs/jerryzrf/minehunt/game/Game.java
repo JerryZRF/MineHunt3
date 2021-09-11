@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.util.GameEndingData;
@@ -16,8 +18,15 @@ import net.mcbbs.jerryzrf.minehunt.watcher.RadarWatcher;
 import net.mcbbs.jerryzrf.minehunt.watcher.ReconnectWatcher;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarFlag;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -47,7 +56,6 @@ public class Game {
 	private final int YBasic = plugin.getConfig().getInt("YBasic");
 	private final boolean AutoRestart = plugin.getConfig().getBoolean("AutoRestart");
 	private final String prefix = Messages.prefix;
-	//private final Map<World, Difficulty> difficultyMap = new HashMap<>();
 	@Getter
 	@Setter
 	private GameStatus status = GameStatus.WAITING_PLAYERS;
@@ -55,7 +63,14 @@ public class Game {
 	private Map<Player, PlayerRole> roleMapping; //线程安全
 	@Getter
 	private boolean CompassUnlocked = plugin.getConfig().getBoolean("CompassUnlocked");
-	
+	public BossBar runnerHealth = Bukkit.createBossBar(
+			new NamespacedKey(plugin, "runnerHealth"),
+			null,
+			BarColor.GREEN,
+			BarStyle.SEGMENTED_10,
+			BarFlag.PLAY_BOSS_MUSIC
+	);
+
 	public void switchCompass(boolean unlocked) {
 		if (this.CompassUnlocked == unlocked) {
 			return;
@@ -139,7 +154,10 @@ public class Game {
 		Bukkit.broadcastMessage(prefix + ChatColor.RED + "猎人: " + Util.list2String(getPlayersAsRole(PlayerRole.HUNTER).stream().map(Player::getName).collect(Collectors.toList())));
 		Bukkit.broadcastMessage(prefix + ChatColor.GREEN + "逃亡者: " + Util.list2String(getPlayersAsRole(PlayerRole.RUNNER).stream().map(Player::getName).collect(Collectors.toList())));
 	}
-	
+
+	/**
+	 * 游戏开始
+	 */
 	public void start() {
 		if (status != GameStatus.WAITING_PLAYERS) {
 			return;
@@ -148,7 +166,7 @@ public class Game {
 		Random random = new Random();
 		List<Player> noRolesPlayers = new ArrayList<>(inGamePlayers);
 		Map<Player, PlayerRole> roleMapTemp = new HashMap<>();
-		
+
 		int runners = 1;
 		if (inGamePlayers.size() >= plugin.getConfig().getInt("L0Player")) {
 			runners = plugin.getConfig().getInt("L0Runner");
@@ -187,12 +205,40 @@ public class Game {
 			getPlayersAsRole(PlayerRole.HUNTER).forEach(p -> p.getInventory().addItem(new ItemStack(Material.COMPASS, 1)));
 		}
 		switchWorldRuleForReady(true);
-		Bukkit.broadcastMessage("正在发放职业物品");
-		inGamePlayers.forEach(player -> {
-			player.getInventory().setItem(8, Kit.kitItem);
-			for (int i = 0; i < Kit.kitsItems.get(Kit.playerKits.get(player)).size(); i++) {
-				player.getInventory().addItem(new ItemStack(Material.getMaterial(Kit.kitsItems.get(Kit.playerKits.get(player)).get(i))));
-			}
+		if (Kit.isEnable()) {
+			Bukkit.broadcastMessage("正在发放职业物品");
+			inGamePlayers.forEach(player -> {
+				player.getInventory().setItem(8, Kit.kitItem);
+				for (int i = 0; i < Kit.kitsItems.get(Kit.playerKits.get(player)).size(); i++) {
+					ItemStack item = new ItemStack(Material.getMaterial(Kit.kitsItems.get(Kit.playerKits.get(player)).get(i)));
+					ItemMeta im = item.getItemMeta();
+					im.setUnbreakable(true);  //无法破坏
+					player.getInventory().addItem(item);
+				}
+			});
+		}
+		if (plugin.getConfig().getBoolean("showRunnerHealth")) {
+			inGamePlayers.forEach(player -> runnerHealth.addPlayer(player));
+		}
+		List<String> runnerBuff = plugin.getConfig().getStringList("runnerBuff.buff");
+		List<Integer> runnerLevel = plugin.getConfig().getIntegerList("runnerBuff.level");
+		getPlayersAsRole(PlayerRole.RUNNER).forEach(player -> {
+			for (int i = 0; i < runnerBuff.size(); i++)
+				player.addPotionEffect(new PotionEffect(
+						PotionEffectType.getByName(runnerBuff.get(i)),
+						0x7FFFFFFF,
+						runnerLevel.get(i)
+				));
+		});
+		List<String> hunterBuff = plugin.getConfig().getStringList("hunterBuff.buff");
+		List<Integer> hunterLevel = plugin.getConfig().getIntegerList("hunterBuff.level");
+		getPlayersAsRole(PlayerRole.RUNNER).forEach(player -> {
+			for (int i = 0; i < hunterBuff.size(); i++)
+				player.addPotionEffect(new PotionEffect(
+						PotionEffectType.getByName(hunterBuff.get(i)),
+						0x7FFFFFFF,
+						hunterLevel.get(i)
+				));
 		});
 		Bukkit.broadcastMessage(prefix + "游戏开始！");
 		for (int i = 0; i < Messages.GameInfo.size(); i++) {
@@ -213,29 +259,23 @@ public class Game {
 	public void switchWorldRuleForReady(boolean ready) {
 		if (ready) {
 			Bukkit.getWorlds().forEach(world -> {
-				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);  //始终白昼
+				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);  //昼夜交替
 				world.setGameRule(GameRule.DO_MOB_SPAWNING, true);    //怪物生成
 				world.setGameRule(GameRule.DO_FIRE_TICK, true);       //火焰蔓延与熄灭
 				world.setGameRule(GameRule.MOB_GRIEFING, true);       //怪物破坏
 				//world.setDifficulty(difficultyMap.getOrDefault(world, Difficulty.NORMAL));
-				Difficulty diff = switch (plugin.getConfig().getInt("Difficult")) {
-					case 0 -> Difficulty.PEACEFUL;
-					case 1 -> Difficulty.EASY;
-					case 2 -> Difficulty.NORMAL;
-					case 3 -> Difficulty.HARD;
-					default -> null;
-				};
+				Difficulty diff = Difficulty.getByValue(plugin.getConfig().getInt("Difficult"));
 				if (diff == null) {
-					plugin.getLogger().warning("未知难度，默认为困难模式");
+					plugin.getLogger().warning("未知难度，默认为普通模式");
 					diff = Difficulty.HARD;
-					plugin.getConfig().set("Difficult", 3);
+					plugin.getConfig().set("Difficult", 1);
 					plugin.saveConfig();
 				}
 				world.setDifficulty(diff);
 			});
 		} else {
 			Bukkit.getWorlds().forEach(world -> {
-				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);  //始终白昼
+				world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);  //昼夜交替
 				world.setGameRule(GameRule.DO_MOB_SPAWNING, false);    //怪物生成
 				world.setGameRule(GameRule.DO_FIRE_TICK, false);       //火焰蔓延与熄灭
 				world.setGameRule(GameRule.MOB_GRIEFING, false);       //怪物破坏

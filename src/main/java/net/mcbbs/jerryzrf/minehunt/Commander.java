@@ -1,8 +1,8 @@
 package net.mcbbs.jerryzrf.minehunt;
 
+import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
-import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
-import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.kit.GUI;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.util.Util;

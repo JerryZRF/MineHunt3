@@ -1,9 +1,9 @@
 package net.mcbbs.jerryzrf.minehunt.listener;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
-import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
-import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.kit.KitInfo;
 import net.md_5.bungee.api.ChatColor;
@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -68,11 +69,11 @@ public class PlayerItemListener implements Listener {
 			if (Kit.isEnable()) {
 				event.getPlayer().getInventory().setItem(8, Kit.kitItem);
 				for (int i = 0; i < Kit.kitsItems.get(Kit.playerKits.get(event.getPlayer())).size(); i++) {
-					event.getPlayer().getInventory().addItem(new ItemStack(Material.getMaterial(
-									Kit.kitsItems.get(Kit.playerKits.get(event.getPlayer())).get(i)
-							))
-					);
-				}
+                    ItemStack item = new ItemStack(Material.getMaterial(Kit.kitsItems.get(Kit.playerKits.get(event.getPlayer())).get(i)));
+                    ItemMeta im = item.getItemMeta();
+                    im.setUnbreakable(true);  //无法破坏
+                    event.getPlayer().getInventory().addItem(item);
+                }
 			}
 		}
 	}
@@ -165,19 +166,23 @@ public class PlayerItemListener implements Listener {
 		if (event.getRawSlot() < 0 || event.getRawSlot() >= Kit.kits.size()) {
 			// 这个方法来源于 Bukkit Development Note
 			// 如果在合理的范围内，getRawSlot 会返回一个合适的编号（0 ~ 物品栏大小-1）
-			return;
-			// 结束处理，使用 return 避免了多余的 else
-		}
-		ItemStack clickedItem = event.getCurrentItem();
-		// 获取被点的物品
-		if (clickedItem == null) {
-			// 确保不是 null
-			return;
-		}
-		// 后续处理
-		Kit.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
-		event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + Kit.kits.get(event.getRawSlot()).name);
-	}
+            return;
+            // 结束处理，使用 return 避免了多余的 else
+        }
+        ItemStack clickedItem = event.getCurrentItem();
+        // 获取被点的物品
+        if (clickedItem == null) {
+            // 确保不是 null
+            return;
+        }
+        // 后续处理
+        if (!((Player) event.getWhoClicked()).getPlayer().hasPermission(Kit.kits.get(event.getSlot()).permission)) {
+            ((Player) event.getWhoClicked()).getPlayer().sendMessage(Messages.NoPermission);
+            return;
+        }
+        Kit.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
+        event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + Kit.kits.get(event.getRawSlot()).name);
+    }
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void clickKitItem(PlayerInteractEvent event) {
@@ -210,14 +215,29 @@ public class PlayerItemListener implements Listener {
 								kits.mode.get(Kit.mode.get(event.getPlayer())).level.get(i)
 						)
 				);
-			}
-			
-			event.getPlayer().sendMessage(Messages.UseKit);
-			Kit.lastMode.put(event.getPlayer(), Kit.mode.get(event.getPlayer()));
-			Kit.useKitTime.put(event.getPlayer(), time.getTime());
-		} else {
-			Kit.mode.put(event.getPlayer(), (Kit.mode.get(event.getPlayer()) + 1) % kits.mode.size());
-			event.getPlayer().sendMessage(Messages.ChangeKitMode.replace("%s", kits.mode.get(Kit.mode.get(event.getPlayer())).name));
-		}
-	}
+            }
+
+            event.getPlayer().sendMessage(Messages.UseKit);
+            Kit.lastMode.put(event.getPlayer(), Kit.mode.get(event.getPlayer()));
+            Kit.useKitTime.put(event.getPlayer(), time.getTime());
+        } else {
+            Kit.mode.put(event.getPlayer(), (Kit.mode.get(event.getPlayer()) + 1) % kits.mode.size());
+            event.getPlayer().sendMessage(Messages.ChangeKitMode.replace("%s", kits.mode.get(Kit.mode.get(event.getPlayer())).name));
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void clickKitChoiceItem(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
+            return;
+        }
+        if (event.getItem() == null && event.getItem().getType() != Kit.kitItem.getType()) {
+            return;
+        }
+        if (plugin.getGame().getStatus() != GameStatus.WAITING_PLAYERS) {
+            return;
+        }
+        event.getPlayer().performCommand("/mh kits");
+    }
 }
+

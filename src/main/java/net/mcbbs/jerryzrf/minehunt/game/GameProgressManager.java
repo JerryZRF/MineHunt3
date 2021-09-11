@@ -2,6 +2,8 @@ package net.mcbbs.jerryzrf.minehunt.game;
 
 import lombok.Setter;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

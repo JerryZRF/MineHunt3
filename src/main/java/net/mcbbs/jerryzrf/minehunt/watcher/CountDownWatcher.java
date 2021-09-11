@@ -1,9 +1,9 @@
 package net.mcbbs.jerryzrf.minehunt.watcher;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.Game;
-import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;

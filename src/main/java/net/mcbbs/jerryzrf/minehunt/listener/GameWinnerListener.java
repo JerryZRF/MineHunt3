@@ -1,13 +1,16 @@
 package net.mcbbs.jerryzrf.minehunt.listener;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
-import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
-import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
+import org.bukkit.*;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarFlag;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -24,7 +27,15 @@ import java.util.Optional;
 public class GameWinnerListener implements Listener {
 	private final MineHunt plugin = MineHunt.getInstance();
 	private String dragonKiller = "Magic";
-	
+
+	BossBar dragonHealth = Bukkit.createBossBar(
+			new NamespacedKey(plugin, "dragonHealth"),
+			"末影龙",
+			BarColor.PURPLE,
+			BarStyle.SEGMENTED_20,
+			BarFlag.PLAY_BOSS_MUSIC
+	);
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void playerDeath(PlayerDeathEvent event) {
 		//游戏已开始
@@ -77,6 +88,14 @@ public class GameWinnerListener implements Listener {
 					return;
 				}
 			}
+			LivingEntity livingEnt = (LivingEntity) event.getEntity();
+			dragonHealth.setProgress(livingEnt.getHealth() / livingEnt.getMaxHealth());
+			Bukkit.getOnlinePlayers().forEach(p -> {
+				if (p.getWorld().getEnvironment() != World.Environment.THE_END || !dragonHealth.getPlayers().contains(p)) {
+					//不在末地 && 没有添加
+					dragonHealth.addPlayer(p);
+				}
+			});
 		}
 		dragonKiller = event.getDamager().getName();
 	}

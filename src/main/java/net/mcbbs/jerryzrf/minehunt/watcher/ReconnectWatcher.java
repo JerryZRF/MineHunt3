@@ -1,7 +1,7 @@
 package net.mcbbs.jerryzrf.minehunt.watcher;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
-import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 

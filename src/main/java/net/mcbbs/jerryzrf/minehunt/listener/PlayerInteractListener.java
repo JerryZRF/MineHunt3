@@ -1,8 +1,9 @@
 package net.mcbbs.jerryzrf.minehunt.listener;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
-import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
-import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
+import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -22,26 +24,50 @@ public class PlayerInteractListener implements Listener {
 	public void clickXJB(PlayerInteractEvent event) {
 		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
 			event.setCancelled(true);
-			event.setUseInteractedBlock(Event.Result.DENY);
-			event.setUseItemInHand(Event.Result.DENY);
-		}
-	}
-	
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void damageXJB(EntityDamageEvent event) {
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
-			event.setCancelled(true);
-		}
-	}
-	
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-	public void runXJB(FoodLevelChangeEvent event) {
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
-			event.setCancelled(true);
-		}
-	}
-	
-	//团队伤害
+            event.setUseInteractedBlock(Event.Result.DENY);
+            event.setUseItemInHand(Event.Result.DENY);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void damageXJB(EntityDamageEvent event) {
+        if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+            event.setCancelled(true);
+        }
+        if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+            return;
+        }
+        if (!(event.getEntity().getType() == EntityType.PLAYER)) {
+            return;
+        }
+        Player player = ((Player) event.getEntity()).getPlayer();
+        if (plugin.getGame().getPlayerRole(player).get() == PlayerRole.RUNNER) {
+            //更新血条
+            plugin.getGame().runnerHealth.setTitle(player.getName());
+            plugin.getGame().runnerHealth.setProgress(player.getHealth() / player.getMaxHealth());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void bloodReturn(EntityRegainHealthEvent event) {
+        if (event.getEntity().getType() == EntityType.PLAYER) {
+            Player player = ((Player) event.getEntity()).getPlayer();
+            if (plugin.getGame().getPlayerRole(player).get() == PlayerRole.RUNNER) {
+                //更新血条
+                plugin.getGame().runnerHealth.setTitle(player.getName());
+                plugin.getGame().runnerHealth.setProgress(player.getHealth() / player.getMaxHealth());
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void runXJB(FoodLevelChangeEvent event) {
+        if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+            event.setCancelled(true);
+        }
+    }
+
+    //团队伤害
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void teamDamage(EntityDamageByEntityEvent event) {
 		if (!(event.getEntity() instanceof Player player1)) {

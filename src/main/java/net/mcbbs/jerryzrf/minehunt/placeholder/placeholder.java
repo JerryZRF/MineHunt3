@@ -2,7 +2,7 @@ package net.mcbbs.jerryzrf.minehunt.placeholder;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
-import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
+import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -59,7 +59,7 @@ public class placeholder extends PlaceholderExpansion {
 	
 	@Override
 	public String getIdentifier() {
-		return "Minehunt";
+        return "MineHunt";
 	}
 	
 	@Override
@@ -88,6 +88,3 @@ public class placeholder extends PlaceholderExpansion {
 		return null;
 	}
 }
-
-
-

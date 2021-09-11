@@ -2,6 +2,7 @@ package net.mcbbs.jerryzrf.minehunt.kit;
 
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -21,6 +22,7 @@ public class GUI {
 			if (im == null) {
 				continue;
 			}
+			ki.lore.add(player.hasPermission(ki.permission) ? ChatColor.GREEN + "已拥有" : ChatColor.RED + "未拥有");
 			im.setLore(ki.lore);
 			im.setDisplayName(ki.name);
 			item.setItemMeta(im);

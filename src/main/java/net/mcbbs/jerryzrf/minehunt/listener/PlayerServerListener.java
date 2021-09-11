@@ -1,9 +1,9 @@
 package net.mcbbs.jerryzrf.minehunt.listener;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
-import net.mcbbs.jerryzrf.minehunt.game.GameStatus;
-import net.mcbbs.jerryzrf.minehunt.game.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,7 +14,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
 import java.util.Map;
 
 public class PlayerServerListener implements Listener {
@@ -25,11 +28,16 @@ public class PlayerServerListener implements Listener {
 		if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
 			if (plugin.getGame().playerJoining(event.getPlayer())) {
 				if (Kit.isEnable()) {
-					Kit.playerKits.put(event.getPlayer(), 0);
-					Kit.useKitTime.put(event.getPlayer(), 0L);
-					Kit.mode.put(event.getPlayer(), 0);
-					Kit.lastMode.put(event.getPlayer(), 0);
-				}
+                    Kit.playerKits.put(event.getPlayer(), 0);
+                    Kit.useKitTime.put(event.getPlayer(), 0L);
+                    Kit.mode.put(event.getPlayer(), 0);
+                    Kit.lastMode.put(event.getPlayer(), 0);
+                    ItemStack is = Kit.kitItem;
+                    ItemMeta im = is.getItemMeta();
+                    im.setLore(List.of("左击打开职业菜单"));
+                    is.setItemMeta(im);
+                    event.getPlayer().getInventory().setItem(8, is);
+                }
 				event.getPlayer().setGameMode(GameMode.ADVENTURE);
 			} else {
 				//人满了

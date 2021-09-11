@@ -1,8 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="MineHunt">
+  <artifact type="jar" build-on-make="true" name="MineHuntAPI">
     <output-path>$PROJECT_DIR$/build</output-path>
-    <root id="archive" name="MineHunt.jar">
-      <element id="module-output" name="MineHunt" />
+    <root id="archive" name="MineHuntAPI.jar">
       <element id="module-output" name="API" />
     </root>
   </artifact>

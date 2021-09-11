@@ -9,4 +9,5 @@ public class KitInfo {
 	public List<String> lore = new ArrayList<>();
 	public String material;
 	public List<KitMode> mode = new ArrayList<>();
+	public String permission;
 }

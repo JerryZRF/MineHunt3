@@ -23,7 +23,7 @@
     <orderEntry type="library" name="PlaceholderAPI-2.10.10" level="project" />
     <orderEntry type="library" name="patched_1.17.1" level="project" />
     <orderEntry type="library" name="lombok" level="project" />
-    <orderEntry type="library" name="commons-io-2.11.0" level="project" />
     <orderEntry type="library" name="jetbrains.annotations" level="project" />
+    <orderEntry type="module" module-name="API" />
   </component>
 </module>

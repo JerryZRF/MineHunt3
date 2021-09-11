@@ -45,6 +45,7 @@ public class LoadKits {
 			ki.material = (String) map.get("material");
 			ki.buff = (List<String>) map.get("buff");
 			List<Map<?, ?>> mode = (List<Map<?, ?>>) map.get("mode");
+			ki.permission = (String) map.get("permission");
 			Kit.kitsItems.add((List<String>) map.get("item"));
 			for (Map<?, ?> value : mode) {
 				KitMode km = new KitMode();

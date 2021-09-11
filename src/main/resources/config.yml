@@ -128,3 +128,18 @@ Difficult: 3
 
 #是否更换地图
 changeMap: true
+
+#逃亡者永久buff
+runnerBuff:
+  buff:
+    - LUCK
+  level:
+    - 0
+hunterBuff:
+  buff:
+    - UNLUCK
+  level:
+    - 0
+
+#是否展示逃亡者血量
+showRunnerHealth: true

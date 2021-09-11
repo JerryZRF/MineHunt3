@@ -1,6 +1,8 @@
 package net.mcbbs.jerryzrf.minehunt;
 
 import lombok.Getter;
+import net.mcbbs.jerryzrf.minehunt.api.APIGetGameInfo;
+import net.mcbbs.jerryzrf.minehunt.api.IGetGameInfo;
 import net.mcbbs.jerryzrf.minehunt.config.LoadKits;
 import net.mcbbs.jerryzrf.minehunt.config.LoadProgress;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
@@ -11,6 +13,7 @@ import net.mcbbs.jerryzrf.minehunt.placeholder.placeholder;
 import net.mcbbs.jerryzrf.minehunt.watcher.CountDownWatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -28,7 +31,8 @@ public final class MineHunt extends JavaPlugin {
 	
 	@Override
 	public void onLoad() {
-		instance = this;
+        instance = this;
+        Bukkit.getServicesManager().register(IGetGameInfo.class, new APIGetGameInfo(), this, ServicePriority.Normal);
 	}
 	
 	@Override
@@ -64,15 +68,15 @@ public final class MineHunt extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
 		getLogger().info("事件注册完成！");
 		if (Bukkit.getPluginCommand("minehunt") != null) {
-			Bukkit.getPluginCommand("minehunt").setExecutor(new Commander());
+            Objects.requireNonNull(Bukkit.getPluginCommand("minehunt")).setExecutor(new Commander());
 		}
 		Objects.requireNonNull(Bukkit.getPluginCommand("minehunt")).setTabCompleter(new Commander());
 		getLogger().info("命令注册完成！");
 		
 		if (getConfig().getInt("version", -1) != versionNum) {
 			getLogger().warning("错误的配置文件版本，已备份并覆盖");
-			File newFile = new File(getDataFolder() + "\\config_old.yml");
-			File oldFile = new File(getDataFolder(), "config.yml");
+            File newFile = new File(getDataFolder(), "config_old.yml");
+            File oldFile = new File(getDataFolder(), "config.yml");
 			oldFile.renameTo(newFile);
 			saveDefaultConfig();
 		}

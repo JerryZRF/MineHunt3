@@ -1,4 +1,4 @@
-package net.mcbbs.jerryzrf.minehunt.game;
+package net.mcbbs.jerryzrf.minehunt.api;
 
 //玩家角色
 public enum PlayerRole {
