@@ -22,8 +22,14 @@ public class GUI {
 			if (im == null) {
 				continue;
 			}
-			ki.lore.add(player.hasPermission(ki.permission) ? ChatColor.GREEN + "已拥有" : ChatColor.RED + "未拥有");
+			if (ki.permission == null || player.hasPermission(ki.permission)) {
+				ki.lore.add(ChatColor.GREEN + "已拥有");
+			} else {
+				ki.lore.add(ChatColor.RED + "未拥有");
+			}
+
 			im.setLore(ki.lore);
+			ki.lore.remove(ki.lore.size() - 1);
 			im.setDisplayName(ki.name);
 			item.setItemMeta(im);
 			inv.setItem(i, item);

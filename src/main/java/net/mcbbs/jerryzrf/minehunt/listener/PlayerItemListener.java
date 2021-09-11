@@ -92,11 +92,13 @@ public class PlayerItemListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void clickCompass(PlayerInteractEvent event) {
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
+//		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
+//			return;
+//		}
+		if (event.getItem() == null) {
 			return;
 		}
-		
-		if (event.getItem() == null || event.getItem().getType() != Material.COMPASS) {
+		if (event.getItem().getType() != Material.COMPASS) {
 			return;
 		}
 		if (!plugin.getGame().isCompassUnlocked()) {
@@ -151,9 +153,9 @@ public class PlayerItemListener implements Listener {
 			event.getPlayer().sendMessage(ChatMessageType.ACTION_BAR, component);
 		}
 	}
-	
+
 	@EventHandler
-	public void GUIClick(InventoryClickEvent event) {
+	public void kitGUIClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
 		// 只有玩家可以触发 InventoryClickEvent，可以强制转换
 		InventoryView inv = player.getOpenInventory();
@@ -166,43 +168,46 @@ public class PlayerItemListener implements Listener {
 		if (event.getRawSlot() < 0 || event.getRawSlot() >= Kit.kits.size()) {
 			// 这个方法来源于 Bukkit Development Note
 			// 如果在合理的范围内，getRawSlot 会返回一个合适的编号（0 ~ 物品栏大小-1）
-            return;
-            // 结束处理，使用 return 避免了多余的 else
-        }
-        ItemStack clickedItem = event.getCurrentItem();
-        // 获取被点的物品
-        if (clickedItem == null) {
-            // 确保不是 null
-            return;
-        }
-        // 后续处理
-        if (!((Player) event.getWhoClicked()).getPlayer().hasPermission(Kit.kits.get(event.getSlot()).permission)) {
-            ((Player) event.getWhoClicked()).getPlayer().sendMessage(Messages.NoPermission);
-            return;
-        }
-        Kit.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
-        event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + Kit.kits.get(event.getRawSlot()).name);
-    }
+			return;
+			// 结束处理，使用 return 避免了多余的 else
+		}
+		ItemStack clickedItem = event.getCurrentItem();
+		// 获取被点的物品
+		if (clickedItem == null) {
+			// 确保不是 null
+			return;
+		}
+		// 后续处理
+		if (Kit.kits.get(event.getSlot()).permission != null && !((Player) event.getWhoClicked()).getPlayer().hasPermission(Kit.kits.get(event.getSlot()).permission)) {
+			((Player) event.getWhoClicked()).getPlayer().sendMessage(Messages.NoPermission);
+			return;
+		}
+		Kit.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
+		event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + Kit.kits.get(event.getRawSlot()).name);
+	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void clickKitItem(PlayerInteractEvent event) {
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
-			return;
-		}
+//		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
+//			return;
+//		}
 		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
 			return;
 		}
-		if (event.getItem() == null || event.getItem().getType() != Kit.kitItem.getType()) {
+		if (event.getItem() == null) {
+			return;
+		}
+		if (event.getItem().getType() != Kit.kitItem.getType()) {
 			return;
 		}
 		KitInfo kits = Kit.kits.get(Kit.playerKits.get(event.getPlayer()));
 		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 			Date time = new Date();
-			
+
 			if ((time.getTime() - Kit.useKitTime.get(event.getPlayer()) <
 					(kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD) * 1000L)) {
 				event.getPlayer().sendMessage(Messages.KitColding.replace("%d",
-								String.valueOf((kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000)
+						String.valueOf((kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000)
 						)
 				);
 				return;
@@ -226,18 +231,18 @@ public class PlayerItemListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR)
     public void clickKitChoiceItem(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
-            return;
-        }
-        if (event.getItem() == null && event.getItem().getType() != Kit.kitItem.getType()) {
-            return;
-        }
-        if (plugin.getGame().getStatus() != GameStatus.WAITING_PLAYERS) {
-            return;
-        }
-        event.getPlayer().performCommand("/mh kits");
-    }
+		if (event.getItem() == null) {
+			return;
+		}
+		if (event.getItem().getType() != Kit.kitItem.getType()) {
+			return;
+		}
+		if (plugin.getGame().getStatus() != GameStatus.WAITING_PLAYERS) {
+			return;
+		}
+		event.getPlayer().performCommand("minehunt kits");
+	}
 }
 

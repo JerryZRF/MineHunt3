@@ -28,16 +28,16 @@ public class PlayerServerListener implements Listener {
 		if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
 			if (plugin.getGame().playerJoining(event.getPlayer())) {
 				if (Kit.isEnable()) {
-                    Kit.playerKits.put(event.getPlayer(), 0);
-                    Kit.useKitTime.put(event.getPlayer(), 0L);
-                    Kit.mode.put(event.getPlayer(), 0);
-                    Kit.lastMode.put(event.getPlayer(), 0);
-                    ItemStack is = Kit.kitItem;
-                    ItemMeta im = is.getItemMeta();
-                    im.setLore(List.of("左击打开职业菜单"));
-                    is.setItemMeta(im);
-                    event.getPlayer().getInventory().setItem(8, is);
-                }
+					Kit.playerKits.put(event.getPlayer(), 0);
+					Kit.useKitTime.put(event.getPlayer(), 0L);
+					Kit.mode.put(event.getPlayer(), 0);
+					Kit.lastMode.put(event.getPlayer(), 0);
+					ItemStack is = Kit.kitItem.clone();
+					ItemMeta im = is.getItemMeta();
+					im.setLore(List.of("点击打开职业菜单"));
+					is.setItemMeta(im);
+					event.getPlayer().getInventory().setItem(8, is);
+				}
 				event.getPlayer().setGameMode(GameMode.ADVENTURE);
 			} else {
 				//人满了
