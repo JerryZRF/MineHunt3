@@ -4,7 +4,7 @@ import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.kit.GUI;
-import net.mcbbs.jerryzrf.minehunt.kit.Kit;
+import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import net.mcbbs.jerryzrf.minehunt.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -159,7 +159,7 @@ public class Commander implements TabExecutor {
 				sender.sendMessage(ChatColor.RED + "游戏已开始！");
 				return true;
 			}
-			if (!Kit.isEnable()) {
+			if (!KitManager.isEnable()) {
 				sender.sendMessage(ChatColor.RED + "服务器已禁用该功能！");
 				return true;
 			}
@@ -176,7 +176,7 @@ public class Commander implements TabExecutor {
 				return true;
 			}
 			if (sender.hasPermission("minehunt.resetkit")) {
-				Kit.useKitTime.put((Player) sender, 0L);
+				KitManager.useKitTime.put((Player) sender, 0L);
 				sender.sendMessage(ChatColor.GOLD + "职业CD已归零");
 			} else {
 				sender.sendMessage(Messages.NoPermission);

@@ -8,7 +8,7 @@ import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
-import net.mcbbs.jerryzrf.minehunt.kit.Kit;
+import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import net.mcbbs.jerryzrf.minehunt.util.GameEndingData;
 import net.mcbbs.jerryzrf.minehunt.util.MusicPlayer;
 import net.mcbbs.jerryzrf.minehunt.util.StatisticsBaker;
@@ -205,12 +205,13 @@ public class Game {
 			getPlayersAsRole(PlayerRole.HUNTER).forEach(p -> p.getInventory().addItem(new ItemStack(Material.COMPASS, 1)));
 		}
 		switchWorldRuleForReady(true);
-		if (Kit.isEnable()) {
+		if (KitManager.isEnable()) {
 			Bukkit.broadcastMessage("正在发放职业物品");
 			inGamePlayers.forEach(player -> {
-				player.getInventory().setItem(8, Kit.kitItem);
-				for (int i = 0; i < Kit.kitsItems.get(Kit.playerKits.get(player)).size(); i++) {
-					ItemStack item = new ItemStack(Material.getMaterial(Kit.kitsItems.get(Kit.playerKits.get(player)).get(i)));
+				player.getInventory().setItem(8, KitManager.kitItem);
+				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(player)).kitItems.size(); i++) {
+					ItemStack item = new ItemStack(Material.getMaterial(
+							KitManager.kits.get(KitManager.playerKits.get(player)).kitItems.get(i)));
 					ItemMeta im = item.getItemMeta();
 					im.setUnbreakable(true);  //无法破坏
 					player.getInventory().addItem(item);

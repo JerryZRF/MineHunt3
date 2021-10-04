@@ -3,7 +3,7 @@ package net.mcbbs.jerryzrf.minehunt.config;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.kit.GUI;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
-import net.mcbbs.jerryzrf.minehunt.kit.KitInfo;
+import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import net.mcbbs.jerryzrf.minehunt.kit.KitMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -32,21 +32,21 @@ public class LoadKits {
 			plugin.saveResource("kits.yml", false);
 		}
 		GUI.setGrid(config.getInt("grid", 36));
-		Kit.kitItem = new ItemStack(Material.getMaterial(config.getString("material", "NETHER_STAR")));
-		Kit.setEnable(config.getBoolean("enable", true));
+		KitManager.kitItem = new ItemStack(Material.getMaterial(config.getString("material", "NETHER_STAR")));
+		KitManager.setEnable(config.getBoolean("enable", true));
 		List<Map<?, ?>> kitList = config.getMapList("kits");
-		ItemMeta im = Kit.kitItem.getItemMeta();
+		ItemMeta im = KitManager.kitItem.getItemMeta();
 		im.setLore(config.getStringList("lore"));
-		Kit.kitItem.setItemMeta(im);
+		KitManager.kitItem.setItemMeta(im);
 		for (Map<?, ?> map : kitList) {
-			KitInfo ki = new KitInfo();
+			Kit ki = new Kit();
 			ki.name = (String) map.get("name");
 			ki.lore = (List<String>) map.get("lore");
 			ki.material = (String) map.get("material");
 			ki.buff = (List<String>) map.get("buff");
 			List<Map<?, ?>> mode = (List<Map<?, ?>>) map.get("mode");
 			ki.permission = (String) map.get("permission");
-			Kit.kitsItems.add((List<String>) map.get("item"));
+			ki.kitItems = (List<String>) map.get("item");
 			for (Map<?, ?> value : mode) {
 				KitMode km = new KitMode();
 				km.name = (String) value.get("name");
@@ -55,7 +55,7 @@ public class LoadKits {
 				km.level = (List<Integer>) value.get("level");
 				ki.mode.add(km);
 			}
-			Kit.kits.add(ki);
+			KitManager.kits.add(ki);
 		}
 	}
 }

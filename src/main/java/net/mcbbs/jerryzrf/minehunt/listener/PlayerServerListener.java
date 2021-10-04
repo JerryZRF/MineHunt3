@@ -6,7 +6,7 @@ import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
-import net.mcbbs.jerryzrf.minehunt.kit.Kit;
+import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -30,12 +30,12 @@ public class PlayerServerListener implements Listener {
 	public void join(PlayerJoinEvent event) {
 		if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
 			if (plugin.getGame().playerJoining(event.getPlayer())) {
-				if (Kit.isEnable()) {
-					Kit.playerKits.put(event.getPlayer(), 0);
-					Kit.useKitTime.put(event.getPlayer(), 0L);
-					Kit.mode.put(event.getPlayer(), 0);
-					Kit.lastMode.put(event.getPlayer(), 0);
-					ItemStack is = Kit.kitItem.clone();
+				if (KitManager.isEnable()) {
+					KitManager.playerKits.put(event.getPlayer(), 0);
+					KitManager.useKitTime.put(event.getPlayer(), 0L);
+					KitManager.mode.put(event.getPlayer(), 0);
+					KitManager.lastMode.put(event.getPlayer(), 0);
+					ItemStack is = KitManager.kitItem.clone();
 					ItemMeta im = is.getItemMeta();
 					im.setLore(List.of("点击打开职业菜单"));
 					is.setItemMeta(im);

@@ -5,7 +5,7 @@ import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.kit.Kit;
-import net.mcbbs.jerryzrf.minehunt.kit.KitInfo;
+import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -66,14 +66,14 @@ public class PlayerItemListener implements Listener {
 					}
 				}
 			}
-			if (Kit.isEnable()) {
-				event.getPlayer().getInventory().setItem(8, Kit.kitItem);
-				for (int i = 0; i < Kit.kitsItems.get(Kit.playerKits.get(event.getPlayer())).size(); i++) {
-                    ItemStack item = new ItemStack(Material.getMaterial(Kit.kitsItems.get(Kit.playerKits.get(event.getPlayer())).get(i)));
-                    ItemMeta im = item.getItemMeta();
-                    im.setUnbreakable(true);  //无法破坏
-                    event.getPlayer().getInventory().addItem(item);
-                }
+			if (KitManager.isEnable()) {
+				event.getPlayer().getInventory().setItem(8, KitManager.kitItem);
+				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(event.getPlayer())).kitItems.size(); i++) {
+					ItemStack item = new ItemStack(Material.getMaterial(KitManager.kits.get(KitManager.playerKits.get(event.getPlayer())).kitItems.get(i)));
+					ItemMeta im = item.getItemMeta();
+					im.setUnbreakable(true);  //无法破坏
+					event.getPlayer().getInventory().addItem(item);
+				}
 			}
 		}
 	}
@@ -81,11 +81,11 @@ public class PlayerItemListener implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void deathDropRemove(PlayerDeathEvent event) {
 		event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.COMPASS);      //删除死亡掉落的指南针
-		if (Kit.isEnable()) {
+		if (KitManager.isEnable()) {
 			event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.NETHER_STAR);  //删除死亡掉落的职业工具
-			for (int i = 0; i < Kit.kitsItems.get(Kit.playerKits.get(event.getEntity())).size(); i++) {
+			for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(event.getEntity())).kitItems.size(); i++) {
 				int finalI = i;
-				event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.getMaterial(Kit.kitsItems.get(Kit.playerKits.get(event.getEntity())).get(finalI)));
+				event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.getMaterial(KitManager.kits.get(KitManager.playerKits.get(event.getEntity())).kitItems.get(finalI)));
 			}
 		}
 	}
@@ -165,7 +165,7 @@ public class PlayerItemListener implements Listener {
 		} else {
 			return;
 		}
-		if (event.getRawSlot() < 0 || event.getRawSlot() >= Kit.kits.size()) {
+		if (event.getRawSlot() < 0 || event.getRawSlot() >= KitManager.kits.size()) {
 			// 这个方法来源于 Bukkit Development Note
 			// 如果在合理的范围内，getRawSlot 会返回一个合适的编号（0 ~ 物品栏大小-1）
 			return;
@@ -178,12 +178,12 @@ public class PlayerItemListener implements Listener {
 			return;
 		}
 		// 后续处理
-		if (Kit.kits.get(event.getSlot()).permission != null && !((Player) event.getWhoClicked()).getPlayer().hasPermission(Kit.kits.get(event.getSlot()).permission)) {
+		if (KitManager.kits.get(event.getSlot()).permission != null && !((Player) event.getWhoClicked()).getPlayer().hasPermission(KitManager.kits.get(event.getSlot()).permission)) {
 			((Player) event.getWhoClicked()).getPlayer().sendMessage(Messages.NoPermission);
 			return;
 		}
-		Kit.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
-		event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + Kit.kits.get(event.getRawSlot()).name);
+		KitManager.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
+		event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + KitManager.kits.get(event.getRawSlot()).name);
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -197,38 +197,38 @@ public class PlayerItemListener implements Listener {
 		if (event.getItem() == null) {
 			return;
 		}
-		if (event.getItem().getType() != Kit.kitItem.getType()) {
+		if (event.getItem().getType() != KitManager.kitItem.getType()) {
 			return;
 		}
-		KitInfo kits = Kit.kits.get(Kit.playerKits.get(event.getPlayer()));
+		Kit kits = KitManager.kits.get(KitManager.playerKits.get(event.getPlayer()));
 		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 			Date time = new Date();
 
-			if ((time.getTime() - Kit.useKitTime.get(event.getPlayer()) <
-					(kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD) * 1000L)) {
+			if ((time.getTime() - KitManager.useKitTime.get(event.getPlayer()) <
+					(kits.mode.get(KitManager.lastMode.get(event.getPlayer())).CD) * 1000L)) {
 				event.getPlayer().sendMessage(Messages.KitColding.replace("%d",
-						String.valueOf((kits.mode.get(Kit.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + Kit.useKitTime.get(event.getPlayer())) / 1000)
+								String.valueOf((kits.mode.get(KitManager.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + KitManager.useKitTime.get(event.getPlayer())) / 1000)
 						)
 				);
 				return;
 			}
-			
-			for (int i = 0; i < kits.mode.get(Kit.mode.get(event.getPlayer())).duration.size(); i++) {
+
+			for (int i = 0; i < kits.mode.get(KitManager.mode.get(event.getPlayer())).duration.size(); i++) {
 				event.getPlayer().addPotionEffect(new PotionEffect(
 								PotionEffectType.getByName(kits.buff.get(i)),
-								(kits.mode.get(Kit.mode.get(event.getPlayer())).duration.get(i)) * 20,
-								kits.mode.get(Kit.mode.get(event.getPlayer())).level.get(i)
+								(kits.mode.get(KitManager.mode.get(event.getPlayer())).duration.get(i)) * 20,
+								kits.mode.get(KitManager.mode.get(event.getPlayer())).level.get(i)
 						)
 				);
-            }
+			}
 
-            event.getPlayer().sendMessage(Messages.UseKit);
-            Kit.lastMode.put(event.getPlayer(), Kit.mode.get(event.getPlayer()));
-            Kit.useKitTime.put(event.getPlayer(), time.getTime());
-        } else {
-            Kit.mode.put(event.getPlayer(), (Kit.mode.get(event.getPlayer()) + 1) % kits.mode.size());
-            event.getPlayer().sendMessage(Messages.ChangeKitMode.replace("%s", kits.mode.get(Kit.mode.get(event.getPlayer())).name));
-        }
+			event.getPlayer().sendMessage(Messages.UseKit);
+			KitManager.lastMode.put(event.getPlayer(), KitManager.mode.get(event.getPlayer()));
+			KitManager.useKitTime.put(event.getPlayer(), time.getTime());
+		} else {
+			KitManager.mode.put(event.getPlayer(), (KitManager.mode.get(event.getPlayer()) + 1) % kits.mode.size());
+			event.getPlayer().sendMessage(Messages.ChangeKitMode.replace("%s", kits.mode.get(KitManager.mode.get(event.getPlayer())).name));
+		}
     }
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -236,7 +236,7 @@ public class PlayerItemListener implements Listener {
 		if (event.getItem() == null) {
 			return;
 		}
-		if (event.getItem().getType() != Kit.kitItem.getType()) {
+		if (event.getItem().getType() != KitManager.kitItem.getType()) {
 			return;
 		}
 		if (plugin.getGame().getStatus() != GameStatus.WAITING_PLAYERS) {

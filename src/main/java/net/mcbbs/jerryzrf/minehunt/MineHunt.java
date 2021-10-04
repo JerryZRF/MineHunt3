@@ -7,7 +7,7 @@ import net.mcbbs.jerryzrf.minehunt.config.LoadKits;
 import net.mcbbs.jerryzrf.minehunt.config.LoadProgress;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.Game;
-import net.mcbbs.jerryzrf.minehunt.kit.Kit;
+import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import net.mcbbs.jerryzrf.minehunt.listener.*;
 import net.mcbbs.jerryzrf.minehunt.placeholder.placeholder;
 import net.mcbbs.jerryzrf.minehunt.watcher.CountDownWatcher;
@@ -45,7 +45,7 @@ public final class MineHunt extends JavaPlugin {
 		new Messages().LoadMessage();
 		getLogger().info("语言文件加载完成！");
 		new LoadKits().Load();
-		Kit.Init();
+		KitManager.Init();
 		getLogger().info("职业文件加载完成！");
 		LoadProgress.Load();
 		getLogger().info("进度文件加载完成！");
