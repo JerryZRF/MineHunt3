@@ -189,11 +189,11 @@ public class Commander implements TabExecutor {
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 		final String[] teams = {"hunter", "runner"};
 		final String[] commands = {"forcestart", "players", "copyright", "resetcountdown", "join", "tp", "kits", "resetkit"};
+		//列出游戏中玩家名称列表
 		final List<String> players = new ArrayList<>();
 		plugin.getGame().getInGamePlayers().forEach((player) -> {
 			players.add(player.getName());
 		});
-		
 		if (args.length == 1) {
 			return Arrays.asList(commands);
 		}

@@ -232,7 +232,7 @@ public class Game {
 		});
 		List<String> hunterBuff = plugin.getConfig().getStringList("hunterBuff.buff");
 		List<Integer> hunterLevel = plugin.getConfig().getIntegerList("hunterBuff.level");
-		getPlayersAsRole(PlayerRole.RUNNER).forEach(player -> {
+		getPlayersAsRole(PlayerRole.HUNTER).forEach(player -> {
 			for (int i = 0; i < hunterBuff.size(); i++)
 				player.addPotionEffect(new PotionEffect(
 						PotionEffectType.getByName(hunterBuff.get(i)),
@@ -267,7 +267,7 @@ public class Game {
 				Difficulty diff = Difficulty.getByValue(plugin.getConfig().getInt("Difficult"));
 				if (diff == null) {
 					plugin.getLogger().warning("未知难度，默认为普通模式");
-					diff = Difficulty.HARD;
+					diff = Difficulty.NORMAL;
 					plugin.getConfig().set("Difficult", 1);
 					plugin.saveConfig();
 				}
@@ -280,8 +280,8 @@ public class Game {
 				world.setGameRule(GameRule.DO_FIRE_TICK, false);       //火焰蔓延与熄灭
 				world.setGameRule(GameRule.MOB_GRIEFING, false);       //怪物破坏
 				//我觉得这个没必要，在配置文件里设置就行了
-				//difficultyMap.put(world, world.getDifficulty());                //储存原本的世界模式
-				world.setDifficulty(Difficulty.PEACEFUL);                       //和平
+				//difficultyMap.put(world, world.getDifficulty());            //储存原本的世界模式
+				world.setDifficulty(Difficulty.PEACEFUL);                     //和平
 			});
 		}
 	}

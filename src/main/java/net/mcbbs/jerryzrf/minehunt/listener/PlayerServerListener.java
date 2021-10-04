@@ -1,5 +1,7 @@
 package net.mcbbs.jerryzrf.minehunt.listener;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
@@ -14,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -72,14 +75,21 @@ public class PlayerServerListener implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void quit(PlayerQuitEvent event) {
 		if (!plugin.getGame().getInGamePlayers().contains(event.getPlayer())) {
-			//是玩家
+			//不在游戏中玩家中
+			event.getPlayer().getInventory().clear();  //清空物品栏
 			return;
 		}
-		//是旁观者
+		//是游戏中的玩家
 		plugin.getGame().playerLeaving(event.getPlayer());
+	}
+
+	@EventHandler
+	public void motd(ServerListPingEvent event) {
+		TextComponent motd = Component.text(plugin.getGame().getStatus().name());
+		event.motd(motd);
 	}
 }
