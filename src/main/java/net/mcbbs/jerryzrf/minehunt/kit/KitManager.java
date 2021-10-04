@@ -2,6 +2,7 @@ package net.mcbbs.jerryzrf.minehunt.kit;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.mcbbs.jerryzrf.minehunt.api.Kit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,5 +24,9 @@ public class KitManager {
 
     public static void Init() {
         kitItem.setDisplayName("职业工具");
+    }
+
+    public static Kit getPlayerKit(Player player) {
+        return kits.get(playerKits.get(player));
     }
 }

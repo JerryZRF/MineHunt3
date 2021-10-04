@@ -1,4 +1,4 @@
-package net.mcbbs.jerryzrf.minehunt.kit;
+package net.mcbbs.jerryzrf.minehunt.api;
 
 import java.util.ArrayList;
 import java.util.List;

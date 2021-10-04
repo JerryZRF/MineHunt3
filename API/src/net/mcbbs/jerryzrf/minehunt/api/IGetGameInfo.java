@@ -30,10 +30,24 @@ public interface IGetGameInfo {
      */
     Set<Player> inGamePlayers();
 
-    /***
+    /**
      * 返回游戏状态
      *
      * @return 游戏状态
      */
     GameStatus getGameStatus();
+
+    /**
+     * 返回职业列表
+     *
+     * @return 职业列表
+     */
+    List<Kit> getKitList();
+
+    /**
+     * 返回玩家职业
+     *
+     * @return 玩家职业
+     */
+    Kit getPlayerKit(Player player);
 }

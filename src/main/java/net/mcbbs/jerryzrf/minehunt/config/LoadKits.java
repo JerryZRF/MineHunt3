@@ -1,10 +1,10 @@
 package net.mcbbs.jerryzrf.minehunt.config;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.api.Kit;
+import net.mcbbs.jerryzrf.minehunt.api.KitMode;
 import net.mcbbs.jerryzrf.minehunt.kit.GUI;
-import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
-import net.mcbbs.jerryzrf.minehunt.kit.KitMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,7 +41,7 @@ public class LoadKits {
 		for (Map<?, ?> map : kitList) {
 			Kit ki = new Kit();
 			ki.name = (String) map.get("name");
-			ki.lore = (List<String>) map.get("lore");
+			((List<String>) map.get("lore")).forEach(s -> ki.lore.add(s.replace("%s", ki.name)));
 			ki.material = (String) map.get("material");
 			ki.buff = (List<String>) map.get("buff");
 			List<Map<?, ?>> mode = (List<Map<?, ?>>) map.get("mode");

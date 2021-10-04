@@ -1,6 +1,7 @@
 package net.mcbbs.jerryzrf.minehunt.api;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
+import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -28,5 +29,15 @@ public class APIGetGameInfo implements IGetGameInfo {
     @Override
     public GameStatus getGameStatus() {
         return plugin.getGame().getStatus();
+    }
+
+    @Override
+    public List<Kit> getKitList() {
+        return KitManager.kits;
+    }
+
+    @Override
+    public Kit getPlayerKit(Player player) {
+        return KitManager.getPlayerKit(player);
     }
 }

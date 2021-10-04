@@ -7,6 +7,7 @@ enable: true
 grid: 9
 #职业物品
 material: NETHER_STAR
+#%s 职业
 lore:
   - "左击使用职业技能"
   - "右击切换模式"
@@ -25,16 +26,16 @@ kits:
         #冷却时间
         cd: 120
         #持续时间
-        duration: [ 30 ]
+        duration: [ 25 ]
         #级别
         level: [ 0 ]
       - name: "超级模式"
         #冷却时间
         cd: 300
         #持续时间
-        duration: [ 20 ]
+        duration: [ 10 ]
         #级别
-        level: [ 1 ]
+        level: [ 2 ]
 
   - name: "矿工"
     material: DIAMOND_PICKAXE
@@ -96,14 +97,14 @@ kits:
         #持续时间
         duration: [ 30 ]
         #级别
-        level: [ 0 ]
+        level: [ 1 ]
       - name: "超级模式"
         #冷却时间
         cd: 300
         #持续时间
         duration: [ 20 ]
         #级别
-        level: [ 1 ]
+        level: [ 3 ]
   - name: "坦克"
     material: SHIELD
     item:

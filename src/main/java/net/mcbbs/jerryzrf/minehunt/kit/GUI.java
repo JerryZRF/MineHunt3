@@ -1,6 +1,7 @@
 package net.mcbbs.jerryzrf.minehunt.kit;
 
 import lombok.Setter;
+import net.mcbbs.jerryzrf.minehunt.api.Kit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

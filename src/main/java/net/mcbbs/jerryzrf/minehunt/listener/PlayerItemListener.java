@@ -2,9 +2,9 @@ package net.mcbbs.jerryzrf.minehunt.listener;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.Kit;
 import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
-import net.mcbbs.jerryzrf.minehunt.kit.Kit;
 import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -56,7 +56,7 @@ public class PlayerItemListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void respawnGivenItem(PlayerRespawnEvent event) {
-		//开局/复活给予猎人指南针&职业工具
+		// 开局|复活给予猎人指南针&职业工具
 		if (plugin.getGame().getStatus() == GameStatus.GAME_STARTED) {
 			if (plugin.getGame().isCompassUnlocked()) {
 				Optional<PlayerRole> role = plugin.getGame().getPlayerRole(event.getPlayer());
@@ -69,7 +69,7 @@ public class PlayerItemListener implements Listener {
 			if (KitManager.isEnable()) {
 				event.getPlayer().getInventory().setItem(8, KitManager.kitItem);
 				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(event.getPlayer())).kitItems.size(); i++) {
-					ItemStack item = new ItemStack(Material.getMaterial(KitManager.kits.get(KitManager.playerKits.get(event.getPlayer())).kitItems.get(i)));
+					ItemStack item = new ItemStack(Material.getMaterial(KitManager.getPlayerKit(event.getPlayer()).kitItems.get(i)));
 					ItemMeta im = item.getItemMeta();
 					im.setUnbreakable(true);  //无法破坏
 					event.getPlayer().getInventory().addItem(item);
@@ -83,9 +83,9 @@ public class PlayerItemListener implements Listener {
 		event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.COMPASS);      //删除死亡掉落的指南针
 		if (KitManager.isEnable()) {
 			event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.NETHER_STAR);  //删除死亡掉落的职业工具
-			for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(event.getEntity())).kitItems.size(); i++) {
+			for (int i = 0; i < KitManager.getPlayerKit(event.getEntity()).kitItems.size(); i++) {
 				int finalI = i;
-				event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.getMaterial(KitManager.kits.get(KitManager.playerKits.get(event.getEntity())).kitItems.get(finalI)));
+				event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.getMaterial(KitManager.getPlayerKit(event.getEntity()).kitItems.get(finalI)));
 			}
 		}
 	}
@@ -200,16 +200,14 @@ public class PlayerItemListener implements Listener {
 		if (event.getItem().getType() != KitManager.kitItem.getType()) {
 			return;
 		}
-		Kit kits = KitManager.kits.get(KitManager.playerKits.get(event.getPlayer()));
+		Kit kits = KitManager.getPlayerKit(event.getPlayer());
 		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 			Date time = new Date();
 
 			if ((time.getTime() - KitManager.useKitTime.get(event.getPlayer()) <
 					(kits.mode.get(KitManager.lastMode.get(event.getPlayer())).CD) * 1000L)) {
 				event.getPlayer().sendMessage(Messages.KitColding.replace("%d",
-								String.valueOf((kits.mode.get(KitManager.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + KitManager.useKitTime.get(event.getPlayer())) / 1000)
-						)
-				);
+						String.valueOf((kits.mode.get(KitManager.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + KitManager.useKitTime.get(event.getPlayer())) / 1000)));
 				return;
 			}
 

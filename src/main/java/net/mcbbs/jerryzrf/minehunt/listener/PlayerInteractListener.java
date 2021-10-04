@@ -34,17 +34,13 @@ public class PlayerInteractListener implements Listener {
         if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
             event.setCancelled(true);
         }
-        if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
-            return;
-        }
-        if (!(event.getEntity().getType() == EntityType.PLAYER)) {
-            return;
-        }
-        Player player = ((Player) event.getEntity()).getPlayer();
-        if (plugin.getGame().getPlayerRole(player).get() == PlayerRole.RUNNER) {
-            //更新血条
-            plugin.getGame().runnerHealth.setTitle(player.getName());
-            plugin.getGame().runnerHealth.setProgress(player.getHealth() / player.getMaxHealth());
+        if (event.getEntity().getType() == EntityType.PLAYER) {
+            Player player = ((Player) event.getEntity()).getPlayer();
+            if (plugin.getGame().getPlayerRole(player).get() == PlayerRole.RUNNER) {
+                //更新血条
+                plugin.getGame().runnerHealth.setTitle(player.getName());
+                plugin.getGame().runnerHealth.setProgress(player.getHealth() / player.getMaxHealth());
+            }
         }
     }
 

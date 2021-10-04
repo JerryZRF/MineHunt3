@@ -218,6 +218,7 @@ public class Game {
 				}
 			});
 		}
+		runnerHealth.setProgress(1.0);
 		if (plugin.getConfig().getBoolean("showRunnerHealth")) {
 			inGamePlayers.forEach(player -> runnerHealth.addPlayer(player));
 		}
