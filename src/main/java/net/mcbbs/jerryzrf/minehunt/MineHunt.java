@@ -28,60 +28,34 @@ public final class MineHunt extends JavaPlugin {
 	private Game game;
 	@Getter
 	private CountDownWatcher countDownWatcher;
-	
+
 	@Override
 	public void onLoad() {
-        instance = this;
-        Bukkit.getServicesManager().register(IGetGameInfo.class, new APIGetGameInfo(), this, ServicePriority.Normal);
+		instance = this;
+		Bukkit.getServicesManager().register(IGetGameInfo.class, new APIGetGameInfo(), this, ServicePriority.Normal);
 	}
-	
-	@Override
-	public void onEnable() {
-		// Plugin startup logic
-		getLogger().info("正在加载MineHunt3插件");
-		
-		saveDefaultConfig();
-		getConfig().options().copyDefaults(true);
-		new Messages().LoadMessage();
-		getLogger().info("语言文件加载完成！");
-		new LoadKits().Load();
-		KitManager.Init();
-		getLogger().info("职业文件加载完成！");
-		LoadProgress.Load();
-		getLogger().info("进度文件加载完成！");
-		
-		game = new Game();
-		countDownWatcher = new CountDownWatcher();
-		
-		Plugin pluginPlaceholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
-		if (pluginPlaceholderAPI != null) {
-			getLogger().info("检测到PlaceHolderAPI插件，变量功能已启用！");
-			new placeholder(this).register();
-		}
-		
-		game.switchWorldRuleForReady(false);
-		Bukkit.getPluginManager().registerEvents(new PlayerServerListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerItemListener(), this);
-		Bukkit.getPluginManager().registerEvents(new ProgressDetectingListener(), this);
-		Bukkit.getPluginManager().registerEvents(new GameWinnerListener(), this);
-		Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
-		getLogger().info("事件注册完成！");
-		if (Bukkit.getPluginCommand("minehunt") != null) {
-            Objects.requireNonNull(Bukkit.getPluginCommand("minehunt")).setExecutor(new Commander());
-		}
-		Objects.requireNonNull(Bukkit.getPluginCommand("minehunt")).setTabCompleter(new Commander());
-		getLogger().info("命令注册完成！");
-		
-		if (getConfig().getInt("version", -1) != versionNum) {
-			getLogger().warning("错误的配置文件版本，已备份并覆盖");
-            File newFile = new File(getDataFolder(), "config_old.yml");
-            File oldFile = new File(getDataFolder(), "config.yml");
-			oldFile.renameTo(newFile);
-			saveDefaultConfig();
+
+	/***
+	 * 删除文件/文件夹
+	 *
+	 * @param file 文件
+	 */
+	public static void DeleteFile(File file) {
+		if (file.isDirectory()) {
+			//是目录
+			if (file.delete()) {
+				return;
+			}
+			File[] files = file.listFiles();
+			for (File value : files) {
+				DeleteFile(value);
+			}
+		} else {
+			//是文件
+			file.delete();
 		}
 	}
-	
+
 	@Override
 	public void onDisable() {
 		// Plugin shutdown logic
@@ -97,25 +71,50 @@ public final class MineHunt extends JavaPlugin {
 			}));
 		}
 	}
-	
-	/***
-	 * 删除文件/文件夹
-	 *
-	 * @param file 文件
-	 */
-	public void DeleteFile(File file) {
-		if (file.isDirectory()) {
-			//是目录
-			if (file.delete()) {
-				return;
-			}
-			File[] files = file.listFiles();
-			for (File value : files) {
-				DeleteFile(value);
-			}
-		} else {
-			//是文件
-			file.delete();
+
+	@Override
+	public void onEnable() {
+		// Plugin startup logic
+		getLogger().info("正在加载MineHunt3插件");
+		saveDefaultConfig();
+		getConfig().options().copyDefaults(true);
+		Messages.LoadMessage();
+		getLogger().info("语言文件加载完成！");
+		new LoadKits().Load();
+		KitManager.Init();
+		getLogger().info("职业文件加载完成！");
+		LoadProgress.Load();
+		getLogger().info("进度文件加载完成！");
+
+		game = new Game();
+		countDownWatcher = new CountDownWatcher();
+
+		Plugin pluginPlaceholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+		if (pluginPlaceholderAPI != null) {
+			getLogger().info("检测到PlaceHolderAPI插件，变量功能已启用！");
+			new placeholder(this).register();
+		}
+
+		game.switchWorldRuleForReady(false);
+		Bukkit.getPluginManager().registerEvents(new PlayerServerListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerItemListener(), this);
+		Bukkit.getPluginManager().registerEvents(new ProgressDetectingListener(), this);
+		Bukkit.getPluginManager().registerEvents(new GameWinnerListener(), this);
+		Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+		getLogger().info("事件注册完成！");
+		if (Bukkit.getPluginCommand("minehunt") != null) {
+            Objects.requireNonNull(Bukkit.getPluginCommand("minehunt")).setExecutor(new Commander());
+		}
+		Objects.requireNonNull(Bukkit.getPluginCommand("minehunt")).setTabCompleter(new Commander());
+		getLogger().info("命令注册完成！");
+
+		if (getConfig().getInt("version", -1) != versionNum) {
+			getLogger().warning("错误的配置文件版本，已备份并覆盖");
+            File newFile = new File(getDataFolder(), "config_old.yml");
+            File oldFile = new File(getDataFolder(), "config.yml");
+			oldFile.renameTo(newFile);
+			saveDefaultConfig();
 		}
 	}
 }

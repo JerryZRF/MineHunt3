@@ -56,8 +56,8 @@ public class PlayerItemListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void respawnGivenItem(PlayerRespawnEvent event) {
-		// 开局|复活给予猎人指南针&职业工具
-		if (plugin.getGame().getStatus() == GameStatus.GAME_STARTED) {
+		// 复活给予猎人指南针&职业工具
+		if (plugin.getGame().getStatus() == GameStatus.Running) {
 			if (plugin.getGame().isCompassUnlocked()) {
 				Optional<PlayerRole> role = plugin.getGame().getPlayerRole(event.getPlayer());
 				if (role.isPresent()) {
@@ -68,7 +68,7 @@ public class PlayerItemListener implements Listener {
 			}
 			if (KitManager.isEnable()) {
 				event.getPlayer().getInventory().setItem(8, KitManager.kitItem);
-				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(event.getPlayer())).kitItems.size(); i++) {
+				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(event.getPlayer().getName())).kitItems.size(); i++) {
 					ItemStack item = new ItemStack(Material.getMaterial(KitManager.getPlayerKit(event.getPlayer()).kitItems.get(i)));
 					ItemMeta im = item.getItemMeta();
 					im.setUnbreakable(true);  //无法破坏
@@ -182,7 +182,7 @@ public class PlayerItemListener implements Listener {
 			((Player) event.getWhoClicked()).getPlayer().sendMessage(Messages.NoPermission);
 			return;
 		}
-		KitManager.playerKits.put((Player) event.getWhoClicked(), event.getSlot());
+		KitManager.playerKits.put(((Player) event.getWhoClicked()).getPlayer().getName(), event.getSlot());
 		event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + KitManager.kits.get(event.getRawSlot()).name);
 	}
 	
@@ -191,7 +191,7 @@ public class PlayerItemListener implements Listener {
 //		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
 //			return;
 //		}
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+		if (plugin.getGame().getStatus() != GameStatus.Running) {
 			return;
 		}
 		if (event.getItem() == null) {
@@ -204,28 +204,27 @@ public class PlayerItemListener implements Listener {
 		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 			Date time = new Date();
 
-			if ((time.getTime() - KitManager.useKitTime.get(event.getPlayer()) <
-					(kits.mode.get(KitManager.lastMode.get(event.getPlayer())).CD) * 1000L)) {
-				event.getPlayer().sendMessage(Messages.KitColding.replace("%d",
-						String.valueOf((kits.mode.get(KitManager.lastMode.get(event.getPlayer())).CD * 1000L - time.getTime() + KitManager.useKitTime.get(event.getPlayer())) / 1000)));
+			if ((time.getTime() - KitManager.useKitTime.get(event.getPlayer().getName()) <
+					(kits.mode.get(KitManager.lastMode.get(event.getPlayer().getName())).CD) * 1000L)) {
+				event.getPlayer().sendMessage(Messages.KitColding.replace("%d", String.valueOf((kits.mode.get(KitManager.lastMode.get(
+						event.getPlayer().getName())).CD * 1000L - time.getTime() + KitManager.useKitTime.get(event.getPlayer().getName())) / 1000)));
 				return;
 			}
 
-			for (int i = 0; i < kits.mode.get(KitManager.mode.get(event.getPlayer())).duration.size(); i++) {
+			for (int i = 0; i < kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).duration.size(); i++) {
 				event.getPlayer().addPotionEffect(new PotionEffect(
-								PotionEffectType.getByName(kits.buff.get(i)),
-								(kits.mode.get(KitManager.mode.get(event.getPlayer())).duration.get(i)) * 20,
-								kits.mode.get(KitManager.mode.get(event.getPlayer())).level.get(i)
-						)
+						PotionEffectType.getByName(kits.buff.get(i)),
+						(int) (Double.valueOf(kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).duration.get(i).toString()) * 20),
+						kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).level.get(i))
 				);
 			}
 
 			event.getPlayer().sendMessage(Messages.UseKit);
-			KitManager.lastMode.put(event.getPlayer(), KitManager.mode.get(event.getPlayer()));
-			KitManager.useKitTime.put(event.getPlayer(), time.getTime());
+			KitManager.lastMode.put(event.getPlayer().getName(), KitManager.mode.get(event.getPlayer().getName()));
+			KitManager.useKitTime.put(event.getPlayer().getName(), time.getTime());
 		} else {
-			KitManager.mode.put(event.getPlayer(), (KitManager.mode.get(event.getPlayer()) + 1) % kits.mode.size());
-			event.getPlayer().sendMessage(Messages.ChangeKitMode.replace("%s", kits.mode.get(KitManager.mode.get(event.getPlayer())).name));
+			KitManager.mode.put(event.getPlayer().getName(), (KitManager.mode.get(event.getPlayer().getName()) + 1) % kits.mode.size());
+			event.getPlayer().sendMessage(Messages.ChangeKitMode.replace("%s", kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).name));
 		}
     }
 
@@ -237,7 +236,7 @@ public class PlayerItemListener implements Listener {
 		if (event.getItem().getType() != KitManager.kitItem.getType()) {
 			return;
 		}
-		if (plugin.getGame().getStatus() != GameStatus.WAITING_PLAYERS) {
+		if (plugin.getGame().getStatus() != GameStatus.Waiting) {
 			return;
 		}
 		event.getPlayer().performCommand("minehunt kits");

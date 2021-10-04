@@ -28,19 +28,19 @@ public class PlayerServerListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void join(PlayerJoinEvent event) {
-		if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
-			if (plugin.getGame().playerJoining(event.getPlayer())) {
-				if (KitManager.isEnable()) {
-					KitManager.playerKits.put(event.getPlayer(), 0);
-					KitManager.useKitTime.put(event.getPlayer(), 0L);
-					KitManager.mode.put(event.getPlayer(), 0);
-					KitManager.lastMode.put(event.getPlayer(), 0);
-					ItemStack is = KitManager.kitItem.clone();
-					ItemMeta im = is.getItemMeta();
-					im.setLore(List.of("点击打开职业菜单"));
-					is.setItemMeta(im);
-					event.getPlayer().getInventory().setItem(8, is);
-				}
+		if (plugin.getGame().getStatus() == GameStatus.Waiting) {
+            if (plugin.getGame().playerJoining(event.getPlayer())) {
+                if (KitManager.isEnable()) {
+                    KitManager.playerKits.put(event.getPlayer().getName(), 0);
+                    KitManager.useKitTime.put(event.getPlayer().getName(), 0L);
+                    KitManager.mode.put(event.getPlayer().getName(), 0);
+                    KitManager.lastMode.put(event.getPlayer().getName(), 0);
+                    ItemStack is = KitManager.kitItem.clone();
+                    ItemMeta im = is.getItemMeta();
+                    im.setLore(List.of("点击打开职业菜单"));
+                    is.setItemMeta(im);
+                    event.getPlayer().getInventory().setItem(8, is);
+                }
 				event.getPlayer().setGameMode(GameMode.ADVENTURE);
 			} else {
 				//人满了

@@ -1,5 +1,5 @@
 name: MineHunt
-version: 3.3.3
+version: 3.3.4
 main: net.mcbbs.jerryzrf.minehunt.MineHunt
 api-version: 1.17
 authors: [ JerryZRF ]
@@ -11,7 +11,7 @@ commands:
     description: "主命令"
     aliases:
       - mh
-    usage: "/minehunt forcestart || players || copyright || resetcountdown || join {team} || tp {player} || kits"
+    usage: "/minehunt help"
 permissions:
   minehunt.admin:
     description: 允许使用minehunt管理员命令
@@ -20,6 +20,7 @@ permissions:
       minehunt.start: true
       minehunt.resetcountdown: true
       minehunt.resetkit: true
+      minehunt:reload: true
     default: op
   minehunt.join:
     description: 允许强制加入一开始的游戏
@@ -32,4 +33,7 @@ permissions:
     default: op
   minehunt.resetkit:
     description: 允许重置职业CD
+    default: op
+  minehunt.reload:
+    description: 允许重载配置文件
     default: op

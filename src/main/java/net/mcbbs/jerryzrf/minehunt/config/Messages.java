@@ -30,16 +30,16 @@ public class Messages {
     public static String UseKit;
     public static String ChangeKitMode;
     
-    private final MineHunt plugin = MineHunt.getInstance();
-    
-    public void LoadMessage() {
+    private final static MineHunt plugin = MineHunt.getInstance();
+
+    public static void LoadMessage() {
         File file = new File(plugin.getDataFolder(), "message.yml");
         if (!file.exists()) {
             plugin.saveResource("message.yml", false);
             //保存插件根目录下的message.yml到插件目录文件夹里
         }
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        
+
         if (config.getInt("version", -1) != MineHunt.getVersionNum()) {
             plugin.getLogger().warning("错误的语言文件版本，已备份并覆盖");
             File newFile = new File(plugin.getDataFolder() + "\\message_old.yml");

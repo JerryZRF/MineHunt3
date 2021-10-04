@@ -39,7 +39,7 @@ public class GameWinnerListener implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void playerDeath(PlayerDeathEvent event) {
 		//游戏已开始
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+		if (plugin.getGame().getStatus() != GameStatus.Running) {
 			return;
 		}
 		Optional<PlayerRole> role = plugin.getGame().getPlayerRole(event.getEntity());  //死亡玩家的角色
@@ -70,7 +70,7 @@ public class GameWinnerListener implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
 	public void entityDeath(EntityDamageByEntityEvent event) {
 		//游戏已开始
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+		if (plugin.getGame().getStatus() != GameStatus.Running) {
 			return;
 		}
 		//末影龙
@@ -103,7 +103,7 @@ public class GameWinnerListener implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void entityDeath(EntityDamageByBlockEvent event) {
 		//游戏已开始
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+		if (plugin.getGame().getStatus() != GameStatus.Running) {
 			return;
 		}
 		//末影龙
@@ -119,7 +119,7 @@ public class GameWinnerListener implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void entityDeath(EntityDeathEvent event) {
 		//游戏已开始
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+		if (plugin.getGame().getStatus() != GameStatus.Running) {
 			return;
 		}
 		//末影龙

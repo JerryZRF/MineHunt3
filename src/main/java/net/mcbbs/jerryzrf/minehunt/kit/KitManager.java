@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 public class KitManager {
-    public static Map<Player, Integer> playerKits = new HashMap<>();
+    public static Map<String, Integer> playerKits = new HashMap<>();
     public static List<Kit> kits = new ArrayList<>();
-    public static Map<Player, Long> useKitTime = new HashMap<>();
-    public static Map<Player, Integer> lastMode = new HashMap<>();
-    public static Map<Player, Integer> mode = new HashMap<>();
+    public static Map<String, Long> useKitTime = new HashMap<>();
+    public static Map<String, Integer> lastMode = new HashMap<>();
+    public static Map<String, Integer> mode = new HashMap<>();
     public static ItemStack kitItem;
     @Setter
     @Getter
@@ -27,6 +27,6 @@ public class KitManager {
     }
 
     public static Kit getPlayerKit(Player player) {
-        return kits.get(playerKits.get(player));
+        return kits.get(playerKits.get(player.getName()));
     }
 }

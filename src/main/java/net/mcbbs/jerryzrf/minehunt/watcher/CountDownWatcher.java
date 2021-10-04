@@ -19,7 +19,7 @@ public class CountDownWatcher {
 			@Override
 			public void run() {
 				Game game = plugin.getGame();
-				if (game.getStatus() != GameStatus.WAITING_PLAYERS) {
+				if (game.getStatus() != GameStatus.Waiting) {
 					return;
 				}
 				//倒计时结束

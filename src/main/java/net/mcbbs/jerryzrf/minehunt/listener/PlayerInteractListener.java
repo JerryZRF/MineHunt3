@@ -22,8 +22,8 @@ public class PlayerInteractListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
 	public void clickXJB(PlayerInteractEvent event) {
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
-			event.setCancelled(true);
+		if (plugin.getGame().getStatus() != GameStatus.Running) {
+            event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
         }
@@ -31,7 +31,7 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void damageXJB(EntityDamageEvent event) {
-        if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+        if (plugin.getGame().getStatus() != GameStatus.Running) {
             event.setCancelled(true);
         }
         if (event.getEntity().getType() == EntityType.PLAYER) {
@@ -58,7 +58,7 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void runXJB(FoodLevelChangeEvent event) {
-        if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+        if (plugin.getGame().getStatus() != GameStatus.Running) {
             event.setCancelled(true);
         }
     }

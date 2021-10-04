@@ -34,12 +34,12 @@ public class GameProgressManager {
 	public void unlockProgress(GameProgress progress, Player player) {
 		//未开始 || 已结束
 		
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED && plugin.getGame().getStatus() != GameStatus.ENDED) {
-			return;
-		}
-		if (!enable) {
-			return;
-		}
+		if (plugin.getGame().getStatus() != GameStatus.Running && plugin.getGame().getStatus() != GameStatus.Ending) {
+            return;
+        }
+        if (!enable) {
+            return;
+        }
 		//已解锁进度
 		if (!unlocked.add(progress)) {
 			return;

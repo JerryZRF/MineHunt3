@@ -16,7 +16,7 @@ public class ReconnectWatcher {
 			@Override
 			public void run() {
 				//游戏已开始
-				if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+				if (plugin.getGame().getStatus() != GameStatus.Running) {
 					return;
 				}
 				List<Player> removing = new ArrayList<>();

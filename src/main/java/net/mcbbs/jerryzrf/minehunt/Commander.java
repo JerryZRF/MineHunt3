@@ -2,6 +2,8 @@ package net.mcbbs.jerryzrf.minehunt;
 
 import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
+import net.mcbbs.jerryzrf.minehunt.config.LoadKits;
+import net.mcbbs.jerryzrf.minehunt.config.LoadProgress;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.kit.GUI;
 import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
@@ -24,9 +26,21 @@ public class Commander implements TabExecutor {
 	private final MineHunt plugin = MineHunt.getInstance();
 	
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-		//格式错误
-		if (args.length == 0) {
-			return false;
+		/*
+		 查看帮助
+		 */
+		if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
+			sender.sendMessage("=====================MineHunt3=====================");
+			sender.sendMessage("/minehunt kits 打开职业菜单");
+			sender.sendMessage("/minehunt copyright 版权声明");
+			sender.sendMessage("/minehunt tp {player} 旁观者传送");
+			sender.sendMessage("/minehunt players 查看玩家");
+			sender.sendMessage("/minehunt forcestart 强制开始");
+			sender.sendMessage("/minehunt reload 重载配置文件");
+			sender.sendMessage("/minehunt resetcountdown 重置倒计时");
+			sender.sendMessage("/minehunt resetkit 重置职业倒计时");
+			sender.sendMessage("/minehunt join Hunter|Runner 强制加入");
+			return true;
 		}
 		//禁止删除本行版权声明
 		//墨守吐槽：如果有人想在我这搞分支就顺着往下写就好了~
@@ -45,6 +59,10 @@ public class Commander implements TabExecutor {
 		if (args[0].equalsIgnoreCase("join")) {
 			if (!(sender instanceof Player)) {
 				sender.sendMessage(ChatColor.RED + "只有玩家才可以这么做！");
+				return true;
+			}
+			if (plugin.getGame().getStatus() != GameStatus.Running) {
+				sender.sendMessage(ChatColor.RED + "游戏不在运行中！");
 				return true;
 			}
 			if (sender.hasPermission("minehunt.join")) {
@@ -73,7 +91,7 @@ public class Commander implements TabExecutor {
          权限：minehunt.resetcountdown
          */
 		if (args[0].equalsIgnoreCase("resetcountdown")) {
-			if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
+			if (plugin.getGame().getStatus() == GameStatus.Waiting) {
 				if (sender.hasPermission("minehunt.reset")) {
 					plugin.getCountDownWatcher().resetCountdown();
 				} else {
@@ -89,7 +107,7 @@ public class Commander implements TabExecutor {
          权限：无
          */
 		if (args[0].equalsIgnoreCase("players")) {
-			if (plugin.getGame().getStatus() == GameStatus.GAME_STARTED) {
+			if (plugin.getGame().getStatus() == GameStatus.Running) {
 				Bukkit.broadcastMessage(ChatColor.YELLOW + "> 猎人 & 逃亡者 <");
 				Bukkit.broadcastMessage(ChatColor.RED + "猎人: " + Util.list2String(MineHunt.getInstance().getGame().getPlayersAsRole(PlayerRole.HUNTER).stream().map(Player::getName).collect(Collectors.toList())));
 				Bukkit.broadcastMessage(ChatColor.GREEN + "逃亡者: " + Util.list2String(MineHunt.getInstance().getGame().getPlayersAsRole(PlayerRole.RUNNER).stream().map(Player::getName).collect(Collectors.toList())));
@@ -103,7 +121,7 @@ public class Commander implements TabExecutor {
          权限：minehunt.start
          */
 		if (args[0].equalsIgnoreCase("forcestart")) {
-			if (plugin.getGame().getStatus() == GameStatus.WAITING_PLAYERS) {
+			if (plugin.getGame().getStatus() == GameStatus.Waiting) {
 				if (sender.hasPermission("minehunt.start")) {
 					if (plugin.getGame().getInGamePlayers().size() < 1) {
 						sender.sendMessage("人数不足，至少需要2人");
@@ -121,12 +139,12 @@ public class Commander implements TabExecutor {
 		/*
 		 旁观者传送到指定玩家
 		 权限：无
-		*/
+		 */
 		if (args[0].equalsIgnoreCase("tp")) {
 			if (!(sender instanceof Player)) {
 				sender.sendMessage(ChatColor.RED + "只有玩家才可以这样做！");
 			}
-			if (plugin.getGame().getStatus() == GameStatus.GAME_STARTED || plugin.getGame().getStatus() == GameStatus.ENDED) {
+			if (plugin.getGame().getStatus() == GameStatus.Running || plugin.getGame().getStatus() == GameStatus.Ending) {
 				if (plugin.getGame().getPlayerRole((Player) sender).isEmpty()) {
 					//是旁观者
 					if (args.length == 1) {
@@ -149,13 +167,13 @@ public class Commander implements TabExecutor {
 		/*
 		 选择职业
 		 权限：无
-		*/
+	  	 */
 		if (args[0].equalsIgnoreCase("kits")) {
 			if (!(sender instanceof Player)) {
 				sender.sendMessage(ChatColor.RED + "只有玩家才可以这么做！");
 				return true;
 			}
-			if (plugin.getGame().getStatus() != GameStatus.WAITING_PLAYERS) {
+			if (plugin.getGame().getStatus() != GameStatus.Waiting) {
 				sender.sendMessage(ChatColor.RED + "游戏已开始！");
 				return true;
 			}
@@ -169,18 +187,35 @@ public class Commander implements TabExecutor {
 		/*
 		 重置职业CD
 		 权限： minehunt.resetkit
-		*/
+		 */
 		if (args[0].equalsIgnoreCase("resetkit")) {
 			if (!(sender instanceof Player)) {
 				sender.sendMessage(ChatColor.RED + "只有玩家才可以这么做！");
 				return true;
 			}
 			if (sender.hasPermission("minehunt.resetkit")) {
-				KitManager.useKitTime.put((Player) sender, 0L);
+				KitManager.useKitTime.put(sender.getName(), 0L);
 				sender.sendMessage(ChatColor.GOLD + "职业CD已归零");
 			} else {
 				sender.sendMessage(Messages.NoPermission);
 			}
+			return true;
+		}
+		/*
+		 重载配置文件
+		 权限：minehunt.reload
+		 */
+		if (args[0].equalsIgnoreCase("reload")) {
+			if (!sender.hasPermission("minehunt.reload")) {
+				sender.sendMessage(Messages.NoPermission);
+				return true;
+			}
+			plugin.saveDefaultConfig();
+			plugin.reloadConfig();
+			Messages.LoadMessage();
+			LoadKits.Load();
+			LoadProgress.Load();
+			sender.sendMessage("重载完成！");
 			return true;
 		}
 		return false;
@@ -188,7 +223,7 @@ public class Commander implements TabExecutor {
 	
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 		final String[] teams = {"hunter", "runner"};
-		final String[] commands = {"forcestart", "players", "copyright", "resetcountdown", "join", "tp", "kits", "resetkit"};
+		final String[] commands = {"forcestart", "players", "copyright", "resetcountdown", "join", "tp", "kits", "resetkit", "reload"};
 		//列出游戏中玩家名称列表
 		final List<String> players = new ArrayList<>();
 		plugin.getGame().getInGamePlayers().forEach((player) -> {

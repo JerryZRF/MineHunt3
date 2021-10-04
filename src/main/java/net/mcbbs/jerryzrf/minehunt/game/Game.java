@@ -58,7 +58,7 @@ public class Game {
 	private final String prefix = Messages.prefix;
 	@Getter
 	@Setter
-	private GameStatus status = GameStatus.WAITING_PLAYERS;
+	private GameStatus status = GameStatus.Waiting;
 	@Getter
 	private Map<Player, PlayerRole> roleMapping; //线程安全
 	@Getter
@@ -93,7 +93,7 @@ public class Game {
 	 * @return 可能是Empty（玩家不属于游戏中的玩家）否则返回玩家角色
 	 */
 	public Optional<PlayerRole> getPlayerRole(Player player) {
-		if (status == GameStatus.WAITING_PLAYERS) {
+		if (status == GameStatus.Waiting) {
 			return Optional.of(PlayerRole.WAITING);
 		}
 		if (!this.roleMapping.containsKey(player)) {
@@ -123,7 +123,7 @@ public class Game {
 	 * @param player 玩家
 	 */
 	public void playerLeaving(Player player) {
-		if (status == GameStatus.WAITING_PLAYERS) {
+		if (status == GameStatus.Waiting) {
 			this.inGamePlayers.remove(player);
 		} else {
 			this.reconnectTimer.put(player, System.currentTimeMillis());
@@ -159,7 +159,7 @@ public class Game {
 	 * 游戏开始
 	 */
 	public void start() {
-		if (status != GameStatus.WAITING_PLAYERS) {
+		if (status != GameStatus.Waiting) {
 			return;
 		}
 		Bukkit.broadcastMessage(prefix + "请稍后，系统正在随机分配玩家身份...");
@@ -208,11 +208,16 @@ public class Game {
 		if (KitManager.isEnable()) {
 			Bukkit.broadcastMessage("正在发放职业物品");
 			inGamePlayers.forEach(player -> {
+				ItemMeta im = KitManager.kitItem.getItemMeta();
+				List<String> lore = new ArrayList<>();
+				im.getLore().forEach(s -> lore.add(s.replace("%s", KitManager.getPlayerKit(player).name)));
+				im.setLore(lore);
+				KitManager.kitItem.setItemMeta(im);
 				player.getInventory().setItem(8, KitManager.kitItem);
-				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(player)).kitItems.size(); i++) {
+				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(player.getName())).kitItems.size(); i++) {
 					ItemStack item = new ItemStack(Material.getMaterial(
-							KitManager.kits.get(KitManager.playerKits.get(player)).kitItems.get(i)));
-					ItemMeta im = item.getItemMeta();
+							KitManager.kits.get(KitManager.playerKits.get(player.getName())).kitItems.get(i)));
+					im = item.getItemMeta();
 					im.setUnbreakable(true);  //无法破坏
 					player.getInventory().addItem(item);
 				}
@@ -248,7 +253,7 @@ public class Game {
 		}
 		Bukkit.broadcastMessage(prefix + ChatColor.RED + "猎人: " + Util.list2String(getPlayersAsRole(PlayerRole.HUNTER).stream().map(Player::getName).collect(Collectors.toList())));
 		Bukkit.broadcastMessage(prefix + ChatColor.GREEN + "逃亡者: " + Util.list2String(getPlayersAsRole(PlayerRole.RUNNER).stream().map(Player::getName).collect(Collectors.toList())));
-		status = GameStatus.GAME_STARTED;
+		status = GameStatus.Running;
 		this.registerWatchers();
 		plugin.getGame().getProgressManager().unlockProgress(GameProgress.GAME_STARTING, null);
 	}
@@ -300,7 +305,7 @@ public class Game {
 			player.teleport(location.clone().add(0, 3, 0));
 			player.teleport(Util.lookAt(player.getEyeLocation(), location));
 		});
-		this.status = GameStatus.ENDED;
+		this.status = GameStatus.Ending;
 		Bukkit.broadcastMessage(ChatColor.YELLOW + prefix + "游戏结束! 服务器将在30秒后重新启动！");
 		String runnerNames = Util.list2String(getPlayersAsRole(PlayerRole.RUNNER).stream().map(Player::getName).collect(Collectors.toList()));
 		String hunterNames = Util.list2String(getPlayersAsRole(PlayerRole.HUNTER).stream().map(Player::getName).collect(Collectors.toList()));

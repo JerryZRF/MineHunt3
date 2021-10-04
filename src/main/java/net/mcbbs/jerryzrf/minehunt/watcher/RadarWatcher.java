@@ -23,9 +23,9 @@ public class RadarWatcher {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
-					return;
-				}
+				if (plugin.getGame().getStatus() != GameStatus.Running) {
+                    return;
+                }
 				List<Player> runners = plugin.getGame().getPlayersAsRole(PlayerRole.RUNNER);
 				List<Player> hunters = plugin.getGame().getPlayersAsRole(PlayerRole.HUNTER);
 				for (Player hunter : hunters) {

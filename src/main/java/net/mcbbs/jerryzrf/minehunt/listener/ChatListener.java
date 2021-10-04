@@ -19,7 +19,7 @@ public class ChatListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void chat(AsyncPlayerChatEvent event) {
 		//游戏已开始
-		if (plugin.getGame().getStatus() != GameStatus.GAME_STARTED) {
+		if (plugin.getGame().getStatus() != GameStatus.Running) {
 			return;
 		}
 		Optional<PlayerRole> role = plugin.getGame().getPlayerRole(event.getPlayer());

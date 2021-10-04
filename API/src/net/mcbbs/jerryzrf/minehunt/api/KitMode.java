@@ -7,5 +7,5 @@ public class KitMode {
 	public String name;
 	public int CD;
 	public List<Integer> level = new ArrayList<>();
-	public List<Integer> duration = new ArrayList<>();
+	public List<Object> duration = new ArrayList<>();
 }

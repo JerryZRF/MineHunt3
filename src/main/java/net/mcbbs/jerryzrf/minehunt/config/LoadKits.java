@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 public class LoadKits {
-	private final MineHunt plugin = MineHunt.getInstance();
-	
-	public void Load() {
+	private final static MineHunt plugin = MineHunt.getInstance();
+
+	public static void Load() {
 		File file = new File(plugin.getDataFolder(), "kits.yml");
 		if (!file.exists()) {
 			plugin.saveResource("kits.yml", false);
@@ -41,7 +41,7 @@ public class LoadKits {
 		for (Map<?, ?> map : kitList) {
 			Kit ki = new Kit();
 			ki.name = (String) map.get("name");
-			((List<String>) map.get("lore")).forEach(s -> ki.lore.add(s.replace("%s", ki.name)));
+			ki.lore = ((List<String>) map.get("lore"));
 			ki.material = (String) map.get("material");
 			ki.buff = (List<String>) map.get("buff");
 			List<Map<?, ?>> mode = (List<Map<?, ?>>) map.get("mode");
@@ -51,7 +51,7 @@ public class LoadKits {
 				KitMode km = new KitMode();
 				km.name = (String) value.get("name");
 				km.CD = (int) value.get("cd");
-				km.duration = (List<Integer>) value.get("duration");
+				km.duration = (List<Object>) value.get("duration");
 				km.level = (List<Integer>) value.get("level");
 				ki.mode.add(km);
 			}
