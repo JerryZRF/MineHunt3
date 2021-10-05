@@ -31,15 +31,15 @@ public class Commander implements TabExecutor {
 		 */
 		if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
 			sender.sendMessage("=====================MineHunt3=====================");
-			sender.sendMessage("/minehunt kits 打开职业菜单");
-			sender.sendMessage("/minehunt copyright 版权声明");
-			sender.sendMessage("/minehunt tp {player} 旁观者传送");
-			sender.sendMessage("/minehunt players 查看玩家");
-			sender.sendMessage("/minehunt forcestart 强制开始");
-			sender.sendMessage("/minehunt reload 重载配置文件");
-			sender.sendMessage("/minehunt resetcountdown 重置倒计时");
-			sender.sendMessage("/minehunt resetkit 重置职业倒计时");
-			sender.sendMessage("/minehunt join Hunter|Runner 强制加入");
+			sender.sendMessage(ChatColor.YELLOW + "/minehunt kits " + ChatColor.AQUA + "打开职业菜单");
+			sender.sendMessage(ChatColor.YELLOW + "/minehunt copyright " + ChatColor.AQUA + "版权声明");
+			sender.sendMessage(ChatColor.YELLOW + "/minehunt tp {player}   " + ChatColor.AQUA + "旁观者传送");
+			sender.sendMessage(ChatColor.YELLOW + "/minehunt players   " + ChatColor.AQUA + "查看玩家");
+			sender.sendMessage(ChatColor.YELLOW + "/minehunt forcestart   " + ChatColor.AQUA + "强制开始");
+			sender.sendMessage(ChatColor.YELLOW + "/minehunt reload   " + ChatColor.AQUA + "重载配置文件");
+			sender.sendMessage(ChatColor.YELLOW + "/minehunt resetcountdown   " + ChatColor.AQUA + "重置倒计时");
+			sender.sendMessage(ChatColor.YELLOW + "/minehunt resetkit  " + ChatColor.AQUA + "重置职业倒计时");
+			sender.sendMessage(ChatColor.YELLOW + "/minehunt join Hunter|Runner  " + ChatColor.AQUA + "强制加入");
 			return true;
 		}
 		//禁止删除本行版权声明
@@ -67,7 +67,6 @@ public class Commander implements TabExecutor {
 			}
 			if (sender.hasPermission("minehunt.join")) {
 				Player player = (Player) sender;
-				plugin.getGame().getInGamePlayers().add(player);
 				if (args.length == 1) {
 					player.sendMessage(Messages.UnknownTeam);
 					return false;
@@ -78,9 +77,15 @@ public class Commander implements TabExecutor {
 					plugin.getGame().getRoleMapping().put(player, PlayerRole.RUNNER);
 				} else {
 					player.sendMessage(Messages.UnknownTeam);
+					return false;
 				}
+				plugin.getGame().getInGamePlayers().add(player);
 				player.setGameMode(GameMode.SURVIVAL);
 				Bukkit.broadcastMessage("玩家 " + sender.getName() + " 强制加入了游戏！ 身份：" + args[1]);
+				if (KitManager.isEnable()) {
+					KitManager.clearKitItems((Player) sender);
+					GUI.openGUI((Player) sender);
+				}
 			} else {
 				sender.sendMessage(Messages.NoPermission);
 			}
@@ -181,7 +186,7 @@ public class Commander implements TabExecutor {
 				sender.sendMessage(ChatColor.RED + "服务器已禁用该功能！");
 				return true;
 			}
-			new GUI().openGUI((Player) sender);
+			GUI.openGUI((Player) sender);
 			return true;
 		}
 		/*
@@ -223,12 +228,10 @@ public class Commander implements TabExecutor {
 	
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 		final String[] teams = {"hunter", "runner"};
-		final String[] commands = {"forcestart", "players", "copyright", "resetcountdown", "join", "tp", "kits", "resetkit", "reload"};
+		final String[] commands = {"help", "forcestart", "players", "copyright", "resetcountdown", "join", "tp", "kits", "resetkit", "reload"};
 		//列出游戏中玩家名称列表
 		final List<String> players = new ArrayList<>();
-		plugin.getGame().getInGamePlayers().forEach((player) -> {
-			players.add(player.getName());
-		});
+		plugin.getGame().getInGamePlayers().forEach((player) -> players.add(player.getName()));
 		if (args.length == 1) {
 			return Arrays.asList(commands);
 		}

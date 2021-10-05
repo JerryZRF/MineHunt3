@@ -56,7 +56,7 @@ GET_ENDER_PERAL:
       num: 1
   buff:
     -
-    #进入末地
+#进入末地
 ENTER_END:
   item:
     - material: WATER_BUCKET

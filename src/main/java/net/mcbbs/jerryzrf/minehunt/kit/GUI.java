@@ -14,7 +14,7 @@ public class GUI {
 	@Setter
 	private static int grid = 36;
 	
-	public void openGUI(Player player) {
+	public static void openGUI(Player player) {
 		Inventory inv = Bukkit.createInventory(player, grid, "职业");
 		for (int i = 0; i < KitManager.kits.size(); i++) {
 			Kit ki = KitManager.kits.get(i);

@@ -208,17 +208,29 @@ public class Game {
 		if (KitManager.isEnable()) {
 			Bukkit.broadcastMessage("正在发放职业物品");
 			inGamePlayers.forEach(player -> {
+				//替换占位符
 				ItemMeta im = KitManager.kitItem.getItemMeta();
 				List<String> lore = new ArrayList<>();
-				im.getLore().forEach(s -> lore.add(s.replace("%s", KitManager.getPlayerKit(player).name)));
-				im.setLore(lore);
+				if (im.getLore() != null) {
+					im.getLore().forEach(s -> lore.add(s.replace("%s", KitManager.getPlayerKit(player).name)));
+					im.setLore(lore);
+				}
 				KitManager.kitItem.setItemMeta(im);
 				player.getInventory().setItem(8, KitManager.kitItem);
+				//发放技能道具
 				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(player.getName())).kitItems.size(); i++) {
 					ItemStack item = new ItemStack(Material.getMaterial(
 							KitManager.kits.get(KitManager.playerKits.get(player.getName())).kitItems.get(i)));
 					im = item.getItemMeta();
+					List<String> itemLore = im.getLore();
+					if (itemLore == null) {
+						itemLore = List.of("KIT");
+					} else {
+						itemLore.add("KIT");
+					}
+					im.setLore(itemLore);
 					im.setUnbreakable(true);  //无法破坏
+					item.setItemMeta(im);
 					player.getInventory().addItem(item);
 				}
 			});

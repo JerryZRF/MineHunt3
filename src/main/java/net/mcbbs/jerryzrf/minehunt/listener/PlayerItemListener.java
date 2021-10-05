@@ -20,12 +20,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -68,12 +68,7 @@ public class PlayerItemListener implements Listener {
 			}
 			if (KitManager.isEnable()) {
 				event.getPlayer().getInventory().setItem(8, KitManager.kitItem);
-				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(event.getPlayer().getName())).kitItems.size(); i++) {
-					ItemStack item = new ItemStack(Material.getMaterial(KitManager.getPlayerKit(event.getPlayer()).kitItems.get(i)));
-					ItemMeta im = item.getItemMeta();
-					im.setUnbreakable(true);  //无法破坏
-					event.getPlayer().getInventory().addItem(item);
-				}
+				KitManager.giveKitItems(event.getPlayer());
 			}
 		}
 	}
@@ -82,19 +77,13 @@ public class PlayerItemListener implements Listener {
 	public void deathDropRemove(PlayerDeathEvent event) {
 		event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.COMPASS);      //删除死亡掉落的指南针
 		if (KitManager.isEnable()) {
-			event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.NETHER_STAR);  //删除死亡掉落的职业工具
-			for (int i = 0; i < KitManager.getPlayerKit(event.getEntity()).kitItems.size(); i++) {
-				int finalI = i;
-				event.getDrops().removeIf(itemStack -> itemStack.getType() == Material.getMaterial(KitManager.getPlayerKit(event.getEntity()).kitItems.get(finalI)));
-			}
+			//删除掉落的职业物品
+			event.getDrops().removeIf(itemStack -> itemStack.getItemMeta().getLore() == null || itemStack.getItemMeta().getLore().contains("KIT"));
 		}
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void clickCompass(PlayerInteractEvent event) {
-//		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
-//			return;
-//		}
 		if (event.getItem() == null) {
 			return;
 		}
@@ -188,37 +177,34 @@ public class PlayerItemListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void clickKitItem(PlayerInteractEvent event) {
-//		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK) {
-//			return;
-//		}
 		if (plugin.getGame().getStatus() != GameStatus.Running) {
 			return;
 		}
 		if (event.getItem() == null) {
 			return;
 		}
-		if (event.getItem().getType() != KitManager.kitItem.getType()) {
+		if (event.getItem().getType() != KitManager.kitItem.getType() || !event.getItem().getItemMeta().getLore().contains("KIT")) {
 			return;
 		}
 		Kit kits = KitManager.getPlayerKit(event.getPlayer());
-		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+		if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR) {
 			Date time = new Date();
-
+			//冷却
 			if ((time.getTime() - KitManager.useKitTime.get(event.getPlayer().getName()) <
 					(kits.mode.get(KitManager.lastMode.get(event.getPlayer().getName())).CD) * 1000L)) {
 				event.getPlayer().sendMessage(Messages.KitColding.replace("%d", String.valueOf((kits.mode.get(KitManager.lastMode.get(
 						event.getPlayer().getName())).CD * 1000L - time.getTime() + KitManager.useKitTime.get(event.getPlayer().getName())) / 1000)));
 				return;
 			}
-
+			//buff
 			for (int i = 0; i < kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).duration.size(); i++) {
 				event.getPlayer().addPotionEffect(new PotionEffect(
 						PotionEffectType.getByName(kits.buff.get(i)),
-						(int) (Double.valueOf(kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).duration.get(i).toString()) * 20),
+						(int) (Double.parseDouble(kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).duration.get(i).toString()) * 20),
 						kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).level.get(i))
 				);
 			}
-
+			//使用完毕
 			event.getPlayer().sendMessage(Messages.UseKit);
 			KitManager.lastMode.put(event.getPlayer().getName(), KitManager.mode.get(event.getPlayer().getName()));
 			KitManager.useKitTime.put(event.getPlayer().getName(), time.getTime());
@@ -241,5 +227,13 @@ public class PlayerItemListener implements Listener {
 		}
 		event.getPlayer().performCommand("minehunt kits");
 	}
+
+	@EventHandler
+	public void dropKitItems(PlayerDropItemEvent event) {
+		if (event.getItemDrop().getItemStack().getItemMeta().getLore() != null && event.getItemDrop().getItemStack().getItemMeta().getLore().contains("KIT")) {
+			event.setCancelled(true);
+		}
+	}
+
 }
 

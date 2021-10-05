@@ -37,8 +37,8 @@ public class PlayerServerListener implements Listener {
                     KitManager.lastMode.put(event.getPlayer().getName(), 0);
                     ItemStack is = KitManager.kitItem.clone();
                     ItemMeta im = is.getItemMeta();
-                    im.setLore(List.of("点击打开职业菜单"));
-                    is.setItemMeta(im);
+                    im.setLore(List.of("点击打开职业菜单", "KIT"));
+					is.setItemMeta(im);
                     event.getPlayer().getInventory().setItem(8, is);
                 }
 				event.getPlayer().setGameMode(GameMode.ADVENTURE);
