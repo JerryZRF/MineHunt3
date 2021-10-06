@@ -3,8 +3,8 @@ package net.mcbbs.jerryzrf.minehunt.config;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.api.Kit;
 import net.mcbbs.jerryzrf.minehunt.api.KitMode;
-import net.mcbbs.jerryzrf.minehunt.kit.GUI;
 import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
+import net.mcbbs.jerryzrf.minehunt.kit.kitGUI;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,7 +31,7 @@ public class LoadKits {
 			file.renameTo(newFile);
 			plugin.saveResource("kits.yml", false);
 		}
-		GUI.setGrid(config.getInt("grid", 36));
+		kitGUI.setGrid(config.getInt("grid", 36));
 		KitManager.kitItem = new ItemStack(Material.getMaterial(config.getString("material", "NETHER_STAR")));
 		KitManager.setEnable(config.getBoolean("enable", true));
 		List<Map<?, ?>> kitList = config.getMapList("kits");

@@ -10,6 +10,7 @@ import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -30,17 +31,23 @@ public class PlayerServerListener implements Listener {
 	public void join(PlayerJoinEvent event) {
 		if (plugin.getGame().getStatus() == GameStatus.Waiting) {
             if (plugin.getGame().playerJoining(event.getPlayer())) {
+				plugin.getGame().getNoRolesPlayers().add(event.getPlayer());
                 if (KitManager.isEnable()) {
-                    KitManager.playerKits.put(event.getPlayer().getName(), 0);
-                    KitManager.useKitTime.put(event.getPlayer().getName(), 0L);
-                    KitManager.mode.put(event.getPlayer().getName(), 0);
-                    KitManager.lastMode.put(event.getPlayer().getName(), 0);
-                    ItemStack is = KitManager.kitItem.clone();
-                    ItemMeta im = is.getItemMeta();
-                    im.setLore(List.of("点击打开职业菜单", "KIT"));
+					KitManager.playerKits.put(event.getPlayer().getName(), 0);
+					KitManager.useKitTime.put(event.getPlayer().getName(), 0L);
+					KitManager.mode.put(event.getPlayer().getName(), 0);
+					KitManager.lastMode.put(event.getPlayer().getName(), 0);
+					ItemStack is = KitManager.kitItem.clone();
+					ItemMeta im = is.getItemMeta();
+					im.setLore(List.of("点击打开职业菜单", "KIT"));
 					is.setItemMeta(im);
-                    event.getPlayer().getInventory().setItem(8, is);
-                }
+					event.getPlayer().getInventory().setItem(8, is);
+				}
+				ItemStack item = new ItemStack(Material.RED_BED);
+				ItemMeta im = item.getItemMeta();
+				im.setLore(List.of("点击选择阵容", "TEAM"));
+				item.setItemMeta(im);
+				event.getPlayer().getInventory().setItem(0, item);
 				event.getPlayer().setGameMode(GameMode.ADVENTURE);
 			} else {
 				//人满了

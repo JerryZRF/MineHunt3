@@ -59,7 +59,7 @@ public class Messages {
         GameFull = config.getString("GameFull");
         GameStart = config.getString("GameStart");
         Waiting = config.getString("Waiting");
-        PlayerEnough = config.getString("PlayerOK");
+        PlayerEnough = config.getString("PlayerEnough");
         NoPermission = config.getString("NoPermission");
         UnknownTeam = config.getString("UnknownTeam");
         DifferentWorld = config.getString("DifferentWorld");

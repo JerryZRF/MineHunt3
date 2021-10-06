@@ -3,7 +3,6 @@ package net.mcbbs.jerryzrf.minehunt.listener;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -34,8 +33,7 @@ public class PlayerInteractListener implements Listener {
         if (plugin.getGame().getStatus() != GameStatus.Running) {
             event.setCancelled(true);
         }
-        if (event.getEntity().getType() == EntityType.PLAYER) {
-            Player player = ((Player) event.getEntity()).getPlayer();
+        if (event.getEntity() instanceof Player player) {
             if (plugin.getGame().getPlayerRole(player).get() == PlayerRole.RUNNER) {
                 //更新血条
                 plugin.getGame().runnerHealth.setTitle(player.getName());
@@ -46,8 +44,7 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void bloodReturn(EntityRegainHealthEvent event) {
-        if (event.getEntity().getType() == EntityType.PLAYER) {
-            Player player = ((Player) event.getEntity()).getPlayer();
+        if (event.getEntity() instanceof Player player) {
             if (plugin.getGame().getPlayerRole(player).get() == PlayerRole.RUNNER) {
                 //更新血条
                 plugin.getGame().runnerHealth.setTitle(player.getName());

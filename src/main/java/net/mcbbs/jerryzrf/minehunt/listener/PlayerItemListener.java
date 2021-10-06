@@ -9,6 +9,7 @@ import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,9 +24,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -230,10 +233,83 @@ public class PlayerItemListener implements Listener {
 
 	@EventHandler
 	public void dropKitItems(PlayerDropItemEvent event) {
-		if (event.getItemDrop().getItemStack().getItemMeta().getLore() != null && event.getItemDrop().getItemStack().getItemMeta().getLore().contains("KIT")) {
+		if (event.getItemDrop().getItemStack().getItemMeta().getLore() != null && (event.getItemDrop().getItemStack().getItemMeta().getLore().contains("KIT") || event.getItemDrop().getItemStack().getItemMeta().getLore().contains("TEAM"))) {
 			event.setCancelled(true);
 		}
 	}
 
+	@EventHandler
+	public void clickChooseTeamItem(PlayerInteractEvent event) {
+		if (plugin.getGame().getStatus() != GameStatus.Waiting) {
+			return;
+		}
+		if (event.getItem() == null || event.getItem().getItemMeta().getLore() == null) {
+			return;
+		}
+		if (event.getItem().getItemMeta().getLore().contains("TEAM")) {
+			Inventory inv = Bukkit.createInventory(event.getPlayer(), 9, "阵容");
+			ItemStack item = new ItemStack(Material.GREEN_WOOL);
+			item.setDisplayName("逃亡者");
+			ItemMeta im = item.getItemMeta();
+			im.setLore(List.of("点击加入"));
+			item.setItemMeta(im);
+			inv.addItem(item);
+			item = new ItemStack(Material.RED_WOOL);
+			item.setDisplayName("猎人");
+			im = item.getItemMeta();
+			im.setLore(List.of("点击加入"));
+			item.setItemMeta(im);
+			inv.addItem(item);
+			event.getPlayer().openInventory(inv);
+		}
+	}
+
+	@EventHandler
+	public void clickTeamGUI(InventoryClickEvent event) {
+		Player player = (Player) event.getWhoClicked();
+		// 只有玩家可以触发 InventoryClickEvent，可以强制转换
+		InventoryView inv = player.getOpenInventory();
+		if (inv.getTitle().equals("阵容")) {
+			// 通过标题区分 GUI
+			event.setCancelled(true);
+		} else {
+			return;
+		}
+		if (event.getRawSlot() < 0 || event.getRawSlot() >= 2) {
+			// 这个方法来源于 Bukkit Development Note
+			// 如果在合理的范围内，getRawSlot 会返回一个合适的编号（0 ~ 物品栏大小-1）
+			return;
+			// 结束处理，使用 return 避免了多余的 else
+		}
+
+		// 后续处理
+		int runners = 1;
+		if (plugin.getGame().getInGamePlayers().size() >= plugin.getConfig().getInt("L0Player")) {
+			runners = plugin.getConfig().getInt("L0Runner");
+		}
+		if (plugin.getGame().getInGamePlayers().size() >= plugin.getConfig().getInt("L1Player")) {
+			runners = plugin.getConfig().getInt("L1Runner");
+		}
+		if (plugin.getGame().getInGamePlayers().size() >= plugin.getConfig().getInt("L2Player")) {
+			runners = plugin.getConfig().getInt("L2Runner");
+		}
+		if (plugin.getGame().getInGamePlayers().size() >= plugin.getConfig().getInt("L3Player")) {
+			runners = plugin.getConfig().getInt("L3Runner");
+		}
+		if (event.getRawSlot() == 0) {
+			if (plugin.getGame().getPlayersAsRole(PlayerRole.RUNNER).size() >= runners) {
+				((Player) event.getWhoClicked()).sendMessage(org.bukkit.ChatColor.RED + "逃亡者已满");
+				return;
+			} else {
+				plugin.getGame().getRoleMapping().put(player, PlayerRole.RUNNER);
+				plugin.getGame().getNoRolesPlayers().remove(player);
+				player.sendMessage("已加入" + ChatColor.GREEN + "逃亡者");
+			}
+		} else {
+			plugin.getGame().getRoleMapping().put(player, PlayerRole.HUNTER);
+			plugin.getGame().getNoRolesPlayers().remove(player);
+			player.sendMessage("已加入" + ChatColor.GREEN + "猎人");
+		}
+	}
 }
 

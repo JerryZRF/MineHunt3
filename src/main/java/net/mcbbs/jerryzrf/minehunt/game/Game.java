@@ -30,7 +30,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class Game {
@@ -60,9 +59,11 @@ public class Game {
 	@Setter
 	private GameStatus status = GameStatus.Waiting;
 	@Getter
-	private Map<Player, PlayerRole> roleMapping; //线程安全
+	private final Map<Player, PlayerRole> roleMapping = new HashMap<>(); //线程安全
 	@Getter
 	private boolean CompassUnlocked = plugin.getConfig().getBoolean("CompassUnlocked");
+	@Getter
+	private final List<Player> noRolesPlayers = new ArrayList<>();
 	public BossBar runnerHealth = Bukkit.createBossBar(
 			new NamespacedKey(plugin, "runnerHealth"),
 			null,
@@ -70,6 +71,8 @@ public class Game {
 			BarStyle.SEGMENTED_10,
 			BarFlag.PLAY_BOSS_MUSIC
 	);
+	@Getter
+	private int runners = 1;
 
 	public void switchCompass(boolean unlocked) {
 		if (this.CompassUnlocked == unlocked) {
@@ -162,32 +165,30 @@ public class Game {
 		if (status != GameStatus.Waiting) {
 			return;
 		}
-		Bukkit.broadcastMessage(prefix + "请稍后，系统正在随机分配玩家身份...");
-		Random random = new Random();
-		List<Player> noRolesPlayers = new ArrayList<>(inGamePlayers);
-		Map<Player, PlayerRole> roleMapTemp = new HashMap<>();
+		if (noRolesPlayers.size() > 0) {
+			Bukkit.broadcastMessage(prefix + "请稍后，系统正在随机分配玩家身份...");
+			Random random = new Random();
 
-		int runners = 1;
-		if (inGamePlayers.size() >= plugin.getConfig().getInt("L0Player")) {
-			runners = plugin.getConfig().getInt("L0Runner");
+			if (inGamePlayers.size() >= plugin.getConfig().getInt("L0Player")) {
+				runners = plugin.getConfig().getInt("L0Runner");
+			}
+			if (inGamePlayers.size() >= plugin.getConfig().getInt("L1Player")) {
+				runners = plugin.getConfig().getInt("L1Runner");
+			}
+			if (inGamePlayers.size() >= plugin.getConfig().getInt("L2Player")) {
+				runners = plugin.getConfig().getInt("L2Runner");
+			}
+			if (inGamePlayers.size() >= plugin.getConfig().getInt("L3Player")) {
+				runners = plugin.getConfig().getInt("L3Runner");
+			}
+			runners -= getPlayersAsRole(PlayerRole.RUNNER).size();
+			for (int i = 0; i < runners; i++) {
+				Player selected = noRolesPlayers.get(random.nextInt(noRolesPlayers.size()));
+				roleMapping.put(selected, PlayerRole.RUNNER);
+				noRolesPlayers.remove(selected);
+			}
+			noRolesPlayers.forEach(p -> roleMapping.put(p, PlayerRole.HUNTER));
 		}
-		if (inGamePlayers.size() >= plugin.getConfig().getInt("L1Player")) {
-			runners = plugin.getConfig().getInt("L1Runner");
-		}
-		if (inGamePlayers.size() >= plugin.getConfig().getInt("L2Player")) {
-			runners = plugin.getConfig().getInt("L2Runner");
-		}
-		if (inGamePlayers.size() >= plugin.getConfig().getInt("L3Player")) {
-			runners = plugin.getConfig().getInt("L3Runner");
-		}
-		
-		for (int i = 0; i < runners; i++) {
-			Player selected = noRolesPlayers.get(random.nextInt(noRolesPlayers.size()));
-			roleMapTemp.put(selected, PlayerRole.RUNNER);
-			noRolesPlayers.remove(selected);
-		}
-		noRolesPlayers.forEach(p -> roleMapTemp.put(p, PlayerRole.HUNTER));
-		this.roleMapping = new ConcurrentHashMap<>(roleMapTemp);
 		Bukkit.broadcastMessage(prefix + "正在将逃亡者随机传送到远离猎人的位置...");
 		Location airDropLoc = airDrop(getPlayersAsRole(PlayerRole.RUNNER).get(0).getWorld().getSpawnLocation());
 		getPlayersAsRole(PlayerRole.RUNNER).forEach(runner -> runner.teleport(airDropLoc));

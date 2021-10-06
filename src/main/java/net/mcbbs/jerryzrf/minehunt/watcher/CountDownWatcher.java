@@ -2,6 +2,7 @@ package net.mcbbs.jerryzrf.minehunt.watcher;
 
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
+import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
 import net.mcbbs.jerryzrf.minehunt.game.Game;
 import org.bukkit.Bukkit;
@@ -35,6 +36,9 @@ public class CountDownWatcher {
 							Messages.Waiting, 0, 40, 0));
 					//我觉得这没有必要，倒计时暂停就够了
 					//remains = plugin.getGame().getCountdown();  //倒计时重置
+					return;
+				} else if (game.getPlayersAsRole(PlayerRole.RUNNER).size() < game.getRunners()) {
+					game.getInGamePlayers().forEach(p -> p.sendTitle("倒计时暂停", "缺少逃亡者", 0, 40, 0));
 					return;
 				} else {
 					game.getInGamePlayers().forEach(p -> {

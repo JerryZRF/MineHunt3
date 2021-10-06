@@ -5,8 +5,8 @@ import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
 import net.mcbbs.jerryzrf.minehunt.config.LoadKits;
 import net.mcbbs.jerryzrf.minehunt.config.LoadProgress;
 import net.mcbbs.jerryzrf.minehunt.config.Messages;
-import net.mcbbs.jerryzrf.minehunt.kit.GUI;
 import net.mcbbs.jerryzrf.minehunt.kit.KitManager;
+import net.mcbbs.jerryzrf.minehunt.kit.kitGUI;
 import net.mcbbs.jerryzrf.minehunt.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -84,7 +84,7 @@ public class Commander implements TabExecutor {
 				Bukkit.broadcastMessage("玩家 " + sender.getName() + " 强制加入了游戏！ 身份：" + args[1]);
 				if (KitManager.isEnable()) {
 					KitManager.clearKitItems((Player) sender);
-					GUI.openGUI((Player) sender);
+					kitGUI.openGUI((Player) sender);
 				}
 			} else {
 				sender.sendMessage(Messages.NoPermission);
@@ -112,13 +112,9 @@ public class Commander implements TabExecutor {
          权限：无
          */
 		if (args[0].equalsIgnoreCase("players")) {
-			if (plugin.getGame().getStatus() == GameStatus.Running) {
-				Bukkit.broadcastMessage(ChatColor.YELLOW + "> 猎人 & 逃亡者 <");
-				Bukkit.broadcastMessage(ChatColor.RED + "猎人: " + Util.list2String(MineHunt.getInstance().getGame().getPlayersAsRole(PlayerRole.HUNTER).stream().map(Player::getName).collect(Collectors.toList())));
-				Bukkit.broadcastMessage(ChatColor.GREEN + "逃亡者: " + Util.list2String(MineHunt.getInstance().getGame().getPlayersAsRole(PlayerRole.RUNNER).stream().map(Player::getName).collect(Collectors.toList())));
-			} else {
-				sender.sendMessage(ChatColor.RED + "游戏还未开始，角色未分配");
-			}
+			Bukkit.broadcastMessage(ChatColor.YELLOW + "> 猎人 & 逃亡者 <");
+			Bukkit.broadcastMessage(ChatColor.RED + "猎人: " + Util.list2String(MineHunt.getInstance().getGame().getPlayersAsRole(PlayerRole.HUNTER).stream().map(Player::getName).collect(Collectors.toList())));
+			Bukkit.broadcastMessage(ChatColor.GREEN + "逃亡者: " + Util.list2String(MineHunt.getInstance().getGame().getPlayersAsRole(PlayerRole.RUNNER).stream().map(Player::getName).collect(Collectors.toList())));
 			return true;
 		}
         /*
@@ -186,7 +182,7 @@ public class Commander implements TabExecutor {
 				sender.sendMessage(ChatColor.RED + "服务器已禁用该功能！");
 				return true;
 			}
-			GUI.openGUI((Player) sender);
+			kitGUI.openGUI((Player) sender);
 			return true;
 		}
 		/*

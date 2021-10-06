@@ -10,10 +10,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class GUI {
+public class kitGUI {
 	@Setter
 	private static int grid = 36;
-	
+
 	public static void openGUI(Player player) {
 		Inventory inv = Bukkit.createInventory(player, grid, "职业");
 		for (int i = 0; i < KitManager.kits.size(); i++) {
