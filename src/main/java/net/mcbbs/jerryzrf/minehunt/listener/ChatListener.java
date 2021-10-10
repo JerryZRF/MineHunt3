@@ -40,9 +40,9 @@ public class ChatListener implements Listener {
 		}
 		//聊天加入前缀
 		if (role.get() == PlayerRole.HUNTER) {
-			event.setFormat(ChatColor.RED + plugin.getConfig().getString("HunterName") + " " + event.getPlayer().getDisplayName() + " " + ChatColor.RESET + event.getMessage());
+			event.setFormat(ChatColor.RED + "[" + plugin.getConfig().getString("HunterName") + "] " + event.getPlayer().getDisplayName() + " " + ChatColor.RESET + event.getMessage());
 		} else if (role.get() == PlayerRole.RUNNER) {
-			event.setFormat(ChatColor.GREEN + plugin.getConfig().getString("RunnerName") + " " + event.getPlayer().getDisplayName() + " " + ChatColor.RESET + event.getMessage());
+			event.setFormat(ChatColor.GREEN + "[" + plugin.getConfig().getString("RunnerName") + "] " + event.getPlayer().getDisplayName() + " " + ChatColor.RESET + event.getMessage());
 		}
 	}
 }

@@ -29,6 +29,7 @@ public class PlayerServerListener implements Listener {
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void join(PlayerJoinEvent event) {
+		event.getPlayer().setScoreboard(plugin.getGame().getTeamSB());
 		if (plugin.getGame().getStatus() == GameStatus.Waiting) {
             if (plugin.getGame().playerJoining(event.getPlayer())) {
 				plugin.getGame().getNoRolesPlayers().add(event.getPlayer());

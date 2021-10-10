@@ -144,6 +144,7 @@ public class Commander implements TabExecutor {
 		if (args[0].equalsIgnoreCase("tp")) {
 			if (!(sender instanceof Player)) {
 				sender.sendMessage(ChatColor.RED + "只有玩家才可以这样做！");
+				return true;
 			}
 			if (plugin.getGame().getStatus() == GameStatus.Running || plugin.getGame().getStatus() == GameStatus.Ending) {
 				if (plugin.getGame().getPlayerRole((Player) sender).isEmpty()) {

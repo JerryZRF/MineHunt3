@@ -79,10 +79,10 @@ ServerGame: "猎人游戏"
 ObserverName: "[吃瓜]"
 
 #追杀者玩家名字前缀
-HunterName: "[猎人]"
+HunterName: "猎人"
 
 #逃亡者玩家名字前缀
-RunnerName: "[逃亡者]"
+RunnerName: "逃亡者"
 
 #等待中玩家名字前缀
 WaitingName: "[等待中]"

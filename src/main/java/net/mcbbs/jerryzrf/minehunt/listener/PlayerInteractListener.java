@@ -36,8 +36,8 @@ public class PlayerInteractListener implements Listener {
         if (event.getEntity() instanceof Player player) {
             if (plugin.getGame().getPlayerRole(player).get() == PlayerRole.RUNNER) {
                 //更新血条
-                plugin.getGame().runnerHealth.setTitle(player.getName());
-                plugin.getGame().runnerHealth.setProgress(player.getHealth() / player.getMaxHealth());
+                plugin.getGame().getRunnerHealth().setTitle(player.getName());
+                plugin.getGame().getRunnerHealth().setProgress(player.getHealth() / player.getMaxHealth());
             }
         }
     }
@@ -47,8 +47,8 @@ public class PlayerInteractListener implements Listener {
         if (event.getEntity() instanceof Player player) {
             if (plugin.getGame().getPlayerRole(player).get() == PlayerRole.RUNNER) {
                 //更新血条
-                plugin.getGame().runnerHealth.setTitle(player.getName());
-                plugin.getGame().runnerHealth.setProgress(player.getHealth() / player.getMaxHealth());
+                plugin.getGame().getRunnerHealth().setTitle(player.getName());
+                plugin.getGame().getRunnerHealth().setProgress(player.getHealth() / player.getMaxHealth());
             }
         }
     }

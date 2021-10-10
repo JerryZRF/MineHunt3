@@ -1,9 +1,9 @@
 package net.mcbbs.jerryzrf.minehunt.game;
 
-import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.mcbbs.jerryzrf.minehunt.MineHunt;
 import net.mcbbs.jerryzrf.minehunt.api.GameStatus;
 import net.mcbbs.jerryzrf.minehunt.api.PlayerRole;
@@ -28,6 +28,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,7 +39,7 @@ public class Game {
 	final Map<Player, Double> teamDamageData = new HashMap<>();
 	private final MineHunt plugin = MineHunt.getInstance();
 	@Getter
-	private final Set<Player> inGamePlayers = Sets.newCopyOnWriteArraySet(); //线程安全
+	private final Set<Player> inGamePlayers = new HashSet<>();
 	@Getter
 	private final Map<Player, Long> reconnectTimer = new HashMap<>();
 	@Getter
@@ -59,12 +61,13 @@ public class Game {
 	@Setter
 	private GameStatus status = GameStatus.Waiting;
 	@Getter
-	private final Map<Player, PlayerRole> roleMapping = new HashMap<>(); //线程安全
+	private final Map<Player, PlayerRole> roleMapping = new HashMap<>();
 	@Getter
 	private boolean CompassUnlocked = plugin.getConfig().getBoolean("CompassUnlocked");
 	@Getter
 	private final List<Player> noRolesPlayers = new ArrayList<>();
-	public BossBar runnerHealth = Bukkit.createBossBar(
+	@Getter
+	private final BossBar runnerHealth = Bukkit.createBossBar(
 			new NamespacedKey(plugin, "runnerHealth"),
 			null,
 			BarColor.GREEN,
@@ -73,6 +76,37 @@ public class Game {
 	);
 	@Getter
 	private int runners = 1;
+	@Getter
+	private final Scoreboard teamSB = Bukkit.getScoreboardManager().getNewScoreboard();
+	@Getter
+	private final Team Hunter = teamSB.registerNewTeam("Hunter");
+	@Getter
+	private final Team Runner = teamSB.registerNewTeam("Runner");
+
+	public Game() {
+		if (inGamePlayers.size() >= plugin.getConfig().getInt("L0Player")) {
+			runners = plugin.getConfig().getInt("L0Runner");
+		}
+		if (inGamePlayers.size() >= plugin.getConfig().getInt("L1Player")) {
+			runners = plugin.getConfig().getInt("L1Runner");
+		}
+		if (inGamePlayers.size() >= plugin.getConfig().getInt("L2Player")) {
+			runners = plugin.getConfig().getInt("L2Runner");
+		}
+		if (inGamePlayers.size() >= plugin.getConfig().getInt("L3Player")) {
+			runners = plugin.getConfig().getInt("L3Runner");
+		}
+		Hunter.setDisplayName(plugin.getConfig().getString("HunterName", "猎人"));
+		Hunter.color(NamedTextColor.RED);
+		Hunter.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
+		Hunter.setCanSeeFriendlyInvisibles(true);
+		Hunter.setPrefix(ChatColor.RED + "[" + plugin.getConfig().getString("HunterName", "猎人") + "]");
+		Runner.setDisplayName(plugin.getConfig().getString("RunnerName", "逃亡者"));
+		Runner.color(NamedTextColor.GREEN);
+		Runner.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
+		Runner.setCanSeeFriendlyInvisibles(true);
+		Runner.setPrefix(ChatColor.GREEN + "[" + plugin.getConfig().getString("RunnerName", "逃亡者") + "]");
+	}
 
 	public void switchCompass(boolean unlocked) {
 		if (this.CompassUnlocked == unlocked) {
@@ -119,7 +153,37 @@ public class Game {
 		}
 		return false;
 	}
-	
+
+	/***
+	 * 玩家加入阵容
+	 *
+	 * @param player 玩家
+	 * @param role 阵容
+	 * @return 提示
+	 */
+	public String playerJoinTeam(Player player, PlayerRole role) {
+		if (role == PlayerRole.RUNNER) {
+			if (plugin.getGame().getPlayersAsRole(PlayerRole.RUNNER).size() >= plugin.getGame().getRunners()) {
+				return ChatColor.RED + "逃亡者已满";
+			}
+			plugin.getGame().getRoleMapping().put(player, PlayerRole.RUNNER);
+			plugin.getGame().getNoRolesPlayers().remove(player);
+			if (Hunter.hasEntry(player.getName())) {
+				Hunter.removeEntry(player.getName());
+			}
+			Runner.addEntry(player.getName());
+			return "已加入" + ChatColor.GREEN + "逃亡者";
+		} else {
+			plugin.getGame().getRoleMapping().put(player, PlayerRole.HUNTER);
+			plugin.getGame().getNoRolesPlayers().remove(player);
+			if (Runner.hasEntry(player.getName())) {
+				Runner.removeEntry(player.getName());
+			}
+			Hunter.addEntry(player.getName());
+			return "已加入" + ChatColor.GREEN + "猎人";
+		}
+	}
+
 	/**
 	 * 玩家离开(倒计时)
 	 *
@@ -165,30 +229,18 @@ public class Game {
 		if (status != GameStatus.Waiting) {
 			return;
 		}
+		//分配玩家身份
 		if (noRolesPlayers.size() > 0) {
 			Bukkit.broadcastMessage(prefix + "请稍后，系统正在随机分配玩家身份...");
 			Random random = new Random();
-
-			if (inGamePlayers.size() >= plugin.getConfig().getInt("L0Player")) {
-				runners = plugin.getConfig().getInt("L0Runner");
-			}
-			if (inGamePlayers.size() >= plugin.getConfig().getInt("L1Player")) {
-				runners = plugin.getConfig().getInt("L1Runner");
-			}
-			if (inGamePlayers.size() >= plugin.getConfig().getInt("L2Player")) {
-				runners = plugin.getConfig().getInt("L2Runner");
-			}
-			if (inGamePlayers.size() >= plugin.getConfig().getInt("L3Player")) {
-				runners = plugin.getConfig().getInt("L3Runner");
-			}
-			runners -= getPlayersAsRole(PlayerRole.RUNNER).size();
-			for (int i = 0; i < runners; i++) {
+			for (int i = 0; i < runners - getPlayersAsRole(PlayerRole.RUNNER).size(); i++) {
 				Player selected = noRolesPlayers.get(random.nextInt(noRolesPlayers.size()));
-				roleMapping.put(selected, PlayerRole.RUNNER);
+				playerJoinTeam(selected, PlayerRole.RUNNER);
 				noRolesPlayers.remove(selected);
 			}
-			noRolesPlayers.forEach(p -> roleMapping.put(p, PlayerRole.HUNTER));
+			noRolesPlayers.forEach(p -> playerJoinTeam(p, PlayerRole.HUNTER));
 		}
+
 		Bukkit.broadcastMessage(prefix + "正在将逃亡者随机传送到远离猎人的位置...");
 		Location airDropLoc = airDrop(getPlayersAsRole(PlayerRole.RUNNER).get(0).getWorld().getSpawnLocation());
 		getPlayersAsRole(PlayerRole.RUNNER).forEach(runner -> runner.teleport(airDropLoc));
@@ -202,10 +254,13 @@ public class Game {
 			p.setCompassTarget(p.getWorld().getSpawnLocation());  //指南针指向出生点
 			p.getInventory().clear();          //清空物品栏
 		});
+		//发放指南针
 		if (CompassUnlocked) {
 			getPlayersAsRole(PlayerRole.HUNTER).forEach(p -> p.getInventory().addItem(new ItemStack(Material.COMPASS, 1)));
 		}
+		//设置游戏规则
 		switchWorldRuleForReady(true);
+		//发放职业相关物品
 		if (KitManager.isEnable()) {
 			Bukkit.broadcastMessage("正在发放职业物品");
 			inGamePlayers.forEach(player -> {
@@ -236,9 +291,10 @@ public class Game {
 				}
 			});
 		}
-		runnerHealth.setProgress(1.0);
+		//设置逃亡者血量进度条
 		if (plugin.getConfig().getBoolean("showRunnerHealth")) {
-			inGamePlayers.forEach(player -> runnerHealth.addPlayer(player));
+			runnerHealth.setProgress(1.0);
+			inGamePlayers.forEach(runnerHealth::addPlayer);
 		}
 		List<String> runnerBuff = plugin.getConfig().getStringList("runnerBuff.buff");
 		List<Integer> runnerLevel = plugin.getConfig().getIntegerList("runnerBuff.level");

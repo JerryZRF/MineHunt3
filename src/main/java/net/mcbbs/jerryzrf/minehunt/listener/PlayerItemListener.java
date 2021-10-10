@@ -283,32 +283,11 @@ public class PlayerItemListener implements Listener {
 		}
 
 		// 后续处理
-		int runners = 1;
-		if (plugin.getGame().getInGamePlayers().size() >= plugin.getConfig().getInt("L0Player")) {
-			runners = plugin.getConfig().getInt("L0Runner");
-		}
-		if (plugin.getGame().getInGamePlayers().size() >= plugin.getConfig().getInt("L1Player")) {
-			runners = plugin.getConfig().getInt("L1Runner");
-		}
-		if (plugin.getGame().getInGamePlayers().size() >= plugin.getConfig().getInt("L2Player")) {
-			runners = plugin.getConfig().getInt("L2Runner");
-		}
-		if (plugin.getGame().getInGamePlayers().size() >= plugin.getConfig().getInt("L3Player")) {
-			runners = plugin.getConfig().getInt("L3Runner");
-		}
+
 		if (event.getRawSlot() == 0) {
-			if (plugin.getGame().getPlayersAsRole(PlayerRole.RUNNER).size() >= runners) {
-				((Player) event.getWhoClicked()).sendMessage(org.bukkit.ChatColor.RED + "逃亡者已满");
-				return;
-			} else {
-				plugin.getGame().getRoleMapping().put(player, PlayerRole.RUNNER);
-				plugin.getGame().getNoRolesPlayers().remove(player);
-				player.sendMessage("已加入" + ChatColor.GREEN + "逃亡者");
-			}
+			event.getWhoClicked().sendMessage(plugin.getGame().playerJoinTeam(player, PlayerRole.RUNNER));
 		} else {
-			plugin.getGame().getRoleMapping().put(player, PlayerRole.HUNTER);
-			plugin.getGame().getNoRolesPlayers().remove(player);
-			player.sendMessage("已加入" + ChatColor.GREEN + "猎人");
+			event.getWhoClicked().sendMessage(plugin.getGame().playerJoinTeam(player, PlayerRole.HUNTER));
 		}
 	}
 }
