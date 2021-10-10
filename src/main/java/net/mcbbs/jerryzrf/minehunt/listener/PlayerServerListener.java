@@ -34,11 +34,11 @@ public class PlayerServerListener implements Listener {
             if (plugin.getGame().playerJoining(event.getPlayer())) {
 				plugin.getGame().getNoRolesPlayers().add(event.getPlayer());
                 if (KitManager.isEnable()) {
-					KitManager.playerKits.put(event.getPlayer().getName(), 0);
-					KitManager.useKitTime.put(event.getPlayer().getName(), 0L);
-					KitManager.mode.put(event.getPlayer().getName(), 0);
-					KitManager.lastMode.put(event.getPlayer().getName(), 0);
-					ItemStack is = KitManager.kitItem.clone();
+					KitManager.getPlayerKits().put(event.getPlayer().getName(), 0);
+					KitManager.getUseKitTime().put(event.getPlayer().getName(), 0L);
+					KitManager.getMode().put(event.getPlayer().getName(), 0);
+					KitManager.getLastMode().put(event.getPlayer().getName(), 0);
+					ItemStack is = KitManager.getKitItem().clone();
 					ItemMeta im = is.getItemMeta();
 					im.setLore(List.of("点击打开职业菜单", "KIT"));
 					is.setItemMeta(im);

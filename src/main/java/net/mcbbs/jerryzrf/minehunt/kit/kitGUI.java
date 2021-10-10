@@ -16,8 +16,8 @@ public class kitGUI {
 
 	public static void openGUI(Player player) {
 		Inventory inv = Bukkit.createInventory(player, grid, "职业");
-		for (int i = 0; i < KitManager.kits.size(); i++) {
-			Kit ki = KitManager.kits.get(i);
+		for (int i = 0; i < KitManager.getKits().size(); i++) {
+			Kit ki = KitManager.getKits().get(i);
 			ItemStack item = new ItemStack(Material.getMaterial(ki.material));
 			ItemMeta im = item.getItemMeta();
 			if (im == null) {

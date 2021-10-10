@@ -32,12 +32,12 @@ public class LoadKits {
 			plugin.saveResource("kits.yml", false);
 		}
 		kitGUI.setGrid(config.getInt("grid", 36));
-		KitManager.kitItem = new ItemStack(Material.getMaterial(config.getString("material", "NETHER_STAR")));
+		KitManager.setKitItem(new ItemStack(Material.getMaterial(config.getString("material", "NETHER_STAR"))));
 		KitManager.setEnable(config.getBoolean("enable", true));
 		List<Map<?, ?>> kitList = config.getMapList("kits");
-		ItemMeta im = KitManager.kitItem.getItemMeta();
+		ItemMeta im = KitManager.getKitItem().getItemMeta();
 		im.setLore(config.getStringList("lore"));
-		KitManager.kitItem.setItemMeta(im);
+		KitManager.getKitItem().setItemMeta(im);
 		for (Map<?, ?> map : kitList) {
 			Kit ki = new Kit();
 			ki.name = (String) map.get("name");
@@ -55,7 +55,7 @@ public class LoadKits {
 				km.level = (List<Integer>) value.get("level");
 				ki.mode.add(km);
 			}
-			KitManager.kits.add(ki);
+			KitManager.getKits().add(ki);
 		}
 	}
 }

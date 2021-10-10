@@ -33,7 +33,7 @@ public class APIGetGameInfo implements IGetGameInfo {
 
     @Override
     public List<Kit> getKitList() {
-        return KitManager.kits;
+        return KitManager.getKits();
     }
 
     @Override

@@ -70,7 +70,7 @@ public class PlayerItemListener implements Listener {
 				}
 			}
 			if (KitManager.isEnable()) {
-				event.getPlayer().getInventory().setItem(8, KitManager.kitItem);
+				event.getPlayer().getInventory().setItem(8, KitManager.getKitItem());
 				KitManager.giveKitItems(event.getPlayer());
 			}
 		}
@@ -157,7 +157,7 @@ public class PlayerItemListener implements Listener {
 		} else {
 			return;
 		}
-		if (event.getRawSlot() < 0 || event.getRawSlot() >= KitManager.kits.size()) {
+		if (event.getRawSlot() < 0 || event.getRawSlot() >= KitManager.getKits().size()) {
 			// 这个方法来源于 Bukkit Development Note
 			// 如果在合理的范围内，getRawSlot 会返回一个合适的编号（0 ~ 物品栏大小-1）
 			return;
@@ -170,12 +170,12 @@ public class PlayerItemListener implements Listener {
 			return;
 		}
 		// 后续处理
-		if (KitManager.kits.get(event.getSlot()).permission != null && !((Player) event.getWhoClicked()).getPlayer().hasPermission(KitManager.kits.get(event.getSlot()).permission)) {
+		if (KitManager.getKits().get(event.getSlot()).permission != null && !((Player) event.getWhoClicked()).getPlayer().hasPermission(KitManager.getKits().get(event.getSlot()).permission)) {
 			((Player) event.getWhoClicked()).getPlayer().sendMessage(Messages.NoPermission);
 			return;
 		}
-		KitManager.playerKits.put(((Player) event.getWhoClicked()).getPlayer().getName(), event.getSlot());
-		event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + KitManager.kits.get(event.getRawSlot()).name);
+		KitManager.getPlayerKits().put(((Player) event.getWhoClicked()).getPlayer().getName(), event.getSlot());
+		event.getWhoClicked().sendMessage("已选择职业" + ChatColor.GREEN + KitManager.getKits().get(event.getRawSlot()).name);
 	}
 	
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -186,34 +186,34 @@ public class PlayerItemListener implements Listener {
 		if (event.getItem() == null) {
 			return;
 		}
-		if (event.getItem().getType() != KitManager.kitItem.getType() || !event.getItem().getItemMeta().getLore().contains("KIT")) {
+		if (event.getItem().getType() != KitManager.getKitItem().getType() || event.getItem().getItemMeta().getLore() == null || !event.getItem().getItemMeta().getLore().contains("KIT")) {
 			return;
 		}
 		Kit kits = KitManager.getPlayerKit(event.getPlayer());
 		if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR) {
 			Date time = new Date();
 			//冷却
-			if ((time.getTime() - KitManager.useKitTime.get(event.getPlayer().getName()) <
-					(kits.mode.get(KitManager.lastMode.get(event.getPlayer().getName())).CD) * 1000L)) {
-				event.getPlayer().sendMessage(Messages.KitColding.replace("%d", String.valueOf((kits.mode.get(KitManager.lastMode.get(
-						event.getPlayer().getName())).CD * 1000L - time.getTime() + KitManager.useKitTime.get(event.getPlayer().getName())) / 1000)));
+			if ((time.getTime() - KitManager.getUseKitTime().get(event.getPlayer().getName()) <
+					(kits.mode.get(KitManager.getLastMode().get(event.getPlayer().getName())).CD) * 1000L)) {
+				event.getPlayer().sendMessage(Messages.KitColding.replace("%d", String.valueOf((kits.mode.get(KitManager.getLastMode().get(
+						event.getPlayer().getName())).CD * 1000L - time.getTime() + KitManager.getUseKitTime().get(event.getPlayer().getName())) / 1000)));
 				return;
 			}
 			//buff
-			for (int i = 0; i < kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).duration.size(); i++) {
+			for (int i = 0; i < kits.mode.get(KitManager.getMode().get(event.getPlayer().getName())).duration.size(); i++) {
 				event.getPlayer().addPotionEffect(new PotionEffect(
 						PotionEffectType.getByName(kits.buff.get(i)),
-						(int) (Double.parseDouble(kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).duration.get(i).toString()) * 20),
-						kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).level.get(i))
+						(int) (Double.parseDouble(kits.mode.get(KitManager.getMode().get(event.getPlayer().getName())).duration.get(i).toString()) * 20),
+						kits.mode.get(KitManager.getMode().get(event.getPlayer().getName())).level.get(i))
 				);
 			}
 			//使用完毕
 			event.getPlayer().sendMessage(Messages.UseKit);
-			KitManager.lastMode.put(event.getPlayer().getName(), KitManager.mode.get(event.getPlayer().getName()));
-			KitManager.useKitTime.put(event.getPlayer().getName(), time.getTime());
+			KitManager.getLastMode().put(event.getPlayer().getName(), KitManager.getMode().get(event.getPlayer().getName()));
+			KitManager.getUseKitTime().put(event.getPlayer().getName(), time.getTime());
 		} else {
-			KitManager.mode.put(event.getPlayer().getName(), (KitManager.mode.get(event.getPlayer().getName()) + 1) % kits.mode.size());
-			event.getPlayer().sendMessage(Messages.ChangeKitMode.replace("%s", kits.mode.get(KitManager.mode.get(event.getPlayer().getName())).name));
+			KitManager.getMode().put(event.getPlayer().getName(), (KitManager.getMode().get(event.getPlayer().getName()) + 1) % kits.mode.size());
+			event.getPlayer().sendMessage(Messages.ChangeKitMode.replace("%s", kits.mode.get(KitManager.getMode().get(event.getPlayer().getName())).name));
 		}
     }
 
@@ -222,7 +222,10 @@ public class PlayerItemListener implements Listener {
 		if (event.getItem() == null) {
 			return;
 		}
-		if (event.getItem().getType() != KitManager.kitItem.getType()) {
+		if (event.getItem().getType() != KitManager.getKitItem().getType()) {
+			return;
+		}
+		if (event.getItem().getItemMeta() == null || event.getItem().getItemMeta().getLore() == null || !event.getItem().getItemMeta().getLore().contains("KIT")) {
 			return;
 		}
 		if (plugin.getGame().getStatus() != GameStatus.Waiting) {

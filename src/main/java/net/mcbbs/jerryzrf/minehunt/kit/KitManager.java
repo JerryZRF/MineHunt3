@@ -14,12 +14,19 @@ import java.util.List;
 import java.util.Map;
 
 public class KitManager {
-    public static Map<String, Integer> playerKits = new HashMap<>();
-    public static List<Kit> kits = new ArrayList<>();
-    public static Map<String, Long> useKitTime = new HashMap<>();
-    public static Map<String, Integer> lastMode = new HashMap<>();
-    public static Map<String, Integer> mode = new HashMap<>();
-    public static ItemStack kitItem;
+    @Getter
+    private static final Map<String, Integer> playerKits = new HashMap<>();
+    @Getter
+    private static final List<Kit> kits = new ArrayList<>();
+    @Getter
+    private static final Map<String, Long> useKitTime = new HashMap<>();
+    @Getter
+    private static final Map<String, Integer> lastMode = new HashMap<>();
+    @Getter
+    private static final Map<String, Integer> mode = new HashMap<>();
+    @Getter
+    @Setter
+    private static ItemStack kitItem;
     @Setter
     @Getter
     private static boolean enable;

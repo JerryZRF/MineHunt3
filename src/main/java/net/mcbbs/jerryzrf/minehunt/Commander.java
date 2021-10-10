@@ -196,7 +196,7 @@ public class Commander implements TabExecutor {
 				return true;
 			}
 			if (sender.hasPermission("minehunt.resetkit")) {
-				KitManager.useKitTime.put(sender.getName(), 0L);
+				KitManager.getUseKitTime().put(sender.getName(), 0L);
 				sender.sendMessage(ChatColor.GOLD + "职业CD已归零");
 			} else {
 				sender.sendMessage(Messages.NoPermission);

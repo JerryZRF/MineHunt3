@@ -265,18 +265,18 @@ public class Game {
 			Bukkit.broadcastMessage("正在发放职业物品");
 			inGamePlayers.forEach(player -> {
 				//替换占位符
-				ItemMeta im = KitManager.kitItem.getItemMeta();
+				ItemMeta im = KitManager.getKitItem().getItemMeta();
 				List<String> lore = new ArrayList<>();
 				if (im.getLore() != null) {
 					im.getLore().forEach(s -> lore.add(s.replace("%s", KitManager.getPlayerKit(player).name)));
 					im.setLore(lore);
 				}
-				KitManager.kitItem.setItemMeta(im);
-				player.getInventory().setItem(8, KitManager.kitItem);
+				KitManager.getKitItem().setItemMeta(im);
+				player.getInventory().setItem(8, KitManager.getKitItem());
 				//发放技能道具
-				for (int i = 0; i < KitManager.kits.get(KitManager.playerKits.get(player.getName())).kitItems.size(); i++) {
+				for (int i = 0; i < KitManager.getKits().get(KitManager.getPlayerKits().get(player.getName())).kitItems.size(); i++) {
 					ItemStack item = new ItemStack(Material.getMaterial(
-							KitManager.kits.get(KitManager.playerKits.get(player.getName())).kitItems.get(i)));
+							KitManager.getKits().get(KitManager.getPlayerKits().get(player.getName())).kitItems.get(i)));
 					im = item.getItemMeta();
 					List<String> itemLore = im.getLore();
 					if (itemLore == null) {

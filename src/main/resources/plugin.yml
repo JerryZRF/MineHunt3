@@ -1,5 +1,5 @@
 name: MineHunt
-version: 3.3.5
+version: 3.3.6
 main: net.mcbbs.jerryzrf.minehunt.MineHunt
 api-version: 1.17
 authors: [ JerryZRF ]
