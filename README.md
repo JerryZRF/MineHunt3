@@ -1,6 +1,7 @@
 # MineHunt3
 
 这是MineHunt2的一个分支
+www.github.com/MossCG/MineHunt2
 
 ## 改变
 
